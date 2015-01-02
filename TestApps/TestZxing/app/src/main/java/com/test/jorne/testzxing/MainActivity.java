@@ -1,9 +1,16 @@
 package com.test.jorne.testzxing;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -12,6 +19,21 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Button button = (Button) findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
+                integrator.addExtra("SCAN_WIDTH", 640);
+                integrator.addExtra("SCAN_HEIGHT", 480);
+                integrator.addExtra("SCAN_MODE", "QR_CODE_MODE");
+                //customize
+                integrator.addExtra("PROMPT_MESSAGE", "SCANNER_START");
+                integrator.initiateScan(IntentIntegrator.QR_CODE_TYPES);
+            }
+        });
     }
 
 
@@ -35,5 +57,20 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent)
+    {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        if(result != null)
+        {
+            String contents = result.getContents();
+            if(contents != null)
+            {
+                TextView text = (TextView) findViewById(R.id.textView);
+                text.setText(result.toString());
+            }
+        }
     }
 }
