@@ -1,10 +1,14 @@
 package be.pxl.citygame;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -15,9 +19,6 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void handleBtnStart(View v) {
-        // Show navigate to next stop activity
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -40,4 +41,31 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void scanQR(View v)
+    {
+        IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
+        integrator.addExtra("SCAN_WIDTH", 640);
+        integrator.addExtra("SCAN_HEIGHT", 480);
+        integrator.addExtra("SCAN_MODE", "QR_CODE_MODE");
+        //customize
+        //integrator.addExtra("PROMPT_MESSAGE", "SCANNER_START");
+        integrator.initiateScan(IntentIntegrator.QR_CODE_TYPES);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent)
+    {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        if(result != null)
+        {
+            String contents = result.getContents();
+            if(contents != null)
+            {
+                //TextView text = (TextView) findViewById(R.id.textView);
+                //text.setText(result.toString());
+            }
+        }
+    }
 }
+

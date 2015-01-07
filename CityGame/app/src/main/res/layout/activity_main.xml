@@ -27,5 +27,7 @@
         android:text="@string/btn_scan_qr"
         android:id="@+id/btn_scan_qr"
         android:layout_below="@+id/btn_start"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="scanQR"
+        />
 </RelativeLayout>
