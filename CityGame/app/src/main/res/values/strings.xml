@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">CityGame</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
+    <string name="btn_start">Start</string>
+    <string name="btn_scan_qr">Scan QR-Code</string>
 </resources>
