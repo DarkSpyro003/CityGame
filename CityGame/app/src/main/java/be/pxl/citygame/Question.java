@@ -43,7 +43,7 @@ public class Question {
         this.type = type;
         this.question = question;
         this.multi_answer = answer;
-        this.options = new ArrayList<>(options);
+        this.options = new ArrayList<String>(options);
         this.extraInfo = "";
     }
 
