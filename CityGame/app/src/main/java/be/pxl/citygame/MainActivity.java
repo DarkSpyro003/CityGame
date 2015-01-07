@@ -19,6 +19,9 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
     }
 
+    public void handleBtnStart(View v) {
+        // Show navigate to next stop activity
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
