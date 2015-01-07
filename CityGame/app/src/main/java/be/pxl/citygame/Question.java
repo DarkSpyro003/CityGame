@@ -1,5 +1,8 @@
 package be.pxl.citygame;
 
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +17,9 @@ public class Question {
     private String text_answer;
     private int multi_answer;
     private List<String> options;
+    private String extraInfo;
+    private Drawable image;
+    private Uri VideoUri;
 
     private boolean answered = false; // Gets set to true when the question is answered
     private boolean answeredCorrect = false; // Gets set to if the result was correct or not
@@ -26,6 +32,7 @@ public class Question {
         this.type = type;
         this.question = question;
         this.text_answer = answer;
+        this.extraInfo = "";
     }
 
     // Constructor multiple choice question
@@ -37,6 +44,7 @@ public class Question {
         this.question = question;
         this.multi_answer = answer;
         this.options = new ArrayList<>(options);
+        this.extraInfo = "";
     }
 
     // Checks plain text answer
@@ -79,5 +87,29 @@ public class Question {
 
     public boolean isAnsweredCorrect() {
         return answeredCorrect;
+    }
+
+    public String getExtraInfo() {
+        return extraInfo;
+    }
+
+    public void setExtraInfo(String extraInfo) {
+        this.extraInfo = extraInfo;
+    }
+
+    public Drawable getImage() {
+        return image;
+    }
+
+    public void setImage(Drawable image) {
+        this.image = image;
+    }
+
+    public Uri getVideoUri() {
+        return VideoUri;
+    }
+
+    public void setVideoUri(Uri videoUri) {
+        VideoUri = videoUri;
     }
 }
