@@ -18,7 +18,8 @@
         android:id="@+id/btn_start"
         android:layout_below="@+id/logo"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="83dp" />
+        android:layout_marginTop="83dp"
+        android:onClick="handleBtnStart" />
 
     <Button
         android:layout_width="150dp"

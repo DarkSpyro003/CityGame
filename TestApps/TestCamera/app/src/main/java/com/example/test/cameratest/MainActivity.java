@@ -1,22 +1,51 @@
-package be.pxl.citygame;
+package com.example.test.cameratest;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.hardware.Camera;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+
+import java.io.IOException;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    private Camera camera;
+    private CameraView cameraView;
+    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        camera = Camera.open();
+        cameraView = new CameraView(this, camera);
+        imageView = (ImageView)findViewById(R.id.image_view);
+        FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
+        preview.addView(cameraView);
+
     }
 
-    public void handleBtnStart(View v) {
-        // Show navigate to next stop activity
+    private Camera.PictureCallback callback = new Camera.PictureCallback() {
+        @Override
+        public void onPictureTaken(byte[] data, Camera camera) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+            imageView.setImageBitmap(bitmap);
+            camera.stopPreview();
+            camera.startPreview();
+        }
+    };
+
+    public void onClick(View view)
+    {
+        camera.takePicture(null, null, callback);
     }
 
     @Override
