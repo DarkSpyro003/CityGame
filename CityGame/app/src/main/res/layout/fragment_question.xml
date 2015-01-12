@@ -32,13 +32,13 @@ android:layout_gravity="center_vertical">
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Antwoord"
+            android:text="@string/btn_answer"
             android:id="@+id/btn_answer" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Meer info"
+            android:text="@string/btn_info"
             android:id="@+id/btn_info" />
     </LinearLayout>
 </LinearLayout>

@@ -6,5 +6,7 @@
     <string name="btn_start">Start</string>
     <string name="btn_scan_qr">Scan QR-Code</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="btn_answer">Antwoord</string>
+    <string name="btn_info">Meer info</string>
 
 </resources>
