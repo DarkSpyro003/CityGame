@@ -11,6 +11,28 @@ class PlayerDb
 		$this->database = $database;
 	}
 	
+	public function createPlayer($player, $passwordhash)
+	{
+		if( $statement = $this->database->prepare('INSERT INTO `players` (`username`, `passwordhash`, `email`, `realname`) VALUES (?, ?, ?, ?)') )
+		{
+			$statement->bind_param('ssss', $player->username, $passwordhash, $player->email, $player->realname);
+			$statement->execute();
+			return $this->database->affected_rows;
+		}
+	}
+	
+	public function checkPassword($passwordhash)
+	{
+		throw new Exception('Not yet implemented');
+		return false;
+	}
+	
+	public function deletePlayerByUsername($username)
+	{
+		$result = $this->database->query('DELETE FROM `players` WHERE `username` = \'' . $username . '\'');
+		return $this->database->affected_rows;
+	}
+	
 	public function getPlayerByUsername($username)
 	{
 		$result = $this->database->query('SELECT `id`, `username`, `email`, `realname` FROM `players` WHERE `username` = \'' . $username . '\'');
@@ -26,7 +48,9 @@ class PlayerDb
 				{
 					$games[] = new PlayedGame($game['gameContentId'], $game['score']);
 				}
-				$player = new Player($playerId, $row['username'], $row['email'], $row['realname'], $games);
+				$player = new Player($row['username'], $row['email'], $row['realname']);
+				$player->id = $playerId;
+				$player->games = $games;
 				
 				return $player;
 			}

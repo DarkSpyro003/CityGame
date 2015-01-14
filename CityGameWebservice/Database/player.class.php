@@ -9,13 +9,11 @@ class Player implements JsonSerializable
 	private $realname;
 	private $games = array();
 	
-	public function __construct($id, $username, $email, $realname, $games)
+	public function __construct($username, $email, $realname)
 	{
-		$this->id = $id;
 		$this->username = $username;
 		$this->email = $email;
 		$this->realname = $realname;
-		$this->games = $games;
 	}
 	
 	public function jsonSerialize()
