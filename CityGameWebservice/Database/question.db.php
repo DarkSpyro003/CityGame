@@ -25,12 +25,12 @@ class QuestionDb
 			$qContentUrl = $row['content_url'];
 			$qLatitude = $row['latitude'];
 			$qLongitude = $row['longitude'];
-			if( $type == 0 ) // plain text question
+			if( $qType == 0 ) // plain text question
 			{
 				$qAnswer = $row['text_answer'];
 				$question = new Question($qType, $qQuestion, $qAnswer);
 			}
-			else if( $type == 1 ) // multiple choice question
+			else if( $qType == 1 ) // multiple choice question
 			{
 				$qAnswer = $row['multi_answer'];
 				$qId = $row['id'];
