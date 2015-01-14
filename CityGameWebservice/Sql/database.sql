@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 14, 2015 at 05:12 PM
+-- Generation Time: Jan 15, 2015 at 12:40 AM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -26,6 +26,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `gamecontent`
 --
 
+DROP TABLE IF EXISTS `gamecontent`;
 CREATE TABLE IF NOT EXISTS `gamecontent` (
 `id` int(11) NOT NULL COMMENT 'unique id for gamecontent',
   `title` varchar(50) NOT NULL COMMENT 'title such as city name'
@@ -37,6 +38,7 @@ CREATE TABLE IF NOT EXISTS `gamecontent` (
 -- Table structure for table `multi_answer`
 --
 
+DROP TABLE IF EXISTS `multi_answer`;
 CREATE TABLE IF NOT EXISTS `multi_answer` (
   `questionId` int(11) NOT NULL,
   `choiceId` int(3) NOT NULL,
@@ -49,13 +51,14 @@ CREATE TABLE IF NOT EXISTS `multi_answer` (
 -- Table structure for table `players`
 --
 
+DROP TABLE IF EXISTS `players`;
 CREATE TABLE IF NOT EXISTS `players` (
 `id` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
   `passwordhash` char(60) NOT NULL COMMENT 'bcrypt',
   `email` varchar(255) NOT NULL,
   `realname` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -63,6 +66,7 @@ CREATE TABLE IF NOT EXISTS `players` (
 -- Table structure for table `player_games`
 --
 
+DROP TABLE IF EXISTS `player_games`;
 CREATE TABLE IF NOT EXISTS `player_games` (
   `playerId` int(11) NOT NULL,
   `gameContentId` int(11) NOT NULL,
@@ -75,6 +79,7 @@ CREATE TABLE IF NOT EXISTS `player_games` (
 -- Table structure for table `question`
 --
 
+DROP TABLE IF EXISTS `question`;
 CREATE TABLE IF NOT EXISTS `question` (
 `id` int(11) NOT NULL,
   `type` int(1) NOT NULL DEFAULT '0',
@@ -135,7 +140,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'unique id for gamecontent',
 -- AUTO_INCREMENT for table `players`
 --
 ALTER TABLE `players`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `question`
 --
