@@ -1,11 +1,13 @@
-<LinearLayout
+<RelativeLayout
 xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:tools="http://schemas.android.com/tools"
 tools:context="be.pxl.citygame.QuestionFragment"
 android:orientation="vertical"
 android:layout_width="fill_parent"
 android:layout_height="fill_parent"
-android:layout_gravity="center_vertical">
+android:layout_gravity="center_vertical"
+android:gravity="center_horizontal"
+    >
 
     <TextView
         android:layout_width="wrap_content"
@@ -13,9 +15,11 @@ android:layout_gravity="center_vertical">
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Is this a question?"
         android:id="@+id/tv_question"
-        android:layout_gravity="center_horizontal" />
+        android:layout_centerHorizontal="true"
+        />
 
     <LinearLayout
+        android:layout_below="@id/tv_question"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,8 +30,9 @@ android:layout_gravity="center_vertical">
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
+        >
 
         <Button
             android:layout_width="wrap_content"
@@ -41,4 +46,4 @@ android:layout_gravity="center_vertical">
             android:text="@string/btn_info"
             android:id="@+id/btn_info" />
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

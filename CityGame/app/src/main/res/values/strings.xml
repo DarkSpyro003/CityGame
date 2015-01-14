@@ -9,5 +9,7 @@
     <string name="btn_answer">Antwoord</string>
     <string name="btn_info">Meer info</string>
     <string name="next_location">Uw volgende stopplaats is </string>
+    <string name="title_activity_game">GameActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
