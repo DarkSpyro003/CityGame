@@ -8,19 +8,31 @@
     >
 
     <fragment
+        android:id="@+id/mapFragment"
+        android:name="be.pxl.citygame.ImageFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        tools:layout="@layout/fragment_image" />
+
+    <fragment
         android:id="@+id/imageFragment"
         android:name="be.pxl.citygame.ImageFragment"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:layout="@layout/fragment_image" />
+        tools:layout="@layout/fragment_image"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/mapFragment"
+        />
 
     <fragment
         android:id="@+id/questionFragment"
         android:name="be.pxl.citygame.QuestionFragment"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         tools:layout="@layout/fragment_question"
         android:layout_below="@id/imageFragment"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/mapFragment"
         />
 
 </RelativeLayout>
