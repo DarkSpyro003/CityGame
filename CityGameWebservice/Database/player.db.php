@@ -19,6 +19,8 @@ class PlayerDb
 			$statement->execute();
 			return $this->database->affected_rows;
 		}
+		else
+			return 0;
 	}
 	
 	public function updatePlayer($player, $passwordhash)
@@ -38,6 +40,9 @@ class PlayerDb
 					else
 						return 500;
 				}
+				else
+					return 500;
+				
 			}
 			else // Not authorized
 			{
