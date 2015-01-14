@@ -13,29 +13,26 @@ class QuestionDb
 	public function getQuestionListForContent($contentId)
 	{
 		$questionList = array();
-		$result = $this->database->query('SELECT `id`, `type`, `question`, `text_answer`, `multi_answer`, `extraInfo`, `content_url`, `gamecontentId` 
+		$result = $this->database->query('SELECT `id`, `type`, `question`, `text_answer`, `multi_answer`, `extraInfo`, `content_url`, `gamecontentId`, `latitude`, `longitude`
 			FROM `question` WHERE `gamecontentId` = ' . $contentId);
 		
 		while($row = $result->fetch_assoc())
 		{
+			$question;
 			$qType = $row['type'];
 			$qQuestion = $row['question'];
+			$qExtraInfo = $row['extraInfo'];
+			$qContentUrl = $row['content_url'];
+			$qLatitude = $row['latitude'];
+			$qLongitude = $row['longitude'];
 			if( $type == 0 ) // plain text question
 			{
 				$qAnswer = $row['text_answer'];
-				$qExtraInfo = $row['extraInfo'];
-				$qContentUrl = $row['content_url'];
 				$question = new Question($qType, $qQuestion, $qAnswer);
-				$question->extraInfo = $qExtraInfo;
-				$question->contentUrl = $qContentUrl;
-				
-				$questionList[] = $question;
 			}
 			else if( $type == 1 ) // multiple choice question
 			{
 				$qAnswer = $row['multi_answer'];
-				$qExtraInfo = $row['extraInfo'];
-				$qContentUrl = $row['content_url'];
 				$qId = $row['id'];
 				$qOptions = array();
 				$resultOptions = $this->database->query('SELECT `questionId`, `choiceId`, `answer` FROM `multi_answer` WHERE `questionId` = ' . 
@@ -45,11 +42,13 @@ class QuestionDb
 					$qOptions[] = $optionRow['answer'];
 				}
 				$question = new Question($qType, $qQuestion, $qAnswer, $qOptions);
-				$question->extraInfo = $qExtraInfo;
-				$question->contentUrl = $qContentUrl;
-				
-				$questionList[] = $question;
 			}
+			$question->extraInfo = $qExtraInfo;
+			$question->contentUrl = $qContentUrl;
+			$question->latitude = $qLatitude;
+			$question->longitude = $qLongitude;
+			
+			$questionList[] = $question;
 		}
 		
 		return $questionList;

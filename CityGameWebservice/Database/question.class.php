@@ -8,6 +8,8 @@ class Question
 	private $options = array();
 	private $extraInfo;
 	private $contentUrl;
+	private $latitude;
+	private $longitude;
 	
 	// Constructor plain text question
 	public function __construct($type, $question, $answer)

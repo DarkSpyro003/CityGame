@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 14, 2015 at 02:47 PM
+-- Generation Time: Jan 14, 2015 at 03:39 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -57,7 +57,9 @@ CREATE TABLE IF NOT EXISTS `question` (
   `multi_answer` int(3) DEFAULT NULL,
   `extraInfo` text NOT NULL,
   `content_url` varchar(255) DEFAULT NULL COMMENT 'image or video url',
-  `gamecontentId` int(11) NOT NULL
+  `gamecontentId` int(11) NOT NULL,
+  `latitude` double NOT NULL,
+  `longitude` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --

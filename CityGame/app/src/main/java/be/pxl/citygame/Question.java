@@ -1,6 +1,7 @@
 package be.pxl.citygame;
 
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.net.Uri;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class Question {
     private int multi_answer;
     private List<String> options;
     private String extraInfo;
+    private Location location;
     private Uri remoteContentUri; // The remote location for the content
     private Uri localContentUri; // When the content is downloaded, its location gets set here
 
@@ -111,5 +113,13 @@ public class Question {
 
     public void setLocalContentUri(Uri localContentUri) {
         this.localContentUri = localContentUri;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }
