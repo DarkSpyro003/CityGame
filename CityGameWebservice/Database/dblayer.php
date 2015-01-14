@@ -8,17 +8,7 @@ class DBLayer
 
 	public function __construct($db_host, $db_name, $db_username, $db_password)
 	{
-		$this->link_id = @mysqli_connect($db_host, $db_username, $db_password, true);
-
-		if ($this->link_id)
-		{
-			if (@mysqli_select_db($db_name, $this->link_id))
-			return $this->link_id;
-			else
-			$this->error('Unable to select database. MySQL reported: '.mysqli_error(), __FILE__, __LINE__);
-		}
-		else
-		$this->error('Unable to connect to MySQL server. MySQL reported: '.mysqli_error(), __FILE__, __LINE__);
+		$this->link_id = mysqli_connect($db_host, $db_username, $db_password, $db_name);
 	}
 
 	function query($sql)

@@ -6,7 +6,7 @@ class GameContentDb
 {
 	private $database;
 	
-	public __construct($database)
+	public function __construct($database)
 	{
 		$this->database = $database;
 	}
