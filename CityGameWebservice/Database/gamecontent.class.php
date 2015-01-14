@@ -6,9 +6,10 @@ class GameContent
 	private $title;
 	private $questionList = array();
 	
-	public function __construct($title)
+	public function __construct($title, $questionList)
 	{
 		$this->title = $title;
+		$this->questionList = $questionList;
 	}
 	
 	public function getTitle()
