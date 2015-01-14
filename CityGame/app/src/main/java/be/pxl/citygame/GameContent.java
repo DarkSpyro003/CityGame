@@ -9,14 +9,17 @@ import java.util.List;
  */
 public class GameContent {
 
+    private String title;
     private List<Question> questionList;
 
-    public GameContent() {
+    public GameContent(String title) {
         questionList = new ArrayList<Question>();
+        this.title = title;
     }
 
-    public GameContent(List<Question> questionList) {
+    public GameContent(String title, List<Question> questionList) {
         this.questionList = questionList;
+        this.title = title;
     }
 
     public void addQuestion(Question question) {
