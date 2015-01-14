@@ -85,11 +85,24 @@ $app->post(
     }
 );
 
-// PATCH route -- Update
-$app->patch('/user/patch',
-	function () 
+// PUT route -- Create & Update
+$app->put('/player/:username',
+	function ($username) use ($database, $app, $serviceroot)
 	{
-		echo 'This is a PATCH route';
+		$player;$passwordhash; // TODO : implement
+		throw new Exception('Not yet implemented');
+        $playerdb = new PlayerDb($database);
+		$status = $playerdb->updatePlayer($player, $passwordhash);
+		$app->response()->status($status);
+		if( $status == 201 )
+		{
+			$newUrl = $serviceroot . '/player/' . $username;
+			$app->response->headers->set('Location', $newUrl); // Holds GET url to the created resource
+		}
+		else if( $status == 401 )
+			echo '401 Unauthorized';
+		else if( $status == 500 )
+			echo '500 Internal Server Error - Something went wrong';
 	}
 );
 

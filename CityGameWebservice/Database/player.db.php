@@ -21,6 +21,38 @@ class PlayerDb
 		}
 	}
 	
+	public function updatePlayer($player, $passwordhash)
+	{
+		// Check if player exists in DB
+		if( !is_null(getPlayerByUsername($player->username)) )
+		{
+			// Player exists, check password
+			if( checkPassword($passwordhash) )
+			{
+				if( $statement = $this->database->prepare('UPDATE `players` SET `email` = ?, `realname` = ? WHERE `username` = ?') )
+				{
+					$statement->bind_param('sss', $player->email, $player->realname, $player->username);
+					$statement->execute();
+					if( $this->database->affected_rows > 0 )
+						return 200;
+					else
+						return 500;
+				}
+			}
+			else // Not authorized
+			{
+				return 401;
+			}
+		}
+		else // Player being updated doesn't exist, create instead
+		{
+			if( createPlayer($player, $passwordhash) > 0 )
+				return 201;
+			else
+				return 500;
+		}
+	}
+	
 	public function checkPassword($passwordhash)
 	{
 		throw new Exception('Not yet implemented');
