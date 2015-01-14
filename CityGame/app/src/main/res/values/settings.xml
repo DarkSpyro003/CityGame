@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- For debugging and general testing purposes -->
+    <string name="question_provider">be.pxl.citygame.providers.QuestionMockProvider</string>
+</resources>
