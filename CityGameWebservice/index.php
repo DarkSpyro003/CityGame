@@ -52,35 +52,56 @@ $app->get(
 
 // POST route -- Create
 $app->post(
-    '/player/create',
-    function () use ($database, $app, $serviceroot)
+    '/player(/:username)',
+    function ($username = '') use ($database, $app, $serviceroot)
 	{
-		$username = $app->$request->post('username');
-		$passwordhash = $app->$request->post('passwordhash');
-		$email = $app->$request->post('email');
-		$realname = $app->$request->post('realname');
-		
-        $playerdb = new PlayerDb($database);
-		$content = $playerdb->getPlayerByUsername($username);
-		if( is_null($content) )
+		if (0 === strpos($app->request->headers->get('Content-Type'), 'application/json')) 
 		{
-			$player = new Player($username, $email, $realname);
-			if ( $playerdb->createPlayer($player, $passwordhash) > 0 )
+			$data = json_decode($app->request->getContent(), true);
+			$jsonusername = $data['username'];
+			$passwordhash = $data['passwordhash'];
+			$email = $data['email'];
+			$realname = $data['realname'];
+			
+			$correct = true;
+			
+			if( $username != '' )
 			{
-				$app->response()->status(201);
-				$newUrl = $serviceroot . '/player/' . $username;
-				$app->response->headers->set('Location', $newUrl); // Holds GET url to the created resource
+				if( !($username == $jsonusername) ) 
+				{ // Username in json is not same as username in path : malformed requested
+					$correct = false;
+					$app->response()->status(422);
+					echo '422 Unprocessable Entity - The username parameter does not match the username in the JSON request body';
+				}
 			}
-			else
+			
+			if( $correct )
 			{
-				$app->response()->status(500);
-				echo '500 Internal Server Error - Something went wrong';
+				$playerdb = new PlayerDb($database);
+				$content = $playerdb->getPlayerByUsername($username);
+				if( is_null($content) )
+				{
+					$player = new Player($username, $email, $realname);
+					if ( $playerdb->createPlayer($player, $passwordhash) > 0 )
+					{
+						$app->response()->status(201);
+						$newUrl = $serviceroot . '/player/' . $username;
+						$app->response->headers->set('Location', $newUrl); // Holds GET url to the created resource
+						$newContent = $playerdb->getPlayerByUsername($username);
+						echo json_encode($newContent);
+					}
+					else
+					{
+						$app->response()->status(500);
+						echo '500 Internal Server Error - Something went wrong';
+					}
+				}
+				else
+				{
+					$app->response()->status(409);
+					echo '409 Resource Already Exists - The requested username is already taken';
+				}
 			}
-		}
-		else
-		{
-			$app->response()->status(409);
-			echo '409 Resource Already Exists - The requested username is already taken';
 		}
     }
 );
@@ -89,20 +110,31 @@ $app->post(
 $app->put('/player/:username',
 	function ($username) use ($database, $app, $serviceroot)
 	{
-		$player;$passwordhash; // TODO : implement
-		throw new Exception('Not yet implemented');
-        $playerdb = new PlayerDb($database);
-		$status = $playerdb->updatePlayer($player, $passwordhash);
-		$app->response()->status($status);
-		if( $status == 201 )
+		if (0 === strpos($app->request->headers->get('Content-Type'), 'application/json')) 
 		{
-			$newUrl = $serviceroot . '/player/' . $username;
-			$app->response->headers->set('Location', $newUrl); // Holds GET url to the created resource
+			$data = json_decode($app->request->getContent(), true);
+			
+			$newusername = $data['username'];
+			$passwordhash = $data['passwordhash'];
+			$newpasswordhash = $data['newpasswordhash'];
+			$email = $data['email'];
+			$realname = $data['realname'];
+			
+			$playerdb = new PlayerDb($database);
+			$status = $playerdb->updatePlayer($player, $username, $passwordhash, $newpasswordhash);
+			$app->response()->status($status);
+			if( $status == 201 )
+			{
+				$newUrl = $serviceroot . '/player/' . $username;
+				$app->response->headers->set('Location', $newUrl); // Holds GET url to the created resource
+				$newContent = $playerdb->getPlayerByUsername($newusername);
+				echo json_encode($newContent);
+			}
+			else if( $status == 401 )
+				echo '401 Unauthorized';
+			else if( $status == 500 )
+				echo '500 Internal Server Error - Something went wrong';
 		}
-		else if( $status == 401 )
-			echo '401 Unauthorized';
-		else if( $status == 500 )
-			echo '500 Internal Server Error - Something went wrong';
 	}
 );
 

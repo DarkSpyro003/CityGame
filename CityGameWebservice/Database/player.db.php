@@ -23,7 +23,7 @@ class PlayerDb
 			return 0;
 	}
 	
-	public function updatePlayer($player, $passwordhash)
+	public function updatePlayer($player, $oldusername, $passwordhash, $newpasswordhash)
 	{
 		// Check if player exists in DB
 		if( !is_null(getPlayerByUsername($player->username)) )
@@ -31,9 +31,9 @@ class PlayerDb
 			// Player exists, check password
 			if( checkPassword($passwordhash) )
 			{
-				if( $statement = $this->database->prepare('UPDATE `players` SET `email` = ?, `realname` = ? WHERE `username` = ?') )
+				if( $statement = $this->database->prepare('UPDATE `players` SET `username` = ?, `passwordhash` = ?, `email` = ?, `realname` = ? WHERE `username` = ?') )
 				{
-					$statement->bind_param('sss', $player->email, $player->realname, $player->username);
+					$statement->bind_param('sssss', $player->username, $newpasswordhash, $player->email, $player->realname, $oldusername);
 					$statement->execute();
 					if( $this->database->affected_rows > 0 )
 						return 200;
