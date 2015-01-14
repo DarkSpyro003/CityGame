@@ -40,8 +40,8 @@ INSERT INTO `multi_answer` (`questionId`, `choiceId`, `answer`) VALUES
 --
 
 INSERT INTO `question` (`id`, `type`, `question`, `text_answer`, `multi_answer`, `extraInfo`, `content_url`, `gamecontentId`, `latitude`, `longitude`) VALUES
-(1, 0, 'Is this a testquestion?', NULL, 0, 'Yes, this was a testquestion, since it''s in the test gamecontent!', 'http://public.ds003.info/imghost/testcontent.png', 1, 50.9167, 5.3333),
-(2, 1, 'This is another testquestion. To answer this question correctly, fill out the opposite word of ''no'' in the answer.', 'yes', NULL, 'And this was the second testquestion, this one in plain text!', 'http://public.ds003.info/imghost/testcontent.png', 1, 50.9368583, 5.3483892);
+(1, 1, 'Is this a testquestion?', NULL, 0, 'Yes, this was a testquestion, since it''s in the test gamecontent!', 'http://public.ds003.info/imghost/testcontent.png', 1, 50.9167, 5.3333),
+(2, 0, 'This is another testquestion. To answer this question correctly, fill out the opposite word of ''no'' in the answer.', 'yes', NULL, 'And this was the second testquestion, this one in plain text!', 'http://public.ds003.info/imghost/testcontent.png', 1, 50.9368583, 5.3483892);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
