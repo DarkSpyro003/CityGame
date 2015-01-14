@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -21,11 +22,14 @@ import org.apache.http.params.BasicHttpParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import be.pxl.citygame.providers.IQuestionProvider;
+import be.pxl.citygame.providers.Providers;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+
 
 
 public class MainActivity extends ActionBarActivity {
@@ -36,6 +40,15 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Loads the providers that have been declared in settings.xml
+        Providers.load(getApplication());
+
+        // For testing purposes only
+        // todo: remove later
+        IQuestionProvider provider = Providers.getQuestionProvider();
+        Question testQuestion = provider.loadQuestionById(0);
+        ((TextView)(findViewById(R.id.tv_output_test))).setText(testQuestion.getQuestion());
     }
 
     public void handleBtnStart(View v) {

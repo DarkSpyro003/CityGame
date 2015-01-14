@@ -30,4 +30,11 @@
         android:layout_centerHorizontal="true"
         android:onClick="scanQR"
         />
+
+    <!-- For testing purposes only, should be removed soon -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_output_test"
+        android:layout_below="@id/btn_scan_qr"/>
 </RelativeLayout>
