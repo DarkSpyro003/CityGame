@@ -7,8 +7,7 @@ class Question
 	private $multi_answer;
 	private $options = array();
 	private $extraInfo;
-	private $imgUrl;
-	private $videoUrl;
+	private $contentUrl;
 	
 	// Constructor plain text question
 	public Question($type, $question, $answer)
