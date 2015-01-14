@@ -24,7 +24,7 @@ $app->get(
 		if( is_null($content) )
 		{
 			$app->response()->status(404);
-			echo '404 Object Not Found';
+			echo '404 Resource Not Found';
 		}
 		else
 			echo json_encode($content);
