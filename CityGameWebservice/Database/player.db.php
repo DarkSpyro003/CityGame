@@ -23,17 +23,17 @@ class PlayerDb
 			return 0;
 	}
 	
-	public function updatePlayer($player, $oldusername, $passwordhash, $newpasswordhash)
+	public function updatePlayer($player, $oldusername, $password, $passwordhash)
 	{
 		// Check if player exists in DB
 		if( !is_null(getPlayerByUsername($player->username)) )
 		{
 			// Player exists, check password
-			if( checkPassword($passwordhash) )
+			if( checkPassword($oldusername, $password) )
 			{
 				if( $statement = $this->database->prepare('UPDATE `players` SET `username` = ?, `passwordhash` = ?, `email` = ?, `realname` = ? WHERE `username` = ?') )
 				{
-					$statement->bind_param('sssss', $player->username, $newpasswordhash, $player->email, $player->realname, $oldusername);
+					$statement->bind_param('sssss', $player->username, $passwordhash, $player->email, $player->realname, $oldusername);
 					$statement->execute();
 					if( $this->database->affected_rows > 0 )
 						return 200;
@@ -58,10 +58,11 @@ class PlayerDb
 		}
 	}
 	
-	public function checkPassword($passwordhash)
+	public function checkPassword($username, $password)
 	{
-		throw new Exception('Not yet implemented');
-		return false;
+		$playerResult = $this->database->query('SELECT `passwordhash` FROM `players` WHERE `username` = \'' . $username . '\'');
+		$passwordhash = $result->fetch_assoc()['passwordhash'];
+		return password_verify($password, $passwordhash);
 	}
 	
 	public function deletePlayerByUsername($username)

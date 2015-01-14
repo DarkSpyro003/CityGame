@@ -115,13 +115,13 @@ $app->put('/player/:username',
 			$data = json_decode($app->request->getContent(), true);
 			
 			$newusername = $data['username'];
+			$password = $data['password'];
 			$passwordhash = $data['passwordhash'];
-			$newpasswordhash = $data['newpasswordhash'];
 			$email = $data['email'];
 			$realname = $data['realname'];
 			
 			$playerdb = new PlayerDb($database);
-			$status = $playerdb->updatePlayer($player, $username, $passwordhash, $newpasswordhash);
+			$status = $playerdb->updatePlayer($player, $username, $password, $passwordhash);
 			$app->response()->status($status);
 			if( $status == 201 )
 			{
@@ -152,8 +152,8 @@ $app->delete(
 		}
 		else
 		{
-			$passwordhash = $app->request->params('passwordhash');
-			if( $playerdb->checkPassword($passwordhash) )
+			$password = $app->request->params('password');
+			if( $playerdb->checkPassword($password) )
 			{
 				if( $playerdb->deletePlayerByUsername($username) > 0 )
 				{
