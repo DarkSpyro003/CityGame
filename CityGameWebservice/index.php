@@ -170,6 +170,41 @@ $app->delete(
     }
 );
 
+// POST Route - after completing a gamecontent
+$app->post(
+    '/player/:username/:gamecontentId',
+    function ($username, $gamecontentId) use ($database, $app, $serviceroot)
+	{
+		if (0 === strpos($app->request->headers->get('Content-Type'), 'application/json')) 
+		{
+			$data = json_decode($app->request->getContent(), true);
+			
+			$playerdb = new PlayerDb($database);
+			if( $playerdb->checkPassword($username, $data['password']) )
+			{
+				$status = $playerdb->completeGameContent($username, $gamecontentId, $data['score']);
+				$app->response()->status($status);
+				if( $status == 201 )
+				{
+					$newUrl = $serviceroot . '/player/' . $username;
+					$app->response->headers->set('Location', $newUrl); // Holds GET url to the created resource
+					$newContent = $playerdb->getPlayerByUsername($username);
+					echo json_encode($newContent);
+				}
+				else if( $status == 401 )
+					echo '409 Resource Already Exists - The gamecontent has already been completed by this user';
+				else if( $status == 500 )
+					echo '500 Internal Server Error - Something went wrong';
+			}
+			else
+			{
+				// Wrong password!
+				$app->response()->status(401);
+				echo '401 Unauthorized';
+			}
+		}
+	}
+);
 // Run the Slim Framework application
 $app->run();
 

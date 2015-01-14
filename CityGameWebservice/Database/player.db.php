@@ -23,6 +23,37 @@ class PlayerDb
 			return 0;
 	}
 	
+	public function completeGameContent($username, $gameContentId, $score)
+	{
+		$player = getPlayerByUsername($username);
+		if( !$hasCompletedGameContent($player->id, $gameContentId) )
+		{
+			if( $statement = $this->database->prepare('INSERT INTO `player_games` (`playerId`, `gameContentId`, `score`) VALUES ?, ?, ?') )
+			{
+				$statement->bind_param('iid', $player->id, $gameContentId, $score);
+				$statement->execute();
+				if( $this->database->affected_rows > 0 )
+					return 201;
+				else
+					return 500;
+			}
+			else
+			{
+				return 500;
+			}
+		}
+		else
+		{
+			return 409;
+		}
+	}
+	
+	public function hasCompletedGameContent($playerId, $gameContentId)
+	{
+		$gamesResult = $this->database->query('SELECT `playerId`, `gameContentId`, `score` FROM `player_games` WHERE `playerId` = ' . $playerId);
+		return $gamesResult->num_rows > 0;
+	}
+	
 	public function updatePlayer($player, $oldusername, $password, $passwordhash)
 	{
 		// Check if player exists in DB
