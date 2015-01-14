@@ -7,7 +7,6 @@ $app = new \Slim\Slim();
 
 // MySQL database access:
 require_once 'Config/config.php';
-require_once 'Database/gamecontent.db.php';
 $database = new mysqli($dbhost, $dbuser, $dbpassword, $dbname);
 
 // Objects used
@@ -17,30 +16,47 @@ require_once 'Database/gamecontent.class.php';
 // Game content data -- GET
 $app->get(
     '/gamecontent/:id',
-    function ($id) use ($database)
+    function ($id) use ($database, $app)
 	{
+		require_once 'Database/gamecontent.db.php';
         $gamecontentdb = new GameContentDb($database);
 		$content = $gamecontentdb->getGameContentById($id);
-		echo json_encode($content);
+		if( is_null($content) )
+		{
+			$app->response()->status(404);
+			echo '404 Object Not Found';
+		}
+		else
+			echo json_encode($content);
     }
 );
 
-// USER CRUD
+require_once 'Database/player.db.php';
+// PLAYER CRUD
 // GET route
 $app->get(
-    '/user/',
-    function () 
+    '/player/:username',
+    function ($username) use ($database, $app) 
 	{
-        echo 'This is a GET route';
+        $playerdb = new PlayerDb($database);
+		$content = $playerdb->getPlayerByUsername($username);
+		if( is_null($content) )
+		{
+			$app->response()->status(404);
+			echo '404 Object Not Found';
+		}
+		else
+			echo json_encode($content);
     }
 );
 
 // POST route -- Create
 $app->post(
     '/user/post',
-    function () 
+    function () use ($database, $app)
 	{
-        echo 'This is a POST route';
+		$app->response()->status(201);
+		$app->response->headers->set('Location', $newUrl); // Holds GET url to the created resource
     }
 );
 
@@ -63,3 +79,5 @@ $app->delete(
 
 // Run the Slim Framework application
 $app->run();
+$database->close();
+?>

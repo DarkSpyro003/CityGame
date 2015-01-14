@@ -26,7 +26,7 @@ class GameContentDb
 		}
 		else
 		{
-			throw new Exception('GameContent with id ' . $id . ' was not found.');
+			return null;
 		}
 	}
 }

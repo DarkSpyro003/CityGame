@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 14, 2015 at 03:52 PM
+-- Generation Time: Jan 14, 2015 at 05:58 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -34,6 +34,20 @@ INSERT INTO `gamecontent` (`id`, `title`) VALUES
 INSERT INTO `multi_answer` (`questionId`, `choiceId`, `answer`) VALUES
 (1, 0, 'yes'),
 (1, 1, 'no');
+
+--
+-- Dumping data for table `players`
+--
+
+INSERT INTO `players` (`id`, `username`, `passwordhash`, `email`, `realname`) VALUES
+(1, 'christina', 'notahashyet', 'christina.korosec@student.pxl.be', 'Christina Lena Korosec');
+
+--
+-- Dumping data for table `player_games`
+--
+
+INSERT INTO `player_games` (`playerId`, `gameContentId`, `score`) VALUES
+(1, 1, 90);
 
 --
 -- Dumping data for table `question`
