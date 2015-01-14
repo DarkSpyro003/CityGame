@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 14, 2015 at 05:08 PM
+-- Generation Time: Jan 14, 2015 at 05:12 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -108,7 +108,7 @@ ALTER TABLE `multi_answer`
 -- Indexes for table `players`
 --
 ALTER TABLE `players`
- ADD PRIMARY KEY (`id`);
+ ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `username` (`username`), ADD KEY `username_2` (`username`);
 
 --
 -- Indexes for table `player_games`
