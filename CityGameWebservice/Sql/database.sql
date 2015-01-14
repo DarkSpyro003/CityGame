@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 14, 2015 at 03:39 PM
+-- Generation Time: Jan 14, 2015 at 05:08 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `gamecontent` (
 `id` int(11) NOT NULL COMMENT 'unique id for gamecontent',
   `title` varchar(50) NOT NULL COMMENT 'title such as city name'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -41,6 +41,32 @@ CREATE TABLE IF NOT EXISTS `multi_answer` (
   `questionId` int(11) NOT NULL,
   `choiceId` int(3) NOT NULL,
   `answer` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `players`
+--
+
+CREATE TABLE IF NOT EXISTS `players` (
+`id` int(11) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `passwordhash` char(60) NOT NULL COMMENT 'bcrypt',
+  `email` varchar(255) NOT NULL,
+  `realname` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `player_games`
+--
+
+CREATE TABLE IF NOT EXISTS `player_games` (
+  `playerId` int(11) NOT NULL,
+  `gameContentId` int(11) NOT NULL,
+  `score` float NOT NULL COMMENT 'Earned score when played'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -60,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `question` (
   `gamecontentId` int(11) NOT NULL,
   `latitude` double NOT NULL,
   `longitude` double NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 --
 -- Indexes for dumped tables
@@ -79,6 +105,18 @@ ALTER TABLE `multi_answer`
  ADD PRIMARY KEY (`questionId`,`choiceId`);
 
 --
+-- Indexes for table `players`
+--
+ALTER TABLE `players`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `player_games`
+--
+ALTER TABLE `player_games`
+ ADD PRIMARY KEY (`playerId`,`gameContentId`), ADD KEY `gameContentId` (`gameContentId`);
+
+--
 -- Indexes for table `question`
 --
 ALTER TABLE `question`
@@ -92,12 +130,17 @@ ALTER TABLE `question`
 -- AUTO_INCREMENT for table `gamecontent`
 --
 ALTER TABLE `gamecontent`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'unique id for gamecontent';
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'unique id for gamecontent',AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `players`
+--
+ALTER TABLE `players`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `question`
 --
 ALTER TABLE `question`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- Constraints for dumped tables
 --
@@ -107,6 +150,13 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 ALTER TABLE `multi_answer`
 ADD CONSTRAINT `multi_answer_ibfk_1` FOREIGN KEY (`questionId`) REFERENCES `question` (`id`);
+
+--
+-- Constraints for table `player_games`
+--
+ALTER TABLE `player_games`
+ADD CONSTRAINT `player_games_ibfk_1` FOREIGN KEY (`gameContentId`) REFERENCES `gamecontent` (`id`),
+ADD CONSTRAINT `player_games_ibfk_2` FOREIGN KEY (`playerId`) REFERENCES `players` (`id`);
 
 --
 -- Constraints for table `question`
