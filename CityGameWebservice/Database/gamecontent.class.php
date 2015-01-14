@@ -1,21 +1,23 @@
 <?php
 require_once 'question.class.php';
+
 class GameContent
 {
 	private $title;
 	private $questionList = array();
 	
-	public GameContent($title)
+	public function __construct($title, $questionList)
 	{
 		$this->title = $title;
+		$this->questionList = $questionList;
 	}
 	
-	public getTitle()
+	public function getTitle()
 	{
 		return $this->title;
 	}
 	
-	public setTitle($title)
+	public function setTitle($title)
 	{
 		$this->title = $title;
 	}

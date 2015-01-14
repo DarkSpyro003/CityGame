@@ -18,8 +18,8 @@ public class Question {
     private int multi_answer;
     private List<String> options;
     private String extraInfo;
-    private Drawable image;
-    private Uri VideoUri;
+    private Uri remoteContentUri; // The remote location for the content
+    private Uri localContentUri; // When the content is downloaded, its location gets set here
 
     private boolean answered = false; // Gets set to true when the question is answered
     private boolean answeredCorrect = false; // Gets set to if the result was correct or not
@@ -97,19 +97,19 @@ public class Question {
         this.extraInfo = extraInfo;
     }
 
-    public Drawable getImage() {
-        return image;
+    public Uri getRemoteContentUri() {
+        return remoteContentUri;
     }
 
-    public void setImage(Drawable image) {
-        this.image = image;
+    public void setRemoteContentUri(Uri remoteContentUri) {
+        this.remoteContentUri = remoteContentUri;
     }
 
-    public Uri getVideoUri() {
-        return VideoUri;
+    public Uri getLocalContentUri() {
+        return localContentUri;
     }
 
-    public void setVideoUri(Uri videoUri) {
-        VideoUri = videoUri;
+    public void setLocalContentUri(Uri localContentUri) {
+        this.localContentUri = localContentUri;
     }
 }

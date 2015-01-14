@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 14, 2015 at 02:23 PM
+-- Generation Time: Jan 14, 2015 at 02:47 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -34,6 +34,18 @@ CREATE TABLE IF NOT EXISTS `gamecontent` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `multi_answer`
+--
+
+CREATE TABLE IF NOT EXISTS `multi_answer` (
+  `questionId` int(11) NOT NULL,
+  `choiceId` int(3) NOT NULL,
+  `answer` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `question`
 --
 
@@ -59,6 +71,12 @@ ALTER TABLE `gamecontent`
  ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `multi_answer`
+--
+ALTER TABLE `multi_answer`
+ ADD PRIMARY KEY (`questionId`,`choiceId`);
+
+--
 -- Indexes for table `question`
 --
 ALTER TABLE `question`
@@ -81,6 +99,12 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `multi_answer`
+--
+ALTER TABLE `multi_answer`
+ADD CONSTRAINT `multi_answer_ibfk_1` FOREIGN KEY (`questionId`) REFERENCES `question` (`id`);
 
 --
 -- Constraints for table `question`
