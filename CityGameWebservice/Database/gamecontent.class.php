@@ -1,7 +1,7 @@
 <?php
 require_once 'question.class.php';
 
-class GameContent
+class GameContent implements JsonSerializable
 {
 	private $title;
 	private $questionList = array();
@@ -12,14 +12,26 @@ class GameContent
 		$this->questionList = $questionList;
 	}
 	
-	public function getTitle()
+	public function jsonSerialize()
 	{
-		return $this->title;
+		return get_object_vars($this);
 	}
 	
-	public function setTitle($title)
+	public function __get($property) 
 	{
-		$this->title = $title;
+		if (property_exists($this, $property))
+		{
+			return $this->$property;
+		}
+	}
+
+	public function __set($property, $value)
+	{
+		if (property_exists($this, $property)) 
+		{
+			$this->$property = $value;
+		}
+		return $this;
 	}
 }
 ?>

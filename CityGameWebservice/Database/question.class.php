@@ -1,5 +1,5 @@
 <?php
-class Question
+class Question implements JsonSerializable
 {
 	private $type;
 	private $question;
@@ -50,6 +50,11 @@ class Question
 		$this->options = $options;
 	}
 	
+	public function jsonSerialize()
+	{
+		return get_object_vars($this);
+	}
+	
 	public function __get($property) 
 	{
 		if (property_exists($this, $property))
@@ -65,6 +70,6 @@ class Question
 			$this->$property = $value;
 		}
 		return $this;
-		}
 	}
+}
 ?>
