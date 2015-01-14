@@ -10,12 +10,12 @@ class GameContent
 		$this->title = $title;
 	}
 	
-	public getTitle()
+	public function getTitle()
 	{
 		return $this->title;
 	}
 	
-	public setTitle($title)
+	public function setTitle($title)
 	{
 		$this->title = $title;
 	}
