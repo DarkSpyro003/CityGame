@@ -6,7 +6,7 @@ class DBLayer
 	var $saved_queries = array();
 	var $num_queries = 0;
 
-	function DBLayer($db_host, $db_name, $db_username, $db_password)
+	public function __construct($db_host, $db_name, $db_username, $db_password)
 	{
 		$this->link_id = @mysqli_connect($db_host, $db_username, $db_password, true);
 

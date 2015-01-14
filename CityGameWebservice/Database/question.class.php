@@ -10,7 +10,7 @@ class Question
 	private $contentUrl;
 	
 	// Constructor plain text question
-	public Question($type, $question, $answer)
+	public __construct($type, $question, $answer)
 	{
 		if( $type != 0 )
 			throw new Exception('Type must be 0 for using this constructor');
@@ -21,7 +21,7 @@ class Question
 	}
 	
 	// Constructor multiple choice question
-	public Question($type, $question, $answer, $options)
+	public __construct($type, $question, $answer, $options)
 	{
 		if( $type != 1 )
 			throw new Exception('Type must be 1 for using this constructor');
