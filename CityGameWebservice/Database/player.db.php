@@ -44,7 +44,7 @@ class PlayerDb
 				$playerId = $row['id'];
 				$games = array();
 				$gamesResult = $this->database->query('SELECT `playerId`, `gameContentId`, `score` FROM `player_games` WHERE `playerId` = ' . $playerId);
-				while($game = $result->fetch_assoc())
+				while($game = $gamesResult->fetch_assoc())
 				{
 					$games[] = new PlayedGame($game['gameContentId'], $game['score']);
 				}
