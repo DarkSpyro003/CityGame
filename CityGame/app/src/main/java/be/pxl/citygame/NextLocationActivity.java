@@ -4,14 +4,19 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-
+import android.content.Intent;
 
 public class NextLocationActivity extends ActionBarActivity {
 
+    private int currQuestion;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_next_location);
+
+        Intent intent = getIntent();
+        currQuestion = intent.getIntExtra("questionNumber", 0);
+
     }
 
 

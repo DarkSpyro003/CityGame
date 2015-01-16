@@ -188,6 +188,7 @@ public class MainActivity extends ActionBarActivity {
                 context.setCurrentGame(content);
                 // Switch to next activity
                 Intent intent = new Intent(context, NextLocationActivity.class);
+                intent.putExtra("questionNumber", 0);
                 startActivity(intent);
             }
         }
