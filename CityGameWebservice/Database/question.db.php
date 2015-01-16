@@ -12,6 +12,7 @@ class QuestionDb
 	
 	public function getQuestionListForContent($contentId)
 	{
+		$contentId = $database->real_escape_string($contentId);
 		$questionList = array();
 		$result = $this->database->query('SELECT `id`, `type`, `question`, `text_answer`, `multi_answer`, `extraInfo`, `content_url`, `gamecontentId`, `latitude`, `longitude`
 			FROM `question` WHERE `gamecontentId` = ' . $contentId);

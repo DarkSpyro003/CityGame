@@ -15,6 +15,11 @@ class PlayerDb
 	{
 		if( $statement = $this->database->prepare('INSERT INTO `players` (`username`, `passwordhash`, `email`, `realname`) VALUES (?, ?, ?, ?)') )
 		{
+			$player->username = $database->real_escape_string($player->username);
+			$player->email = $database->real_escape_string($player->email);
+			$player->realname = $database->real_escape_string($player->realname);
+			$passwordhash = $database->real_escape_string($passwordhash);
+			
 			$statement->bind_param('ssss', $player->username, $passwordhash, $player->email, $player->realname);
 			$statement->execute();
 			return $this->database->affected_rows;
@@ -30,6 +35,10 @@ class PlayerDb
 		{
 			if( $statement = $this->database->prepare('INSERT INTO `player_games` (`playerId`, `gameContentId`, `score`) VALUES ?, ?, ?') )
 			{
+				$player->id = $database->real_escape_string($player->id);
+				$gameContentId = $database->real_escape_string($gameContentId);
+				$score = $database->real_escape_string($score);
+				
 				$statement->bind_param('iid', $player->id, $gameContentId, $score);
 				$statement->execute();
 				if( $this->database->affected_rows > 0 )
@@ -50,7 +59,10 @@ class PlayerDb
 	
 	public function hasCompletedGameContent($playerId, $gameContentId)
 	{
-		$gamesResult = $this->database->query('SELECT `playerId`, `gameContentId`, `score` FROM `player_games` WHERE `playerId` = ' . $playerId);
+		$playerId = $database->real_escape_string($playerId);
+		$gameContentId = $database->real_escape_string($gameContentId);
+		
+		$gamesResult = $this->database->query('SELECT `playerId`, `gameContentId`, `score` FROM `player_games` WHERE `playerId` = ' . $playerId . ' AND `gameContentId` = ' . $gameContentId);
 		return $gamesResult->num_rows > 0;
 	}
 	
@@ -64,6 +76,13 @@ class PlayerDb
 			{
 				if( $statement = $this->database->prepare('UPDATE `players` SET `username` = ?, `passwordhash` = ?, `email` = ?, `realname` = ? WHERE `username` = ?') )
 				{
+					
+					$player->username = $database->real_escape_string($player->username);
+					$player->email = $database->real_escape_string($player->email);
+					$player->realname = $database->real_escape_string($player->realname);
+					$passwordhash = $database->real_escape_string($passwordhash);
+					$oldusername = $database->real_escape_string($oldusername);
+			
 					$statement->bind_param('sssss', $player->username, $passwordhash, $player->email, $player->realname, $oldusername);
 					$statement->execute();
 					if( $this->database->affected_rows > 0 )
@@ -91,6 +110,8 @@ class PlayerDb
 	
 	public function checkPassword($username, $password)
 	{
+		$username = $database->real_escape_string($username);
+		
 		$playerResult = $this->database->query('SELECT `passwordhash` FROM `players` WHERE `username` = \'' . $username . '\'');
 		$passwordhash = $result->fetch_assoc()['passwordhash'];
 		return password_verify($password, $passwordhash);
@@ -98,12 +119,15 @@ class PlayerDb
 	
 	public function deletePlayerByUsername($username)
 	{
+		$username = $database->real_escape_string($username);
+		
 		$result = $this->database->query('DELETE FROM `players` WHERE `username` = \'' . $username . '\'');
 		return $this->database->affected_rows;
 	}
 	
 	public function getPlayerByUsername($username)
 	{
+		$username = $database->real_escape_string($username);
 		$result = $this->database->query('SELECT `id`, `username`, `email`, `realname` FROM `players` WHERE `username` = \'' . $username . '\'');
 		
 		if( $result->num_rows > 0 )
