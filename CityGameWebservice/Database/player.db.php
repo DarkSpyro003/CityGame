@@ -11,14 +11,14 @@ class PlayerDb
 		$this->database = $database;
 	}
 	
-	public function createPlayer($player, $passwordhash)
+	public function createPlayer($player, $password)
 	{
 		if( $statement = $this->database->prepare('INSERT INTO `players` (`username`, `passwordhash`, `email`, `realname`) VALUES (?, ?, ?, ?)') )
 		{
 			$player->username = $database->real_escape_string($player->username);
 			$player->email = $database->real_escape_string($player->email);
 			$player->realname = $database->real_escape_string($player->realname);
-			$passwordhash = $database->real_escape_string($passwordhash);
+			$passwordhash = $this->createPasswordHash($password);
 			
 			$statement->bind_param('ssss', $player->username, $passwordhash, $player->email, $player->realname);
 			$statement->execute();
@@ -26,6 +26,11 @@ class PlayerDb
 		}
 		else
 			return 0;
+	}
+	
+	public function createPasswordHash($password)
+	{
+		return password_hash($password, PASSWORD_BCRYPT);
 	}
 	
 	public function completeGameContent($username, $gameContentId, $score)
@@ -66,13 +71,13 @@ class PlayerDb
 		return $gamesResult->num_rows > 0;
 	}
 	
-	public function updatePlayer($player, $oldusername, $password, $passwordhash)
+	public function updatePlayer($player, $oldusername, $password, $oldpassword)
 	{
 		// Check if player exists in DB
 		if( !is_null(getPlayerByUsername($player->username)) )
 		{
 			// Player exists, check password
-			if( checkPassword($oldusername, $password) )
+			if( checkPassword($oldusername, $oldpassword) )
 			{
 				if( $statement = $this->database->prepare('UPDATE `players` SET `username` = ?, `passwordhash` = ?, `email` = ?, `realname` = ? WHERE `username` = ?') )
 				{
@@ -80,7 +85,7 @@ class PlayerDb
 					$player->username = $database->real_escape_string($player->username);
 					$player->email = $database->real_escape_string($player->email);
 					$player->realname = $database->real_escape_string($player->realname);
-					$passwordhash = $database->real_escape_string($passwordhash);
+					$passwordhash = $this->createPasswordHash($password);
 					$oldusername = $database->real_escape_string($oldusername);
 			
 					$statement->bind_param('sssss', $player->username, $passwordhash, $player->email, $player->realname, $oldusername);
@@ -101,7 +106,7 @@ class PlayerDb
 		}
 		else // Player being updated doesn't exist, create instead
 		{
-			if( createPlayer($player, $passwordhash) > 0 )
+			if( createPlayer($player, $password) > 0 )
 				return 201;
 			else
 				return 500;

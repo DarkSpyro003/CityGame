@@ -59,7 +59,7 @@ $app->post(
 		{
 			$data = json_decode($app->request->getContent(), true);
 			$jsonusername = $data['username'];
-			$passwordhash = $data['passwordhash'];
+			$password = $data['password'];
 			$email = $data['email'];
 			$realname = $data['realname'];
 			
@@ -82,7 +82,7 @@ $app->post(
 				if( is_null($content) )
 				{
 					$player = new Player($username, $email, $realname);
-					if ( $playerdb->createPlayer($player, $passwordhash) > 0 )
+					if ( $playerdb->createPlayer($player, $password) > 0 )
 					{
 						$app->response()->status(201);
 						$newUrl = $serviceroot . '/player/' . $username;
@@ -116,12 +116,12 @@ $app->put('/player/:username',
 			
 			$newusername = $data['username'];
 			$password = $data['password'];
-			$passwordhash = $data['passwordhash'];
+			$newpassword = $data['newpassword'];
 			$email = $data['email'];
 			$realname = $data['realname'];
 			
 			$playerdb = new PlayerDb($database);
-			$status = $playerdb->updatePlayer($player, $username, $password, $passwordhash);
+			$status = $playerdb->updatePlayer($player, $username, $newpassword, $password);
 			$app->response()->status($status);
 			if( $status == 201 )
 			{
