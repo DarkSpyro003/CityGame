@@ -19,6 +19,7 @@ public class Question {
     private int multi_answer;
     private List<String> options;
     private String extraInfo;
+    private String placename;
     private Location location;
     private Uri remoteContentUri; // The remote location for the content
     private Uri localContentUri; // When the content is downloaded, its location gets set here
@@ -121,5 +122,13 @@ public class Question {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public String getPlacename() {
+        return placename;
+    }
+
+    public void setPlacename(String placename) {
+        this.placename = placename;
     }
 }

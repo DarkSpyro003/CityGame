@@ -9,6 +9,7 @@ import android.content.Intent;
 public class NextLocationActivity extends ActionBarActivity {
 
     private int currQuestion;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
