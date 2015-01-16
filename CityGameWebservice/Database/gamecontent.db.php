@@ -13,7 +13,7 @@ class GameContentDb
 	
 	public function getGameContentById($id)
 	{
-		$id = $database->real_escape_string($id);
+		$id = $this->database->real_escape_string($id);
 		$result = $this->database->query('SELECT `id`, `title` FROM `gamecontent` WHERE `id` = ' . $id);
 		if( $result->num_rows > 0 )
 		{
