@@ -3,12 +3,14 @@
     package="be.pxl.citygame" >
 
     <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:name="be.pxl.citygame.CityGameApplication">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >

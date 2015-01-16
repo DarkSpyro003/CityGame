@@ -1,11 +1,9 @@
 package be.pxl.citygame;
 
 import android.content.Intent;
-import android.location.Location;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,21 +12,8 @@ import android.widget.TextView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import be.pxl.citygame.providers.IQuestionProvider;
 import be.pxl.citygame.providers.Providers;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 
 
 
@@ -109,6 +94,8 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         protected GameContent doInBackground(String... params) {
+
+            /*
             DefaultHttpClient httpclient = new DefaultHttpClient(new BasicHttpParams());
             HttpPost httppost = new HttpPost(params[0]);
             // Depends on your web service
@@ -177,6 +164,10 @@ public class MainActivity extends ActionBarActivity {
                 return content;
             } catch(JSONException e) {}
             return null;
+            */
+
+            GameContent content = Providers.getGameContentProvider().getGameContentById(1);
+            return content;
         }
 
         @Override

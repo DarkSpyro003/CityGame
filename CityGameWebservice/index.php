@@ -153,7 +153,7 @@ $app->delete(
 		else
 		{
 			$password = $app->request->params('password');
-			if( $playerdb->checkPassword($password) )
+			if( $playerdb->checkPassword($username, $password) )
 			{
 				if( $playerdb->deletePlayerByUsername($username) > 0 )
 				{

@@ -1,12 +1,14 @@
 package be.pxl.citygame;
 
+import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
 
-public class NextLocationActivity extends ActionBarActivity {
+public class NextLocationActivity extends ActionBarActivity
+        implements NextLocationFragment.OnFragmentInteractionListener {
 
     private int currQuestion;
 
@@ -41,5 +43,10 @@ public class NextLocationActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

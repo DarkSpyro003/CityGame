@@ -10,6 +10,6 @@ import be.pxl.citygame.Question;
  */
 public interface IQuestionProvider {
 
-    Question loadQuestionById(int id) throws NoSuchElementException;
+    public Question loadQuestionById(int id) throws NoSuchElementException;
 
 }

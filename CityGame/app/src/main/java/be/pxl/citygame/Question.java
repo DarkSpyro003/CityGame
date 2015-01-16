@@ -13,6 +13,8 @@ import java.util.List;
 public class Question {
 
     // type: 0 = plain text, 1 = multiple choice
+    public static final int PLAIN_TEXT = 0,
+                            MULTIPLE_CHOICE = 1;
     private int type;
     private String question;
     private String text_answer;

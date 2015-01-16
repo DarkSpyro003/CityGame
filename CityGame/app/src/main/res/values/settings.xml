@@ -2,4 +2,7 @@
 <resources>
     <!-- For debugging and general testing purposes -->
     <string name="question_provider">be.pxl.citygame.providers.QuestionMockProvider</string>
+    <string name="game_content_provider">be.pxl.citygame.providers.GameContentWebProvider</string>
+
+    <string name="webservice_url">http://public.ds003.info/citygame/</string>
 </resources>
