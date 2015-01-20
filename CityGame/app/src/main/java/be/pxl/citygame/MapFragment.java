@@ -1,9 +1,7 @@
 package be.pxl.citygame;
 
 import android.app.Activity;
-import android.content.Context;
 import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +11,10 @@ import android.view.ViewGroup;
 
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
+
+import be.pxl.citygame.gps.ILocationRequest;
+import be.pxl.citygame.gps.LocationGps;
 
 
 /**
@@ -27,6 +29,7 @@ public class MapFragment extends Fragment implements ILocationRequest {
     private int questionId;
     private boolean dataSet = false;
     private MapView mapView;
+    private MyLocationNewOverlay myLocationOverlay;
 
     private OnFragmentInteractionListener mListener;
 

@@ -1,4 +1,4 @@
-package be.pxl.citygame;
+package be.pxl.citygame.gps;
 
 import android.location.Location;
 

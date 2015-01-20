@@ -1,10 +1,9 @@
-package be.pxl.citygame;
+package be.pxl.citygame.gps;
 
 import android.app.Activity;
 import android.content.Context;
 import android.location.*;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -50,6 +49,10 @@ public class LocationGps implements LocationListener {
         }
 
         locMan.requestLocationUpdates(locationProviderName, 5000, 10, this);
+    }
+
+    public void stopGpsLocation() {
+        locMan.removeUpdates(this);
     }
 
     @Override
