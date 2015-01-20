@@ -7,13 +7,4 @@ import android.app.Application;
  */
 public class CityGameApplication extends Application {
 
-    private GameContent currentGame;
-
-    public GameContent getCurrentGame() {
-        return currentGame;
-    }
-
-    public void setCurrentGame(GameContent currentGame) {
-        this.currentGame = currentGame;
-    }
 }

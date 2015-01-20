@@ -8,9 +8,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import be.pxl.citygame.providers.IQuestionProvider;
 import be.pxl.citygame.providers.Providers;
@@ -19,7 +23,7 @@ import be.pxl.citygame.providers.Providers;
 
 public class MainActivity extends ActionBarActivity {
 
-    private static final String PRIMARY_CONTENT = "http://public.ds003.info/citygame/gamecontent/1";
+    private static final int PRIMARY_CONTENT_ID = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,14 +35,16 @@ public class MainActivity extends ActionBarActivity {
 
         // For testing purposes only
         // todo: remove later
+        /*
         IQuestionProvider provider = Providers.getQuestionProvider();
         Question testQuestion = provider.loadQuestionById(0, 0);
         ((TextView)(findViewById(R.id.tv_output_test))).setText(testQuestion.getQuestion());
+        */
     }
 
     public void handleBtnStart(View v) {
         // Download primary content
-        new GetRestData().execute(PRIMARY_CONTENT);
+        new GetRestData().execute(PRIMARY_CONTENT_ID);
     }
 
     @Override
@@ -80,21 +86,35 @@ public class MainActivity extends ActionBarActivity {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if(result != null)
         {
+            // QR code should contain application name + gamecontent  in JSON
             String contents = result.getContents();
             if(contents != null)
             {
-                // QR code should contain url to a valid GameContent JSON file or REST service
-                // Try to download the content. If successful, it will switch to the next activity
-                new GetRestData().execute(contents);
+                try {
+                    JSONObject object = new JSONObject(contents);
+                    String app = object.getString("appname");
+                    if( app.equals("be.pxl.citygame") ) {
+                        int gameContentId = object.getInt("gameContentId");
+                        new GetRestData().execute(gameContentId);
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(), R.string.QR_invalid, Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(getApplicationContext(), R.string.QR_invalid, Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
 
-    private class GetRestData extends AsyncTask<String, Void, GameContent> {
+    private class GetRestData extends AsyncTask<Integer, Void, GameContent> {
+
+        private int gameContentId;
 
         @Override
-        protected GameContent doInBackground(String... params) {
-            GameContent content = Providers.getGameContentProvider().getGameContentById(1);
+        protected GameContent doInBackground(Integer... params) {
+            this.gameContentId = params[0];
+            GameContent content = Providers.getGameContentProvider().getGameContentById(gameContentId);
             return content;
         }
 
@@ -103,11 +123,10 @@ public class MainActivity extends ActionBarActivity {
             // This runs in GUI thread
             if( content != null ) {
                 CityGameApplication context = (CityGameApplication) getApplicationContext();
-                // Store gamecontent in global variable
-                context.setCurrentGame(content);
                 // Switch to next activity
                 Intent intent = new Intent(context, NextLocationActivity.class);
-                intent.putExtra("questionNumber", 0);
+                intent.putExtra("gameId", gameContentId);
+                intent.putExtra("questionId", 0);
                 startActivity(intent);
             }
         }

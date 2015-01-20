@@ -1,6 +1,7 @@
 package be.pxl.citygame;
 
 import android.net.Uri;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,6 +11,7 @@ import android.content.Intent;
 public class NextLocationActivity extends ActionBarActivity
         implements NextLocationFragment.OnFragmentInteractionListener {
 
+    private int currGame;
     private int currQuestion;
 
     @Override
@@ -18,8 +20,11 @@ public class NextLocationActivity extends ActionBarActivity
         setContentView(R.layout.activity_next_location);
 
         Intent intent = getIntent();
-        currQuestion = intent.getIntExtra("questionNumber", 0);
+        currGame = intent.getIntExtra("gameId", 0);
+        currQuestion = intent.getIntExtra("questionId", 0);
 
+        NextLocationFragment loc = (NextLocationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_next_location);
+        loc.setData(currGame, currQuestion);
     }
 
 
