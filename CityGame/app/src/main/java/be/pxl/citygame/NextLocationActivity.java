@@ -23,8 +23,12 @@ public class NextLocationActivity extends ActionBarActivity
         currGame = intent.getIntExtra("gameId", 0);
         currQuestion = intent.getIntExtra("questionId", 0);
 
-        NextLocationFragment loc = (NextLocationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_next_location);
-        loc.setData(currGame, currQuestion);
+        // Pass data to fragments
+        NextLocationFragment locfrag = (NextLocationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_next_location);
+        locfrag.setData(currGame, currQuestion);
+
+        MapFragment mapfrag = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_map);
+        mapfrag.setData(currGame, currQuestion);
     }
 
 
