@@ -19,6 +19,8 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.NoSuchElementException;
 
 import be.pxl.citygame.GameContent;
 import be.pxl.citygame.Question;
@@ -30,13 +32,29 @@ import be.pxl.citygame.R;
 class GameContentWebProvider implements IGameContentProvider
 {
     private Application application;
+    private Hashtable<Integer, GameContent> contentCache;
 
     public GameContentWebProvider(Application application) {
+        contentCache = new Hashtable<Integer, GameContent>();
         this.application = application;
     }
 
     @Override
-    public GameContent getGameContentById(int id) {
+    public GameContent getGameContentById(int id) throws NoSuchElementException {
+        GameContent content = contentCache.get(id);
+        if( content == null ) {
+            content = getWebGameContentById(id);
+
+            if( content == null )
+                throw new NoSuchElementException("No such gamecontent ID");
+
+            contentCache.put(id, content);
+        }
+
+        return content;
+    }
+
+    public GameContent getWebGameContentById(int id) {
 
         // Slightly modified version of the code found in MainActivity(Christina's?)
         DefaultHttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
