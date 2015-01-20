@@ -30,7 +30,7 @@ class QuestionMockProvider implements IQuestionProvider {
 
     public QuestionMockProvider(@SuppressWarnings("unused") Application application) { }
     @Override
-    public Question loadQuestionById(@SuppressWarnings("unused") int gameId, int id) {
+    public Question loadQuestionById(@SuppressWarnings("unused") int gameId, int id) throws NoSuchElementException {
         // If id is in a valid range
         if (id >= 0 && id < questions.length)
         {

@@ -22,8 +22,7 @@ public class Providers {
      * Needs to be called when the application gets created and before any other methods are accessed
      * @param application The current Application instance
      */
-    public static void load(Application application)
-    {
+    public static void load(Application application) {
 
         try {
             {
@@ -56,8 +55,7 @@ public class Providers {
 
     }
 
-    public static IQuestionProvider getQuestionProvider()
-    {
+    public static IQuestionProvider getQuestionProvider() {
         return questionProvider;
     }
 
