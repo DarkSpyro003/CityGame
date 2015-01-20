@@ -22,7 +22,7 @@ class GameContentMockProvider implements IGameContentProvider {
         GameContent content = new GameContent("Mock game");
         for (int i = 0; i < 4; i++) {
             try {
-                content.addQuestion(Providers.getQuestionProvider().loadQuestionById(i));
+                content.addQuestion(Providers.getQuestionProvider().loadQuestionById(id, i));
             }
             catch (NoSuchElementException e) {
                 break;
