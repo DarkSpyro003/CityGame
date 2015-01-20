@@ -2,6 +2,7 @@ package be.pxl.citygame;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Created by Christina on 7/01/2015.
@@ -15,6 +16,14 @@ public class GameContent {
     public GameContent(String title) {
         questionList = new ArrayList<Question>();
         this.title = title;
+    }
+
+    public Question getQuestionById(int id) throws NoSuchElementException {
+        Question question = questionList.get(id);
+        if( question == null )
+            throw new NoSuchElementException("No such question id in this gamecontent id");
+
+        return question;
     }
 
     public GameContent(String title, List<Question> questionList) {
