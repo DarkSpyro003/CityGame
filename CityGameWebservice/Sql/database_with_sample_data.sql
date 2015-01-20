@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 20, 2015 at 02:14 PM
+-- Generation Time: Jan 20, 2015 at 02:23 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -31,6 +31,13 @@ CREATE TABLE IF NOT EXISTS `gamecontent` (
   `title` varchar(50) NOT NULL COMMENT 'title such as city name'
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `gamecontent`
+--
+
+INSERT INTO `gamecontent` (`id`, `title`) VALUES
+(1, 'A list of testquestions');
+
 -- --------------------------------------------------------
 
 --
@@ -42,6 +49,14 @@ CREATE TABLE IF NOT EXISTS `multi_answer` (
   `choiceId` int(3) NOT NULL,
   `answer` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `multi_answer`
+--
+
+INSERT INTO `multi_answer` (`questionId`, `choiceId`, `answer`) VALUES
+(1, 0, 'yes'),
+(1, 1, 'no');
 
 -- --------------------------------------------------------
 
@@ -57,6 +72,13 @@ CREATE TABLE IF NOT EXISTS `players` (
   `realname` varchar(50) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `players`
+--
+
+INSERT INTO `players` (`id`, `username`, `passwordhash`, `email`, `realname`) VALUES
+(1, 'christina', 'notahashyet', 'christina.korosec@student.pxl.be', 'Christina Lena Korosec');
+
 -- --------------------------------------------------------
 
 --
@@ -68,6 +90,13 @@ CREATE TABLE IF NOT EXISTS `player_games` (
   `gameContentId` int(11) NOT NULL,
   `score` float NOT NULL COMMENT 'Earned score when played'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `player_games`
+--
+
+INSERT INTO `player_games` (`playerId`, `gameContentId`, `score`) VALUES
+(1, 1, 90);
 
 -- --------------------------------------------------------
 
@@ -88,6 +117,14 @@ CREATE TABLE IF NOT EXISTS `question` (
   `latitude` double NOT NULL,
   `longitude` double NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `question`
+--
+
+INSERT INTO `question` (`id`, `type`, `question`, `text_answer`, `multi_answer`, `placename`, `extraInfo`, `content_url`, `gamecontentId`, `latitude`, `longitude`) VALUES
+(1, 1, 'Is this a testquestion?', NULL, 0, 'ergens in Hasselt', 'Yes, this was a testquestion, since it''s in the test gamecontent!', 'http://public.ds003.info/imghost/testcontent.png', 1, 50.9167, 5.3333),
+(2, 0, 'This is another testquestion. To answer this question correctly, fill out the opposite word of ''no'' in the answer.', 'yes', NULL, 'ergens anders in Hasselt :P', 'And this was the second testquestion, this one in plain text!', 'http://public.ds003.info/imghost/testcontent.png', 1, 50.9368583, 5.3483892);
 
 --
 -- Indexes for dumped tables

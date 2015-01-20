@@ -6,6 +6,7 @@ class Question implements JsonSerializable
 	private $text_answer;
 	private $multi_answer;
 	private $options = array();
+	private $placename;
 	private $extraInfo;
 	private $contentUrl;
 	private $latitude;

@@ -14,7 +14,7 @@ class QuestionDb
 	{
 		$contentId = $this->database->real_escape_string($contentId);
 		$questionList = array();
-		$result = $this->database->query('SELECT `id`, `type`, `question`, `text_answer`, `multi_answer`, `extraInfo`, `content_url`, `gamecontentId`, `latitude`, `longitude`
+		$result = $this->database->query('SELECT `id`, `type`, `question`, `text_answer`, `multi_answer`, `placename`, `extraInfo`, `content_url`, `gamecontentId`, `latitude`, `longitude`
 			FROM `question` WHERE `gamecontentId` = ' . $contentId);
 		
 		while($row = $result->fetch_assoc())
@@ -22,6 +22,7 @@ class QuestionDb
 			$question;
 			$qType = $row['type'];
 			$qQuestion = $row['question'];
+			$qPlacename = $row['placename'];
 			$qExtraInfo = $row['extraInfo'];
 			$qContentUrl = $row['content_url'];
 			$qLatitude = $row['latitude'];
@@ -44,6 +45,7 @@ class QuestionDb
 				}
 				$question = new Question($qType, $qQuestion, $qAnswer, $qOptions);
 			}
+			$question->placename = $qPlacename;
 			$question->extraInfo = $qExtraInfo;
 			$question->contentUrl = $qContentUrl;
 			$question->latitude = $qLatitude;
