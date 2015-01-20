@@ -7,6 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import be.pxl.citygame.providers.Providers;
 
 
 /**
@@ -27,6 +30,9 @@ public class NextLocationFragment extends Fragment {
         this.gameId = gameId;
         this.questionId = questionId;
         this.dataSet = true;
+
+        TextView locationLabel = (TextView) getActivity().findViewById(R.id.tv_nextLocation);
+        locationLabel.setText(getString(R.string.next_location) + " " + Providers.getQuestionProvider().loadQuestionById(gameId, questionId).getPlacename());
     }
 
     public NextLocationFragment() {

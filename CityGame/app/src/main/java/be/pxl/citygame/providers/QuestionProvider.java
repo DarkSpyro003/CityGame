@@ -1,14 +1,21 @@
 package be.pxl.citygame.providers;
 
+import android.app.Application;
+
 import java.util.NoSuchElementException;
 
-import be.pxl.citygame.GameContent;
 import be.pxl.citygame.Question;
 
 /**
  * Created by Christina on 20/01/2015.
  */
 public class QuestionProvider implements IQuestionProvider {
+
+    private Application application;
+
+    public QuestionProvider(Application application) {
+        this.application = application;
+    }
 
     @Override
     public Question loadQuestionById(int gameId, int questionId) throws NoSuchElementException {

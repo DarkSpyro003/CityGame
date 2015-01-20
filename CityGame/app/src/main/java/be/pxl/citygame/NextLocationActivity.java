@@ -31,7 +31,6 @@ public class NextLocationActivity extends ActionBarActivity
         mapfrag.setData(currGame, currQuestion);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
