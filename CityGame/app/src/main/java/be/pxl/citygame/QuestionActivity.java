@@ -6,11 +6,15 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import be.pxl.citygame.data.Question;
+import be.pxl.citygame.providers.Providers;
+
 
 public class QuestionActivity extends ActionBarActivity {
 
     private int currGame;
     private int currQuestion;
+    private Question question;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,8 @@ public class QuestionActivity extends ActionBarActivity {
 
         QuestionFragment questFrag = (QuestionFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_question);
         questFrag.setData(currGame, currQuestion);
+
+        this.question = Providers.getQuestionProvider().loadQuestionById(currGame, currQuestion);
     }
 
 

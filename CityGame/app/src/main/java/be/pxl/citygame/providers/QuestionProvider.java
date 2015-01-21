@@ -4,7 +4,7 @@ import android.app.Application;
 
 import java.util.NoSuchElementException;
 
-import be.pxl.citygame.Question;
+import be.pxl.citygame.data.Question;
 
 /**
  * Created by Christina on 20/01/2015.

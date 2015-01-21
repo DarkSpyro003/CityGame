@@ -1,4 +1,4 @@
-package be.pxl.citygame;
+package be.pxl.citygame.data;
 
 import java.util.ArrayList;
 import java.util.List;

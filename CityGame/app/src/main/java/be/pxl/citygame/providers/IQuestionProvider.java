@@ -2,7 +2,7 @@ package be.pxl.citygame.providers;
 
 import java.util.NoSuchElementException;
 
-import be.pxl.citygame.Question;
+import be.pxl.citygame.data.Question;
 
 /**
  * Created by Lorenz Jolling on 2015-01-14.

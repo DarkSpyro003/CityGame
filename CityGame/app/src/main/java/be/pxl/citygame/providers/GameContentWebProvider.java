@@ -8,7 +8,6 @@ import android.util.Log;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.json.JSONArray;
@@ -22,8 +21,8 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.NoSuchElementException;
 
-import be.pxl.citygame.GameContent;
-import be.pxl.citygame.Question;
+import be.pxl.citygame.data.GameContent;
+import be.pxl.citygame.data.Question;
 import be.pxl.citygame.R;
 
 /**

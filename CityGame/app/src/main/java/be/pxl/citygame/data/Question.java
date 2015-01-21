@@ -1,4 +1,4 @@
-package be.pxl.citygame;
+package be.pxl.citygame.data;
 
 import android.graphics.drawable.Drawable;
 import android.location.Location;
