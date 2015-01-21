@@ -87,11 +87,11 @@ public class MapFragment extends Fragment implements ILocationRequest {
                 CityGameApplication context = (CityGameApplication) getActivity().getApplicationContext();
                 if( (questionId + 1) < Providers.getGameContentProvider().getGameContentById(gameId).getNumQuestions() ) {
                     // Switch to next activity
-                    Intent intent = new Intent(context, GameActivity.class);
+                    Intent intent = new Intent(context, QuestionActivity.class);
                     intent.putExtra("gameId", gameId);
                     // Next question
                     intent.putExtra("questionId", questionId + 1);
-                    //startActivity(intent);
+                    startActivity(intent);
                     Log.d(MapFragment.class.toString(), "Switching to Game activity");
                 }
             }
