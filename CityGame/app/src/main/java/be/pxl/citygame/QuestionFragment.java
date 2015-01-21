@@ -2,9 +2,11 @@ package be.pxl.citygame;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,21 +45,12 @@ public class QuestionFragment extends Fragment {
         this.questionId = questionId;
         this.question = Providers.getQuestionProvider().loadQuestionById(gameId, questionId);
         this.dataSet = true;
-    }
 
-    public QuestionFragment() {
-        // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        TextView tv_question = (TextView) getView().findViewById(R.id.tv_question);
+        // Build Question input UI now that we have received data
+        TextView tv_question = (TextView) getActivity().findViewById(R.id.tv_question);
         tv_question.setText(question.getQuestion());
 
-        //Build Question input UI
-        LinearLayout layout_procedural_answer = (LinearLayout) getView().findViewById(R.id.layout_procedural_answer);
+        LinearLayout layout_procedural_answer = (LinearLayout) getActivity().findViewById(R.id.layout_procedural_answer);
         if(question.getType() == Question.PLAIN_TEXT)
         {
             txtAnswer = new EditText(getActivity());
@@ -78,6 +71,15 @@ public class QuestionFragment extends Fragment {
                 optionList.add(rb_option);
             }
         }
+    }
+
+    public QuestionFragment() {
+        // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -128,7 +130,17 @@ public class QuestionFragment extends Fragment {
 
     public void handleAnswer(View v)
     {
-
+        // TODO: implement score keeping
+        if( (questionId + 1) < Providers.getGameContentProvider().getGameContentById(gameId).getNumQuestions() ) {
+            CityGameApplication context = (CityGameApplication) getActivity().getApplicationContext();
+            // Switch to next activity
+            Intent intent = new Intent(context, NextLocationActivity.class);
+            intent.putExtra("gameId", gameId);
+            // Go to next question
+            intent.putExtra("questionId", questionId + 1);
+            startActivity(intent);
+            Log.d(QuestionFragment.class.toString(), "Switching to NextLocation activity");
+        }
     }
 
     public void showMoreInfo(View v)
