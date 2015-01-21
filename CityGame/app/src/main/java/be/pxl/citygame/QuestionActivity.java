@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -32,10 +33,10 @@ public class QuestionActivity extends ActionBarActivity implements QuestionFragm
         currQuestion = intent.getIntExtra("questionId", 0);
 
         // Pass data to fragments
-        ImageFragment imgFrag = (ImageFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_image);
+        ImageFragment imgFrag = (ImageFragment) getSupportFragmentManager().findFragmentById(R.id.imageFragment);
         imgFrag.setData(currGame, currQuestion);
 
-        QuestionFragment questFrag = (QuestionFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_question);
+        QuestionFragment questFrag = (QuestionFragment) getSupportFragmentManager().findFragmentById(R.id.questionFragment);
         questFrag.setData(currGame, currQuestion);
 
         this.question = Providers.getQuestionProvider().loadQuestionById(currGame, currQuestion);
@@ -67,5 +68,15 @@ public class QuestionActivity extends ActionBarActivity implements QuestionFragm
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    public void handleAnswer(View v) {
+        QuestionFragment fragment = (QuestionFragment) getSupportFragmentManager().findFragmentById(R.id.questionFragment);
+        fragment.handleAnswer(v);
+    }
+
+    public void showMoreInfo(View v) {
+        QuestionFragment fragment = (QuestionFragment) getSupportFragmentManager().findFragmentById(R.id.questionFragment);
+        fragment.showMoreInfo(v);
     }
 }

@@ -128,11 +128,15 @@ public class QuestionFragment extends Fragment {
         public void onFragmentInteraction(Uri uri);
     }
 
-    public void handleAnswer(View v)
-    {
-        // TODO: implement score keeping
+    public void handleAnswer(View v) {
+        // TODO: Correct this code to use the right controls
+        if( question.getType() == Question.PLAIN_TEXT )
+            question.checkAnswer("");
+        else if( question.getType() == Question.MULTIPLE_CHOICE )
+            question.checkAnswer(5);
+
+        CityGameApplication context = (CityGameApplication) getActivity().getApplicationContext();
         if( (questionId + 1) < Providers.getGameContentProvider().getGameContentById(gameId).getNumQuestions() ) {
-            CityGameApplication context = (CityGameApplication) getActivity().getApplicationContext();
             // Switch to next activity
             Intent intent = new Intent(context, NextLocationActivity.class);
             intent.putExtra("gameId", gameId);
@@ -140,11 +144,14 @@ public class QuestionFragment extends Fragment {
             intent.putExtra("questionId", questionId + 1);
             startActivity(intent);
             Log.d(QuestionFragment.class.toString(), "Switching to NextLocation activity");
+        } else {
+            // TODO: Score activity
+            Intent intent = new Intent(context, MainActivity.class);
+            startActivity(intent);
         }
     }
 
-    public void showMoreInfo(View v)
-    {
+    public void showMoreInfo(View v) {
 
     }
 }
