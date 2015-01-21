@@ -170,6 +170,48 @@ $app->delete(
     }
 );
 
+
+// POST route -- Login
+$app->post(
+    '/player/login/:username',
+    function ($username) use ($database, $app, $serviceroot)
+	{
+		if (0 === strpos($app->request->headers->get('Content-Type'), 'application/json')) 
+		{
+			$data = json_decode($app->request->getContent(), true);
+			$jsonusername = $data['username'];
+			$password = $data['password'];
+			
+			$correct = true;
+			
+			if( $username != '' )
+			{
+				if( !($username == $jsonusername) ) 
+				{ // Username in json is not same as username in path : malformed requested
+					$correct = false;
+					$app->response()->status(422);
+					echo '422 Unprocessable Entity - The username parameter does not match the username in the JSON request body';
+				}
+			}
+			
+			if( $correct )
+			{
+				$playerdb = new PlayerDb($database);
+				if( checkPassword($username, $password) )
+				{
+					echo '200 Ok';
+				}
+				else
+				{
+					// Wrong password!
+					$app->response()->status(401);
+					echo '401 Unauthorized';
+				}
+			}
+		}
+    }
+);
+
 // POST Route - after completing a gamecontent
 $app->post(
     '/player/:username/:gamecontentId',

@@ -59,4 +59,9 @@ public class NextLocationActivity extends ActionBarActivity
     public void onFragmentInteraction(Uri uri) {
 
     }
+
+    @Override
+     public void onBackPressed() {
+        // Do nothing - you can't go back to previous question!
+    }
 }

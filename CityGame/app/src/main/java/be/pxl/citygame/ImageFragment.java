@@ -1,12 +1,16 @@
 package be.pxl.citygame;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import be.pxl.citygame.providers.Providers;
 
 
 /**
@@ -22,6 +26,11 @@ public class ImageFragment extends Fragment {
         this.gameId = gameId;
         this.questionId = questionId;
         this.dataSet = true;
+
+        // Set image!
+        Bitmap img = Providers.getQuestionProvider().loadQuestionById(gameId, questionId).getImage(getActivity().getApplication());
+        ImageView pictureView = (ImageView) getActivity().findViewById(R.id.picture);
+        pictureView.setImageBitmap(img);
     }
 
     public ImageFragment() {
