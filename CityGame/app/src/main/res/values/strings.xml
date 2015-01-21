@@ -13,9 +13,13 @@
     <string name="title_activity_question">Vraag</string>
     <string name="load_game_progress_title">Bezig met laden...</string>
     <string name="load_game_progress_content">Het spel is aan het laden. Dit kan een minuut duren.</string>
+    <string name="login_progress_title">Bezig met aanmelden...</string>
+    <string name="login_progress_content">Het systeem contacteert onze servers. Dit kan een minuut duren.</string>
+    <string name="login_fail_title">Aanmelden mislukt!</string>
+    <string name="login_fail_content">Aanmelden is mislukt. Contruleer uw wachtwoord.</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="back">Terug</string>
-    <string name="title_activity_info">InfoActivity</string>
+    <string name="title_activity_info">Informatie</string>
     <string name="hello_world">Hello world!</string>
 
 </resources>

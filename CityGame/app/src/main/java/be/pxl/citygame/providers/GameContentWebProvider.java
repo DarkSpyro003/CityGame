@@ -197,7 +197,8 @@ class GameContentWebProvider implements IGameContentProvider
             this.dialog.show();
         }
 
-        protected void onPostExecute(final Boolean success) {
+        @Override
+        protected void onPostExecute(GameContent content) {
             if (dialog.isShowing())
                 dialog.dismiss();
         }
