@@ -139,7 +139,7 @@ class GameContentWebProvider implements IGameContentProvider
                     questionObject.setPlacename(quest.getString("placename"));
                     questionObject.setExtraInfo(quest.getString("extraInfo"));
                     questionObject.setRemoteContentUri(Uri.parse(quest.getString("contentUrl")));
-                    // TODO : Download remote content
+                    // TODO : Download remote video
                     URL remoteURL = null;
                     try {
                         String link = questionObject.getRemoteContentUri().toString();
@@ -168,7 +168,6 @@ class GameContentWebProvider implements IGameContentProvider
                     }
 
                     application.getCacheDir();
-                    // END
                     Location loc = new Location("");
                     loc.setLatitude(quest.getDouble("latitude"));
                     loc.setLongitude(quest.getDouble("longitude"));

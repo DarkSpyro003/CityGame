@@ -83,7 +83,7 @@ public class MapFragment extends Fragment implements ILocationRequest {
             GeoPoint currentLoc;
             currentLoc = new GeoPoint(loc);
             mapView.getController().animateTo(currentLoc);
-            if( loc.distanceTo(targetLocation) < 15 ) {
+            if( loc.distanceTo(targetLocation) <= getResources().getInteger(R.integer.gps_marker_distance) ) {
                 CityGameApplication context = (CityGameApplication) getActivity().getApplicationContext();
                 // Switch to next activity
                 Intent intent = new Intent(context, QuestionActivity.class);

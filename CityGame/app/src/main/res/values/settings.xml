@@ -5,4 +5,5 @@
     <string name="game_content_provider">be.pxl.citygame.providers.GameContentWebProvider</string>
 
     <string name="webservice_url">http://public.ds003.info/citygame/</string>
+    <integer name="gps_marker_distance">15</integer>
 </resources>
