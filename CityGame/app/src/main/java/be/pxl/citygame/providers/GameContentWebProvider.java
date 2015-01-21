@@ -94,6 +94,7 @@ class GameContentWebProvider implements IGameContentProvider
             GameContent content = new GameContent(title);
 
             JSONArray questionArray = data.getJSONArray("questionList");
+            Log.d(GameContentWebProvider.class.toString(), "Got " + questionArray.length() + " questions.");
             for( int i = 0; i < questionArray.length(); ++i ) {
                 JSONObject quest = questionArray.getJSONObject(i);
                 int type = quest.getInt("type");
@@ -110,8 +111,10 @@ class GameContentWebProvider implements IGameContentProvider
                         choices.add(choiceArray.getString(j));
                     }
                     questionObject = new Question(type, question, answer, choices);
-                    content.addQuestion(questionObject);
                 }
+                if( questionObject != null )
+                    content.addQuestion(questionObject);
+
                 if( questionObject != null ) {
                     questionObject.setPlacename(quest.getString("placename"));
                     questionObject.setExtraInfo(quest.getString("extraInfo"));

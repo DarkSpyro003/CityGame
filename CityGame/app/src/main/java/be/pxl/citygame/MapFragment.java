@@ -6,6 +6,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,13 +86,13 @@ public class MapFragment extends Fragment implements ILocationRequest {
             if( loc.distanceTo(targetLocation) < 15 ) {
                 CityGameApplication context = (CityGameApplication) getActivity().getApplicationContext();
                 if( (questionId + 1) < Providers.getGameContentProvider().getGameContentById(gameId).getNumQuestions() ) {
-                    // TODO: Make question activity!!
-                    /*// Switch to next activity
-                    Intent intent = new Intent(context, QuestionActivity.class);
+                    // Switch to next activity
+                    Intent intent = new Intent(context, GameActivity.class);
                     intent.putExtra("gameId", gameId);
                     // Next question
                     intent.putExtra("questionId", questionId + 1);
-                    startActivity(intent);*/
+                    //startActivity(intent);
+                    Log.d(MapFragment.class.toString(), "Switching to Game activity");
                 }
             }
         }
