@@ -5,6 +5,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import be.pxl.citygame.data.Question;
 import be.pxl.citygame.providers.Providers;
@@ -15,6 +17,7 @@ public class QuestionActivity extends ActionBarActivity {
     private int currGame;
     private int currQuestion;
     private Question question;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,13 +1,21 @@
 package be.pxl.citygame;
 
 import android.app.Activity;
+import android.app.Application;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import be.pxl.citygame.data.Question;
 import be.pxl.citygame.providers.Providers;
@@ -27,6 +35,9 @@ public class QuestionFragment extends Fragment {
     private boolean dataSet = false;
     private Question question;
 
+    private EditText txtAnswer;
+    private List<RadioButton> optionList;
+
     public void setData(int gameId, int questionId) {
         this.gameId = gameId;
         this.questionId = questionId;
@@ -41,6 +52,32 @@ public class QuestionFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        TextView tv_question = (TextView) getView().findViewById(R.id.tv_question);
+        tv_question.setText(question.getQuestion());
+        
+        //Build Question input UI
+        LinearLayout layout_procedural_answer = (LinearLayout) getView().findViewById(R.id.layout_procedural_answer);
+        if(question.getType() == Question.PLAIN_TEXT)
+        {
+            txtAnswer = new EditText(getActivity());
+            layout_procedural_answer.addView(txtAnswer);
+        }
+        else if(question.getType() == Question.MULTIPLE_CHOICE)
+        {
+            RadioGroup rg_options = new RadioGroup(getActivity());
+            rg_options.setOrientation(LinearLayout.VERTICAL);
+            layout_procedural_answer.addView(rg_options);
+            optionList = new ArrayList<RadioButton>();
+
+            for (String option : question.getOptions())
+            {
+                RadioButton rb_option = new RadioButton(getActivity());
+                rb_option.setText(option);
+                rg_options.addView(rb_option);
+                optionList.add(rb_option);
+            }
+        }
     }
 
     @Override
