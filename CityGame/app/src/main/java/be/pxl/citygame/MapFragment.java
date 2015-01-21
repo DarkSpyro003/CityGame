@@ -85,15 +85,13 @@ public class MapFragment extends Fragment implements ILocationRequest {
             mapView.getController().animateTo(currentLoc);
             if( loc.distanceTo(targetLocation) < 15 ) {
                 CityGameApplication context = (CityGameApplication) getActivity().getApplicationContext();
-                if( (questionId + 1) < Providers.getGameContentProvider().getGameContentById(gameId).getNumQuestions() ) {
-                    // Switch to next activity
-                    Intent intent = new Intent(context, QuestionActivity.class);
-                    intent.putExtra("gameId", gameId);
-                    // Next question
-                    intent.putExtra("questionId", questionId + 1);
-                    startActivity(intent);
-                    Log.d(MapFragment.class.toString(), "Switching to Game activity");
-                }
+                // Switch to next activity
+                Intent intent = new Intent(context, QuestionActivity.class);
+                intent.putExtra("gameId", gameId);
+                // Ask question
+                intent.putExtra("questionId", questionId);
+                startActivity(intent);
+                Log.d(MapFragment.class.toString(), "Switching to Game activity");
             }
         }
     }
