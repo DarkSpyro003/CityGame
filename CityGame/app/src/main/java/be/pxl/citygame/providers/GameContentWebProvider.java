@@ -17,9 +17,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.NoSuchElementException;
@@ -52,8 +59,10 @@ class GameContentWebProvider implements IGameContentProvider
                 content = (GameContent) dataTask.get();
             } catch (InterruptedException e) {
                 content = null;
+                Log.e(GameContentWebProvider.class.toString(), e.getMessage(), e);
             } catch (ExecutionException e) {
                 content = null;
+                Log.e(GameContentWebProvider.class.toString(), e.getMessage(), e);
             }
 
             if( content == null )
@@ -131,6 +140,35 @@ class GameContentWebProvider implements IGameContentProvider
                     questionObject.setExtraInfo(quest.getString("extraInfo"));
                     questionObject.setRemoteContentUri(Uri.parse(quest.getString("contentUrl")));
                     // TODO : Download remote content
+                    URL remoteURL = null;
+                    try {
+                        String link = questionObject.getRemoteContentUri().toString();
+                        remoteURL = new URL(link);
+                        URLConnection connection = remoteURL.openConnection();
+                        InputStream remoteInput = new BufferedInputStream(remoteURL.openStream(), 10240);
+                        File cacheDir = application.getCacheDir();
+                        String fileName = link.substring(link.lastIndexOf('/') + 1);
+                        File cacheFile = new File(cacheDir, fileName);
+
+                        FileOutputStream cacheOutput = new FileOutputStream(cacheFile);
+                        byte[] buff = new byte[1024];
+                        int dataSize;
+                        int loadedSize = 0;
+                        while( (dataSize = remoteInput.read(buff)) != -1 ) {
+                            loadedSize += dataSize;
+                            cacheOutput.write(buff, 0, dataSize);
+                        }
+                        cacheOutput.close();
+
+                        questionObject.setLocalContentUri(Uri.parse(cacheFile.getAbsolutePath()));
+                    } catch (MalformedURLException e) {
+                        Log.e(GameContentWebProvider.class.toString(), e.getMessage(), e);
+                    } catch (IOException e) {
+                        Log.e(GameContentWebProvider.class.toString(), e.getMessage(), e);
+                    }
+
+                    application.getCacheDir();
+                    // END
                     Location loc = new Location("");
                     loc.setLatitude(quest.getDouble("latitude"));
                     loc.setLongitude(quest.getDouble("longitude"));
@@ -139,7 +177,6 @@ class GameContentWebProvider implements IGameContentProvider
             }
             return content;
         } catch(JSONException e) {
-
         }
         return null;
     }

@@ -1,9 +1,17 @@
 package be.pxl.citygame.data;
 
+import android.app.Application;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,6 +72,25 @@ public class Question {
         this.answered = true;
         answeredCorrect = id == this.multi_answer ;
         return this.answeredCorrect;
+    }
+
+    public Bitmap getImage(Application app) {
+        try {
+            File cacheFile = new File(localContentUri.toString());
+            InputStream fileInputStream = null;
+            fileInputStream = new FileInputStream(cacheFile);
+            BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+            bitmapOptions.inJustDecodeBounds = false;
+            Bitmap image = BitmapFactory.decodeStream(fileInputStream, null, bitmapOptions);
+            fileInputStream.close();
+
+            return image;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public int getType() {
