@@ -15,10 +15,12 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import be.pxl.citygame.data.GameContent;
 import be.pxl.citygame.data.Question;
 import be.pxl.citygame.providers.Providers;
 
@@ -131,9 +133,16 @@ public class QuestionFragment extends Fragment {
     public void handleAnswer(View v) {
         // TODO: Correct this code to use the right controls
         if( question.getType() == Question.PLAIN_TEXT )
-            question.checkAnswer("");
-        else if( question.getType() == Question.MULTIPLE_CHOICE )
-            question.checkAnswer(5);
+            question.checkAnswer(txtAnswer.getText().toString());
+        else if( question.getType() == Question.MULTIPLE_CHOICE ) {
+            int i = 0;
+            for( RadioButton option : optionList ) {
+                if( option.isChecked() ) {
+                    question.checkAnswer(i);
+                }
+            }
+            i++;
+        }
 
         CityGameApplication context = (CityGameApplication) getActivity().getApplicationContext();
         if( (questionId + 1) < Providers.getGameContentProvider().getGameContentById(gameId).getNumQuestions() ) {
@@ -146,6 +155,13 @@ public class QuestionFragment extends Fragment {
             Log.d(QuestionFragment.class.toString(), "Switching to NextLocation activity");
         } else {
             // TODO: Score activity
+            GameContent content = Providers.getGameContentProvider().getGameContentById(gameId);
+            int score = 0;
+            for( int i = 0; i < content.getNumQuestions(); i++ ) {
+                if( content.getQuestionById(i).isAnsweredCorrect() )
+                    score++;
+            }
+            Toast.makeText(getActivity().getApplicationContext(), "Uw score is: " + score + "/" + content.getNumQuestions(), Toast.LENGTH_LONG).show();
             Intent intent = new Intent(context, MainActivity.class);
             startActivity(intent);
         }
