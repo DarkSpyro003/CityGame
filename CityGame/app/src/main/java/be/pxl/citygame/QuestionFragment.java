@@ -7,6 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import be.pxl.citygame.providers.Providers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,7 +29,19 @@ public class QuestionFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+
+
     private OnFragmentInteractionListener mListener;
+
+    private int gameId;
+    private int questionId;
+    private boolean dataSet = false;
+
+    public void setData(int gameId, int questionId) {
+        this.gameId = gameId;
+        this.questionId = questionId;
+        this.dataSet = true;
+    }
 
     /**
      * Use this factory method to create a new instance of

@@ -29,6 +29,16 @@ public class ImageFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private int gameId;
+    private int questionId;
+    private boolean dataSet = false;
+
+    public void setData(int gameId, int questionId) {
+        this.gameId = gameId;
+        this.questionId = questionId;
+        this.dataSet = true;
+    }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.

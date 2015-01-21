@@ -15,7 +15,7 @@
         />
 
     <fragment
-        android:id="@+id/fragment_map"
+        android:id="@+id/fragment_question"
         android:name="be.pxl.citygame.QuestionFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

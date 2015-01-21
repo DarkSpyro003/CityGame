@@ -1,5 +1,6 @@
 package be.pxl.citygame;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,10 +9,24 @@ import android.view.MenuItem;
 
 public class QuestionActivity extends ActionBarActivity {
 
+    private int currGame;
+    private int currQuestion;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
+
+        Intent intent = getIntent();
+        currGame = intent.getIntExtra("gameId", 0);
+        currQuestion = intent.getIntExtra("questionId", 0);
+
+        // Pass data to fragments
+        ImageFragment imgFrag = (ImageFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_image);
+        imgFrag.setData(currGame, currQuestion);
+
+        QuestionFragment questFrag = (QuestionFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_question);
+        questFrag.setData(currGame, currQuestion);
     }
 
 
