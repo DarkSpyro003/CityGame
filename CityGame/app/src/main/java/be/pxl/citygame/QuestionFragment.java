@@ -55,7 +55,7 @@ public class QuestionFragment extends Fragment {
 
         TextView tv_question = (TextView) getView().findViewById(R.id.tv_question);
         tv_question.setText(question.getQuestion());
-        
+
         //Build Question input UI
         LinearLayout layout_procedural_answer = (LinearLayout) getView().findViewById(R.id.layout_procedural_answer);
         if(question.getType() == Question.PLAIN_TEXT)
@@ -126,4 +126,13 @@ public class QuestionFragment extends Fragment {
         public void onFragmentInteraction(Uri uri);
     }
 
+    public void handleAnswer(View v)
+    {
+
+    }
+
+    public void showMoreInfo(View v)
+    {
+
+    }
 }

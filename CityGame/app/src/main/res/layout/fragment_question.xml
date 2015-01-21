@@ -38,12 +38,16 @@ android:gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/btn_answer"
-            android:id="@+id/btn_answer" />
+            android:id="@+id/btn_answer"
+            android:onClick="handleAnswer"
+            />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/btn_info"
-            android:id="@+id/btn_info" />
+            android:id="@+id/btn_info"
+            android:onClick="showMoreInfo"
+            />
     </LinearLayout>
 </RelativeLayout>
