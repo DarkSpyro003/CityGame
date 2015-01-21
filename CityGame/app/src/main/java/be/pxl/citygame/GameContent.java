@@ -18,7 +18,14 @@ public class GameContent {
         this.title = title;
     }
 
+    public int getNumQuestions() {
+        return questionList.size();
+    }
+
     public Question getQuestionById(int id) throws NoSuchElementException {
+        if( id >= questionList.size() )
+            throw new NoSuchElementException("No such question id in this gamecontent id");
+
         Question question = questionList.get(id);
         if( question == null )
             throw new NoSuchElementException("No such question id in this gamecontent id");

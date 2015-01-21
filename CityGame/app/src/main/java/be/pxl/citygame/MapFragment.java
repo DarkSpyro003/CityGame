@@ -1,6 +1,7 @@
 package be.pxl.citygame;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -82,7 +83,16 @@ public class MapFragment extends Fragment implements ILocationRequest {
             currentLoc = new GeoPoint(loc);
             mapView.getController().animateTo(currentLoc);
             if( loc.distanceTo(targetLocation) < 15 ) {
-                // TODO: Switch to next activity to show question on arrival
+                CityGameApplication context = (CityGameApplication) getActivity().getApplicationContext();
+                if( (questionId + 1) < Providers.getGameContentProvider().getGameContentById(gameId).getNumQuestions() ) {
+                    // TODO: Make question activity!!
+                    /*// Switch to next activity
+                    Intent intent = new Intent(context, QuestionActivity.class);
+                    intent.putExtra("gameId", gameId);
+                    // Next question
+                    intent.putExtra("questionId", questionId + 1);
+                    startActivity(intent);*/
+                }
             }
         }
     }
