@@ -32,13 +32,6 @@ public class MainActivity extends ActionBarActivity {
         // Loads the providers that have been declared in settings.xml
         Providers.load(getApplication());
 
-        // For testing purposes only
-        // todo: remove later
-        /*
-        IQuestionProvider provider = Providers.getQuestionProvider();
-        Question testQuestion = provider.loadQuestionById(0, 0);
-        ((TextView)(findViewById(R.id.tv_output_test))).setText(testQuestion.getQuestion());
-        */
         ((CityGameApplication)getApplicationContext()).setActivity(this);
     }
 
