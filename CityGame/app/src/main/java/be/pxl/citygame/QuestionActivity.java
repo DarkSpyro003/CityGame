@@ -1,6 +1,7 @@
 package be.pxl.citygame;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,7 +11,7 @@ import be.pxl.citygame.data.Question;
 import be.pxl.citygame.providers.Providers;
 
 
-public class QuestionActivity extends ActionBarActivity {
+public class QuestionActivity extends ActionBarActivity implements QuestionFragment.OnFragmentInteractionListener {
 
     private int currGame;
     private int currQuestion;
@@ -56,5 +57,10 @@ public class QuestionActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
