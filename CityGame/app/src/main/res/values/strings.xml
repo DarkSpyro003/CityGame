@@ -12,5 +12,7 @@
     <string name="title_activity_game">GameActivity</string>
     <string name="title_activity_next_location">NextLocationActivity</string>
     <string name="QR_invalid">De QR-code die u scande hoort niet bij ons stadsspel. Gelieve een correcte QR-code te scannen.</string>
+    <string name="title_activity_question">QuestionActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
