@@ -31,7 +31,7 @@ public class Question {
 
     // Constructor plain text question
     public Question(int type, String question, String answer) {
-        if( type != 0 )
+        if( type != PLAIN_TEXT )
             throw new IllegalArgumentException("Type must be 0 for using this constructor");
 
         this.type = type;
@@ -42,7 +42,7 @@ public class Question {
 
     // Constructor multiple choice question
     public Question(int type, String question, int answer, List<String> options) {
-        if( type != 1 )
+        if( type != MULTIPLE_CHOICE )
             throw new IllegalArgumentException("Type must be 1 for using this constructor");
 
         this.type = type;
