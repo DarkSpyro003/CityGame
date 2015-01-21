@@ -155,7 +155,8 @@ class GameContentWebProvider implements IGameContentProvider
                 Log.e(GameContentWebProvider.class.toString(), "ApplicationContext = null");
 
             this.dialog = new ProgressDialog(((CityGameApplication)application).getActivity());
-            this.dialog.setMessage("Wacht tot het spel gedownload is. Dit kan een minuut duren.");
+            this.dialog.setTitle(application.getString(R.string.load_game_progress_title));
+            this.dialog.setMessage(application.getString(R.string.load_game_progress_content));
             this.dialog.show();
         }
 

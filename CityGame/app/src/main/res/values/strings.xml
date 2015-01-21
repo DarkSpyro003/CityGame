@@ -11,5 +11,7 @@
     <string name="title_activity_next_location">Volgende stopplaats</string>
     <string name="QR_invalid">De QR-code die u scande hoort niet bij ons stadsspel. Gelieve een correcte QR-code te scannen.</string>
     <string name="title_activity_question">Vraag</string>
+    <string name="load_game_progress_title">Bezig met laden...</string>
+    <string name="load_game_progress_content">Het spel is aan het laden. Dit kan een minuut duren.</string>
 
 </resources>
