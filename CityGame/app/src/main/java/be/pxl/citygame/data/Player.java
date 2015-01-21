@@ -19,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 import be.pxl.citygame.CityGameApplication;
 import be.pxl.citygame.R;
@@ -50,9 +51,18 @@ public class Player {
         this.dialogTitle = application.getString(R.string.login_progress_title);
         this.dialogContent = application.getString(R.string.login_progress_content);
         job = this.JOB_LOGIN;
+        AsyncTask login = new GetRestData().execute(password);
+        try {
+            return (Boolean) login.get();
+        } catch (InterruptedException e) {
+            Log.e(Player.class.toString(), e.getMessage(), e);
+        } catch (ExecutionException e) {
+            Log.e(Player.class.toString(), e.getMessage(), e);
+        }
+        return false;
     }
 
-    private class GetRestData extends AsyncTask<String, Void, Void> {
+    private class GetRestData extends AsyncTask<String, Void, Boolean> {
 
         private ProgressDialog dialog;
 
@@ -65,17 +75,16 @@ public class Player {
         }
 
         @Override
-        protected void onPostExecute(Void nothing) {
+        protected void onPostExecute(Boolean success) {
             if (dialog.isShowing())
                 dialog.dismiss();
         }
 
         @Override
-        protected Void doInBackground(String... params) {
+        protected Boolean doInBackground(String... params) {
             switch(job) {
                 case JOB_LOGIN:
-                    tryLogin(params[0]);
-                    break;
+                    return tryLogin(params[0]);
             }
             return null;
         }
