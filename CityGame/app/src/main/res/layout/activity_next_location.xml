@@ -9,15 +9,16 @@
     <fragment
         android:id="@+id/fragment_map"
         android:layout_width="match_parent"
-        android:layout_height="450dp"
+        android:layout_height="match_parent"
         android:name="be.pxl.citygame.MapFragment"
+        android:layout_above="@+id/fragment_next_location"
         tools:layout="@layout/fragment_map" />
 
     <fragment
         android:id="@+id/fragment_next_location"
         android:layout_width="match_parent"
-        android:layout_height="450dp"
-        android:layout_below="@+id/fragment_map"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:name="be.pxl.citygame.NextLocationFragment"
         tools:layout="@layout/fragment_next_location" />
 

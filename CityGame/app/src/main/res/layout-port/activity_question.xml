@@ -7,7 +7,7 @@
     tools:context="be.pxl.citygame.QuestionActivity">
 
     <fragment
-        android:id="@+id/fragment_image"
+        android:id="@+id/imageFragment"
         android:name="be.pxl.citygame.ImageFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -15,12 +15,12 @@
         />
 
     <fragment
-        android:id="@+id/fragment_question"
+        android:id="@+id/questionFragment"
         android:name="be.pxl.citygame.QuestionFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         tools:layout ="@layout/fragment_question"
-        android:layout_below="@id/fragment_image"
+        android:layout_below="@id/imageFragment"
         />
 
 </RelativeLayout>
