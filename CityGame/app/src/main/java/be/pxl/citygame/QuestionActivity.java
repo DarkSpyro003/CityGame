@@ -79,4 +79,9 @@ public class QuestionActivity extends ActionBarActivity implements QuestionFragm
         QuestionFragment fragment = (QuestionFragment) getSupportFragmentManager().findFragmentById(R.id.questionFragment);
         fragment.showMoreInfo(v);
     }
+
+    @Override
+    public void onBackPressed() {
+        // Do nothing - you can't go back to previous question!
+    }
 }
