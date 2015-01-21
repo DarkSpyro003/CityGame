@@ -172,6 +172,6 @@ public class QuestionFragment extends Fragment {
         Intent intent = new Intent(getActivity().getApplicationContext(), InfoActivity.class);
         intent.putExtra("gameId", gameId);
         intent.putExtra("questionId", questionId);
-        startActivity(intent);
+        startActivityForResult(intent, 0);
     }
 }

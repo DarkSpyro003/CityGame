@@ -1,17 +1,26 @@
 package be.pxl.citygame;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 
-public class InfoActivity extends ActionBarActivity {
+public class InfoActivity extends ActionBarActivity implements InfoFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
+
+        ((CityGameApplication)getApplicationContext()).setActivity(this);
+
+        Intent intent = getIntent();
+        InfoFragment frag = (InfoFragment) getSupportFragmentManager().findFragmentById(R.id.infoFragment);
+        frag.setData(intent.getIntExtra("gameId", 0), intent.getIntExtra("questionId", 0));
     }
 
 
@@ -35,5 +44,16 @@ public class InfoActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    public void handleBackToQuestion(View v)
+    {
+        InfoFragment frag = (InfoFragment) getSupportFragmentManager().findFragmentById(R.id.infoFragment);
+        frag.handleBackToQuestion(v);
     }
 }

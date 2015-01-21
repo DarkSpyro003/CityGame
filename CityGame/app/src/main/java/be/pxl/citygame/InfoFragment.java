@@ -96,10 +96,7 @@ public class InfoFragment extends Fragment {
 
     public void handleBackToQuestion(View v)
     {
-        Intent intent = new Intent(getActivity().getApplicationContext(), QuestionActivity.class);
-        intent.putExtra("gameId", gameId);
-        intent.putExtra("questionId", questionId);
-        startActivity(intent);
+        getActivity().finish();
     }
 
 }
