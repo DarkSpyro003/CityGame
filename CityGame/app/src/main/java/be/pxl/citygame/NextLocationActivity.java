@@ -19,6 +19,8 @@ public class NextLocationActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_next_location);
 
+        ((CityGameApplication)getApplicationContext()).setActivity(this);
+
         Intent intent = getIntent();
         currGame = intent.getIntExtra("gameId", 0);
         currQuestion = intent.getIntExtra("questionId", 0);

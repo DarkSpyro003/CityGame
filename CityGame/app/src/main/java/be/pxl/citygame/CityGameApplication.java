@@ -1,5 +1,6 @@
 package be.pxl.citygame;
 
+import android.app.Activity;
 import android.app.Application;
 
 /**
@@ -7,4 +8,13 @@ import android.app.Application;
  */
 public class CityGameApplication extends Application {
 
+    private Activity activity;
+
+    public Activity getActivity() {
+        return activity;
+    }
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
+    }
 }

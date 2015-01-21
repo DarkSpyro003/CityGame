@@ -25,6 +25,8 @@ public class QuestionActivity extends ActionBarActivity implements QuestionFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
 
+        ((CityGameApplication)getApplicationContext()).setActivity(this);
+
         Intent intent = getIntent();
         currGame = intent.getIntExtra("gameId", 0);
         currQuestion = intent.getIntExtra("questionId", 0);

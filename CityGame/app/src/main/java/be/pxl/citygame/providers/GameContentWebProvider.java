@@ -1,8 +1,11 @@
 package be.pxl.citygame.providers;
 
 import android.app.Application;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import org.apache.http.HttpEntity;
@@ -20,7 +23,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.NoSuchElementException;
+import java.util.concurrent.ExecutionException;
 
+import be.pxl.citygame.CityGameApplication;
 import be.pxl.citygame.data.GameContent;
 import be.pxl.citygame.data.Question;
 import be.pxl.citygame.R;
@@ -42,7 +47,14 @@ class GameContentWebProvider implements IGameContentProvider
     public GameContent getGameContentById(int id) throws NoSuchElementException {
         GameContent content = contentCache.get(id);
         if( content == null ) {
-            content = getWebGameContentById(id);
+            AsyncTask dataTask = new GetRestData().execute(id);
+            try {
+                content = (GameContent) dataTask.get();
+            } catch (InterruptedException e) {
+                content = null;
+            } catch (ExecutionException e) {
+                content = null;
+            }
 
             if( content == null )
                 throw new NoSuchElementException("No such gamecontent ID");
@@ -130,5 +142,34 @@ class GameContentWebProvider implements IGameContentProvider
 
         }
         return null;
+    }
+
+    private class GetRestData extends AsyncTask<Integer, Void, GameContent> {
+
+        private int gameContentId;
+        private ProgressDialog dialog;
+
+        @Override
+        protected void onPreExecute() {
+            if( application.getApplicationContext() == null )
+                Log.e(GameContentWebProvider.class.toString(), "ApplicationContext = null");
+
+            this.dialog = new ProgressDialog(((CityGameApplication)application).getActivity());
+            this.dialog.setMessage("Wacht tot het spel gedownload is. Dit kan een minuut duren.");
+            this.dialog.show();
+        }
+
+        protected void onPostExecute(final Boolean success) {
+            if (dialog.isShowing())
+                dialog.dismiss();
+        }
+
+        @Override
+        protected GameContent doInBackground(Integer... params) {
+            this.gameContentId = params[0];
+            GameContent content = getWebGameContentById(gameContentId);
+
+            return content;
+        }
     }
 }

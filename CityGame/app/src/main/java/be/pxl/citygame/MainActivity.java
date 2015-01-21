@@ -39,11 +39,23 @@ public class MainActivity extends ActionBarActivity {
         Question testQuestion = provider.loadQuestionById(0, 0);
         ((TextView)(findViewById(R.id.tv_output_test))).setText(testQuestion.getQuestion());
         */
+        ((CityGameApplication)getApplicationContext()).setActivity(this);
     }
 
     public void handleBtnStart(View v) {
-        // Download primary content
-        new GetRestData().execute(PRIMARY_CONTENT_ID);
+        startGame(PRIMARY_CONTENT_ID);
+    }
+
+    public void startGame(int id) {
+        // Download data
+        Providers.getGameContentProvider().getGameContentById(id);
+
+        // Switch to next activity
+        CityGameApplication context = (CityGameApplication) getApplicationContext();
+        Intent intent = new Intent(context, NextLocationActivity.class);
+        intent.putExtra("gameId", id);
+        intent.putExtra("questionId", 0);
+        startActivity(intent);
     }
 
     @Override
@@ -94,7 +106,7 @@ public class MainActivity extends ActionBarActivity {
                     String app = object.getString("appname");
                     if( app.equals("be.pxl.citygame") ) {
                         int gameContentId = object.getInt("gameContentId");
-                        new GetRestData().execute(gameContentId);
+                        startGame(gameContentId);
                     }
                     else {
                         Toast.makeText(getApplicationContext(), R.string.QR_invalid, Toast.LENGTH_SHORT).show();
@@ -102,32 +114,6 @@ public class MainActivity extends ActionBarActivity {
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(), R.string.QR_invalid, Toast.LENGTH_SHORT).show();
                 }
-            }
-        }
-    }
-
-    private class GetRestData extends AsyncTask<Integer, Void, GameContent> {
-
-        private int gameContentId;
-
-        @Override
-        protected GameContent doInBackground(Integer... params) {
-            this.gameContentId = params[0];
-            GameContent content = Providers.getGameContentProvider().getGameContentById(gameContentId);
-
-            return content;
-        }
-
-        @Override
-        protected void onPostExecute(GameContent content) {
-            // This runs in GUI thread
-            if( content != null ) {
-                CityGameApplication context = (CityGameApplication) getApplicationContext();
-                // Switch to next activity
-                Intent intent = new Intent(context, NextLocationActivity.class);
-                intent.putExtra("gameId", gameContentId);
-                intent.putExtra("questionId", 0);
-                startActivity(intent);
             }
         }
     }
