@@ -42,12 +42,27 @@ public class Player {
     private static final int JOB_LOGIN = 0, JOB_REGISTER = 1, JOB_UPDATE = 2;
     private int job = 0;
 
-    public Player(String username) {
+    public Player(String username, Application application) {
         this.username = username;
+        this.application = application;
     }
 
-    public boolean checkLogin(Application application, String password) {
-        this.application = application;
+    public boolean register(String password) {
+        this.dialogTitle = "Registering...";
+        this.dialogContent = "Please wait.";
+        job = this.JOB_REGISTER;
+        AsyncTask register = new GetRestData().execute(password);
+        try {
+            return (Boolean) register.get();
+        } catch (InterruptedException e) {
+            Log.e(Player.class.toString(), e.getMessage(), e);
+        } catch (ExecutionException e) {
+            Log.e(Player.class.toString(), e.getMessage(), e);
+        }
+        return false;
+    }
+
+    public boolean checkLogin(String password) {
         this.dialogTitle = application.getString(R.string.login_progress_title);
         this.dialogContent = application.getString(R.string.login_progress_content);
         job = this.JOB_LOGIN;
@@ -85,9 +100,49 @@ public class Player {
             switch(job) {
                 case JOB_LOGIN:
                     return tryLogin(params[0]);
+                case JOB_REGISTER:
+                    return tryRegister(params[0]);
             }
             return null;
         }
+    }
+
+    private boolean tryRegister(String password) {
+        DefaultHttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
+        HttpPost httpPost = new HttpPost(application.getString(R.string.webservice_url) + "player/" + username);
+        httpPost.setHeader("Content-Type", "application/json");
+        try {
+            JSONObject data = new JSONObject();
+            data.put("username", username);
+            data.put("password", password);
+            data.put("email", email);
+            data.put("realname", realname);
+            httpPost.setEntity(new StringEntity(data.toString()));
+
+            HttpResponse response = httpClient.execute(httpPost);
+            int statusCode = response.getStatusLine().getStatusCode();
+
+            return statusCode == HttpStatus.SC_CREATED;
+        } catch (IOException e) {
+            Log.e(Player.class.toString(), e.getMessage(), e);
+        } catch (JSONException e) {
+            Log.e(Player.class.toString(), e.getMessage(), e);
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(((CityGameApplication)application).getActivity());
+        builder.setTitle("Registration failed")
+                .setMessage("Sorry, something went wrong")
+                .setCancelable(true)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+
+        return false;
     }
 
     private boolean tryLogin(String password) {
