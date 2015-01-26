@@ -35,6 +35,8 @@ import java.util.List;
  */
 public class LoginActivity extends Activity {
 
+    //TODO: Make UserLoginTask.doInBackground() attempt to log in or move through registration activity (Default code is all dummy code)
+    //TODO: After fixing UserLoginTask.doInBackground() remove DUMMY_CREDENTIALS
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
@@ -100,7 +102,7 @@ public class LoginActivity extends Activity {
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
+        String user = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
@@ -115,7 +117,7 @@ public class LoginActivity extends Activity {
         }
 
         // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
+        if (TextUtils.isEmpty(user)) {
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
@@ -129,7 +131,7 @@ public class LoginActivity extends Activity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask = new UserLoginTask(user, password);
             mAuthTask.execute((Void) null);
         }
     }
@@ -241,14 +243,16 @@ public class LoginActivity extends Activity {
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-
+            //TODO: This is all Dummy code
+            //TODO: Try to connect
             try {
                 // Simulate network access.
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 return false;
             }
-
+            //TODO: This is all Dummy code too
+            //TODO: Try to authenticate
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
                 if (pieces[0].equals(mEmail)) {
@@ -258,6 +262,7 @@ public class LoginActivity extends Activity {
             }
 
             // TODO: register the new account here.
+            //TODO: Switch to registration activity, pass username and password
             return true;
         }
 

@@ -11,4 +11,7 @@
     <string name="error_invalid_password">Dit paswoord is te kort</string>
     <string name="error_incorrect_password">Dit paswoord is verkeerd</string>
     <string name="error_field_required">Dit veld is verplicht</string>
+
+    <string name="email">Email (Optioneel)</string>
+    <string name="action_register">Registreer</string>
 </resources>
