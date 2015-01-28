@@ -102,6 +102,16 @@ $app->post(
 					echo '409 Resource Already Exists - The requested username is already taken';
 				}
 			}
+			else
+			{
+				$app->response()->status(500);
+				echo '500 Internal Server Error - Something went wrong';
+			}
+		}
+		else
+		{
+			$app->response()->status(500);
+			echo '500 Internal Server Error - Something went wrong';
 		}
     }
 );

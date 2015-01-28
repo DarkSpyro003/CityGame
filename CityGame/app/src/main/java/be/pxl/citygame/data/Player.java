@@ -134,6 +134,7 @@ public class Player {
 
             HttpResponse response = httpClient.execute(httpPost);
             int statusCode = response.getStatusLine().getStatusCode();
+            Log.d(Player.class.toString(), "User registration with status " + statusCode + " and content " + response.getEntity().toString());
 
             return statusCode == HttpStatus.SC_CREATED;
         } catch (IOException e) {
