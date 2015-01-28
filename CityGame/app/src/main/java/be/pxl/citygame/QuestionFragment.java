@@ -163,6 +163,8 @@ public class QuestionFragment extends Fragment {
             }
             Toast.makeText(getActivity().getApplicationContext(), "Uw score is: " + score + "/" + content.getNumQuestions(), Toast.LENGTH_LONG).show();
             Intent intent = new Intent(context, MainActivity.class);
+            //Intent intent = new Intent(context, GameResultsActivity.class);
+            intent.putExtra("gameId", gameId);
             startActivity(intent);
         }
     }
