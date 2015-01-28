@@ -31,10 +31,21 @@
         android:onClick="scanQR"
         />
 
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="@string/action_sign_in"
+        android:id="@+id/btn_go_to_log_in"
+        android:layout_below="@+id/btn_scan_qr"
+        android:layout_centerHorizontal="true"
+        android:onClick="goToLogin"
+        />
+
     <!-- For testing purposes only, should be removed soon -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tv_output_test"
-        android:layout_below="@id/btn_scan_qr"/>
+        android:layout_below="@id/btn_go_to_log_in"
+        />
 </RelativeLayout>

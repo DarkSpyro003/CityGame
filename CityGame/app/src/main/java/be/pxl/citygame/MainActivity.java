@@ -110,5 +110,11 @@ public class MainActivity extends ActionBarActivity {
             }
         }
     }
+
+    public void goToLogin(View v)
+    {
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(intent);
+    }
 }
 
