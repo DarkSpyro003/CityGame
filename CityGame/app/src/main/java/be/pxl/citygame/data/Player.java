@@ -55,7 +55,9 @@ public class Player {
         job = this.JOB_REGISTER;
         AsyncTask register = new GetRestData().execute(password);
         try {
-            return (Boolean) register.get();
+            // If not true, let it go to the bottom to show the AlertDialog
+            if( ((Boolean) register.get()) )
+                return true;
         } catch (InterruptedException e) {
             Log.e(Player.class.toString(), e.getMessage(), e);
         } catch (ExecutionException e) {
@@ -74,6 +76,7 @@ public class Player {
 
         AlertDialog alert = builder.create();
         alert.show();
+        Log.d(Player.class.toString(), "Showing alert dialog");
         return false;
     }
 

@@ -74,6 +74,8 @@ public class LoginActivity extends Activity {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        ((CityGameApplication)getApplicationContext()).setActivity(this);
     }
 
     /**
