@@ -4,14 +4,10 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentResolver;
-import android.content.CursorLoader;
-import android.content.Loader;
+import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build.VERSION;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -29,21 +25,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import be.pxl.citygame.data.Player;
+
 
 /**
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends Activity {
 
-    //TODO: Make UserLoginTask.doInBackground() attempt to log in or move through registration activity (Default code is all dummy code)
-    //TODO: After fixing UserLoginTask.doInBackground() remove DUMMY_CREDENTIALS
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -109,20 +98,6 @@ public class LoginActivity extends Activity {
         View focusView = null;
 
 
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(user)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        }
-
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -134,11 +109,6 @@ public class LoginActivity extends Activity {
             mAuthTask = new UserLoginTask(user, password);
             mAuthTask.execute((Void) null);
         }
-    }
-
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
     }
 
     /**
@@ -226,44 +196,31 @@ public class LoginActivity extends Activity {
         mEmailView.setAdapter(adapter);
     }
 
+    public void goToRegistration(View v)
+    {
+        Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+        startActivity(intent);
+    }
+
     /**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String mEmail;
+        private final String mUser;
         private final String mPassword;
 
-        UserLoginTask(String email, String password) {
-            mEmail = email;
+        UserLoginTask(String username, String password) {
+            mUser = username;
             mPassword = password;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            //TODO: This is all Dummy code
-            //TODO: Try to connect
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-            //TODO: This is all Dummy code too
-            //TODO: Try to authenticate
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
 
-            // TODO: register the new account here.
-            //TODO: Switch to registration activity, pass username and password
-            return true;
+            Player player = new Player(mUser, getApplication());
+            return player.checkLogin(mPassword);
         }
 
         @Override

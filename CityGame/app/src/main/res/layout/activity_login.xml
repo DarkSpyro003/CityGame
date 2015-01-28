@@ -35,6 +35,21 @@
                 android:layout_marginTop="16dp" android:text="@string/action_sign_in"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/tv_no_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_account"
+                android:textAppearance="?android:textAppearanceMedium"
+                />
+
+            <Button android:id="@+id/btnRegister" style="?android:textAppearanceSmall"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="16dp" android:text="@string/action_register_now"
+                android:textStyle="bold"
+                android:onClick="goToRegistration"
+                />
+
         </LinearLayout>
     </ScrollView>
 
