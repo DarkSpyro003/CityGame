@@ -29,7 +29,7 @@ public class GameResultsActivity extends ActionBarActivity {
 
         ListView view = (ListView)findViewById(R.id.lv_question_response);
         // todo: Get correct list of answers from question activity
-        Question[] questions = new Question[] { Providers.getQuestionProvider().loadQuestionById(1, 1) };
+        Question[] questions = (Question[])Providers.getGameContentProvider().getGameContentById(gameId).getQuestionList().toArray();
         QuestionResponseAdapter adapter = new QuestionResponseAdapter(this, questions);
         view.setAdapter(adapter);
     }
