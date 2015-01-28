@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -57,6 +58,10 @@ public class RegisterFragment extends Fragment {
             player.setRealname(name);
 
             Boolean success = player.register(password);
+
+            if( success )
+                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.registration_success), Toast.LENGTH_LONG);
+
             Log.d("Register", success.toString());
         }
     }
