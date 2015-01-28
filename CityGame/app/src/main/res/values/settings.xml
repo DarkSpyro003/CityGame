@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- For debugging and general testing purposes -->
-    <string name="question_provider">be.pxl.citygame.providers.QuestionProvider</string>
-    <string name="game_content_provider">be.pxl.citygame.providers.GameContentWebProvider</string>
+    <!-- For settings that may change -->
+
+    <!-- -><string name="game_content_provider">be.pxl.citygame.providers.GameContentMockProvider</string><!- -->
+    <!-- --><string name="game_content_provider">be.pxl.citygame.providers.GameContentWebProvider</string><!-- -->
+
+    <!-- -><string name="question_provider">be.pxl.citygame.providers.QuestionMockProvider</string><!- -->
+    <!-- --><string name="question_provider">be.pxl.citygame.providers.QuestionProvider</string><!-- -->
 
     <string name="webservice_url">http://public.ds003.info/citygame/</string>
     <integer name="gps_marker_distance">15</integer>

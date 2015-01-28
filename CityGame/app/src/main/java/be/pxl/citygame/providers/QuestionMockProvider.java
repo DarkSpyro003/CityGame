@@ -36,6 +36,6 @@ class QuestionMockProvider implements IQuestionProvider {
         {
             return questions[id];
         }
-        throw new NoSuchElementException("Invalid id. (index out of bounds)");
+        throw new NoSuchElementException("Invalid id. (index out of bounds) (Mock provider)");
     }
 }

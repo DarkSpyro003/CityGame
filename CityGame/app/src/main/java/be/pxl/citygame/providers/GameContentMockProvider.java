@@ -13,7 +13,7 @@ class GameContentMockProvider implements IGameContentProvider {
     public GameContent getGameContentById(int id) throws NoSuchElementException {
         // Only id 1 valid for testing
         if (id != 1) {
-            throw new NoSuchElementException("No GameContent with id: " + id);
+            throw new NoSuchElementException("No GameContent with id: " + id + " (Mock provider)");
         }
 
         GameContent content = new GameContent("Mock game");

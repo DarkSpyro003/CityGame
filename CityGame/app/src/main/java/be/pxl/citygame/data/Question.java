@@ -3,7 +3,6 @@ package be.pxl.citygame.data;
 import android.app.Application;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
 
@@ -27,6 +26,8 @@ public class Question {
     private String question;
     private String text_answer;
     private int multi_answer;
+    private String userTextInput;
+    private int userMultiInput;
     private List<String> options;
     private String extraInfo;
     private String placename;
@@ -64,6 +65,7 @@ public class Question {
     public boolean checkAnswer(String text) {
         this.answered = true;
         this.answeredCorrect = text.toLowerCase().equals(this.text_answer.toLowerCase());
+        this.setUserTextInput(text);
         return this.answeredCorrect;
     }
 
@@ -71,6 +73,7 @@ public class Question {
     public boolean checkAnswer(int id) {
         this.answered = true;
         answeredCorrect = id == this.multi_answer ;
+        this.setUserMultiInput(id);
         return this.answeredCorrect;
     }
 
@@ -111,6 +114,10 @@ public class Question {
 
     public List<String> getOptions() {
         return options;
+    }
+
+    public String getOption(int i) {
+        return options.get(i);
     }
 
     public boolean isAnswered() {
@@ -159,5 +166,21 @@ public class Question {
 
     public void setPlacename(String placename) {
         this.placename = placename;
+    }
+
+    public String getUserTextInput() {
+        return userTextInput;
+    }
+
+    public void setUserTextInput(String userTextInput) {
+        this.userTextInput = userTextInput;
+    }
+
+    public int getUserMultiInput() {
+        return userMultiInput;
+    }
+
+    public void setUserMultiInput(int userMultiInput) {
+        this.userMultiInput = userMultiInput;
     }
 }
