@@ -41,9 +41,9 @@ public class RegisterFragment extends Fragment {
     public void register(View v)
     {
         EditText txtUsername = (EditText) getActivity().findViewById(R.id.txtUser);
-        EditText txtPassword = (EditText) getActivity().findViewById(R.id.txtUser);
-        EditText txtName = (EditText) getActivity().findViewById(R.id.txtUser);
-        EditText txtEmail = (EditText) getActivity().findViewById(R.id.txtUser);
+        EditText txtPassword = (EditText) getActivity().findViewById(R.id.txtPassword);
+        EditText txtName = (EditText) getActivity().findViewById(R.id.txtName);
+        EditText txtEmail = (EditText) getActivity().findViewById(R.id.txtEmail);
 
         String username = txtUsername.getText().toString();
         String password = txtPassword.getText().toString();
@@ -87,7 +87,7 @@ public class RegisterFragment extends Fragment {
         Matcher matcher = pattern.matcher(inputStr);
 
         Boolean success = matcher.matches();
-        Log.d("Email is valid", success.toString());
+        Log.d("Email is valid", success.toString() + " " + email);
 
         return  success;
     }
