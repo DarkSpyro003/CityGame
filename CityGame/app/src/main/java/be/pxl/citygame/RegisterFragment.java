@@ -1,6 +1,7 @@
 package be.pxl.citygame;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -58,11 +59,12 @@ public class RegisterFragment extends Fragment {
             player.setRealname(name);
 
             Boolean success = player.register(password);
-
-            if( success )
-                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.registration_success), Toast.LENGTH_LONG).show();
-
             Log.d("Register", success.toString());
+            if( success ) {
+                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.registration_success), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
         }
     }
 
