@@ -4,7 +4,11 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import be.pxl.citygame.data.Question;
+import be.pxl.citygame.providers.Providers;
 
 
 public class GameResultsActivity extends ActionBarActivity {
@@ -16,6 +20,12 @@ public class GameResultsActivity extends ActionBarActivity {
         setContentView(R.layout.activity_game_results);
 
         correctAnswersText = (TextView)findViewById(R.id.tv_correct_answers);
+
+        ListView view = (ListView)findViewById(R.id.lv_question_response);
+        // todo: Get correct list of answers from question activity
+        Question[] questions = new Question[] { Providers.getQuestionProvider().loadQuestionById(1, 1) };
+        QuestionResponseAdapter adapter = new QuestionResponseAdapter(this, questions);
+        view.setAdapter(adapter);
     }
 
 
