@@ -21,6 +21,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +33,6 @@ import be.pxl.citygame.data.Player;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends Activity {
-
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -84,10 +80,6 @@ public class LoginActivity extends Activity {
      * errors are presented and no actual login attempt is made.
      */
     public void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
-
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
@@ -96,20 +88,11 @@ public class LoginActivity extends Activity {
         String user = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        boolean cancel = false;
-        View focusView = null;
-
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
+        Player player = new Player(user, getApplication());
+        if( player.checkLogin(password) ) {
+            Toast.makeText(getApplicationContext(), getString(R.string.login_success), Toast.LENGTH_LONG).show();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(user, password);
-            mAuthTask.execute((Void) null);
+            Toast.makeText(getApplicationContext(), getString(R.string.login_failed), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -202,47 +185,6 @@ public class LoginActivity extends Activity {
     {
         Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
         startActivity(intent);
-    }
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mUser;
-        private final String mPassword;
-
-        UserLoginTask(String username, String password) {
-            mUser = username;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-
-            Player player = new Player(mUser, getApplication());
-            return player.checkLogin(mPassword);
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
     }
 }
 

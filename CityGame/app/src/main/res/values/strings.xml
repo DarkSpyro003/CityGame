@@ -28,5 +28,7 @@
     <string name="title_activity_gameresults">Uw score</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="registration_success">Uw account is succesvol aangemaakt.</string>
+    <string name="login_success">U bent nu aangemeld!</string>
+    <string name="login_failed">Aanmelden mislukt, controleer uw wachtwoord</string>
 
 </resources>
