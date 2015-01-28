@@ -33,15 +33,6 @@ import be.pxl.citygame.data.Player;
  */
 public class LoginActivity extends Activity {
 
-    //TODO: Make UserLoginTask.doInBackground() attempt to log in or move through registration activity (Default code is all dummy code)
-    //TODO: After fixing UserLoginTask.doInBackground() remove DUMMY_CREDENTIALS
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -107,20 +98,6 @@ public class LoginActivity extends Activity {
         View focusView = null;
 
 
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(user)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        }
-
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -132,11 +109,6 @@ public class LoginActivity extends Activity {
             mAuthTask = new UserLoginTask(user, password);
             mAuthTask.execute((Void) null);
         }
-    }
-
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
     }
 
     /**
