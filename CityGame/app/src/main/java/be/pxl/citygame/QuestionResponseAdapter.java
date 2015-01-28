@@ -1,6 +1,7 @@
 package be.pxl.citygame;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,15 +32,18 @@ public class QuestionResponseAdapter extends ArrayAdapter<Question> {
 
         TextView questionLabelView = (TextView) questionResponseView.findViewById(R.id.tv_question_label);
         TextView questionUserInputView = (TextView) questionResponseView.findViewById(R.id.tv_question_user_input);
+        TextView questionUserInputLabelView = (TextView) questionResponseView.findViewById(R.id.tv_question_user_input_label);
         TextView questionCorrectOutputView = (TextView) questionResponseView.findViewById(R.id.tv_question_correct_output);
 
         Question question = questions[position];
 
         if (question.isAnsweredCorrect()) {
-            questionUserInputView.setTextColor(0x00CC00);
-            questionCorrectOutputView.setVisibility(View.INVISIBLE);
+            questionCorrectOutputView.setTextColor(0xFF00CC00);
+            questionUserInputLabelView.setVisibility(View.GONE);
+            questionUserInputView.setVisibility(View.GONE);
+
         } else {
-            questionUserInputView.setTextColor(0xCC0000);
+            questionUserInputView.setTextColor(0xFFCC0000);
         }
 
         switch (question.getType())
@@ -47,11 +51,15 @@ public class QuestionResponseAdapter extends ArrayAdapter<Question> {
             case Question.MULTIPLE_CHOICE:
                 questionUserInputView.setText(question.getOption(question.getUserMultiInput()));
                 questionCorrectOutputView.setText(question.getOption(question.getMulti_answer()));
+                Log.d(QuestionResponseAdapter.class.toString(), "Showing score for multichoice question");
                 break;
             case Question.PLAIN_TEXT:
                 questionUserInputView.setText(question.getUserTextInput());
                 questionCorrectOutputView.setText(question.getText_answer());
+                Log.d(QuestionResponseAdapter.class.toString(), "Showing score for plaintext question, answer was " + question.getUserTextInput());
                 break;
+            default:
+                Log.e(QuestionResponseAdapter.class.toString(), "Unknown question type");
         }
         questionLabelView.setText(question.getQuestion());
 
