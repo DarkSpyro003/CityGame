@@ -154,16 +154,7 @@ public class QuestionFragment extends Fragment {
             startActivity(intent);
             Log.d(QuestionFragment.class.toString(), "Switching to NextLocation activity");
         } else {
-            // TODO: Score activity
-            GameContent content = Providers.getGameContentProvider().getGameContentById(gameId);
-            int score = 0;
-            for( int i = 0; i < content.getNumQuestions(); i++ ) {
-                if( content.getQuestionById(i).isAnsweredCorrect() )
-                    score++;
-            }
-            Toast.makeText(getActivity().getApplicationContext(), "Uw score is: " + score + "/" + content.getNumQuestions(), Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(context, MainActivity.class);
-            //Intent intent = new Intent(context, GameResultsActivity.class);
+            Intent intent = new Intent(context, GameResultsActivity.class);
             intent.putExtra("gameId", gameId);
             startActivity(intent);
         }
