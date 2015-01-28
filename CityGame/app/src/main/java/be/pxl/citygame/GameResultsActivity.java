@@ -61,4 +61,9 @@ public class GameResultsActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onBackPressed() {
+        // Do nothing - you can't go back to previous question!
+    }
 }
