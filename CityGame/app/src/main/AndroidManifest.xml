@@ -48,6 +48,10 @@
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
+        <activity
+            android:name=".GameResultsActivity"
+            android:label="@string/title_activity_gameresults" >
+        </activity>
     </application>
 
 </manifest>
