@@ -4,7 +4,7 @@
     <!-- Strings related to login -->
     <string name="prompt_username">Gebruikersnaam</string>
     <string name="prompt_password">Paswoord</string>
-    <string name="action_sign_in">Log in of registreer</string>
+    <string name="action_sign_in">Inloggen</string>
     <string name="action_sign_in_short">Log in</string>
 
     <string name="error_invalid_email">This email address is invalid</string>
@@ -14,4 +14,6 @@
 
     <string name="email">Email (Optioneel)</string>
     <string name="action_register">Registreer</string>
+    <string name="action_register_now">Registreer u nu</string>
+    <string name="no_account">Nog geen account?</string>
 </resources>

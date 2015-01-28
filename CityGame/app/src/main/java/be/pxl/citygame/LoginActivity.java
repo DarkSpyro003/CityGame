@@ -4,14 +4,10 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentResolver;
-import android.content.CursorLoader;
-import android.content.Loader;
+import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build.VERSION;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -28,6 +24,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import be.pxl.citygame.data.Player;
 
 
 /**
@@ -226,44 +224,31 @@ public class LoginActivity extends Activity {
         mEmailView.setAdapter(adapter);
     }
 
+    public void goToRegistration(View v)
+    {
+        Intent intent = new Intent(getApplicationContext(), InfoActivity.class);
+        startActivity(intent);
+    }
+
     /**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String mEmail;
+        private final String mUser;
         private final String mPassword;
 
-        UserLoginTask(String email, String password) {
-            mEmail = email;
+        UserLoginTask(String username, String password) {
+            mUser = username;
             mPassword = password;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            //TODO: This is all Dummy code
-            //TODO: Try to connect
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-            //TODO: This is all Dummy code too
-            //TODO: Try to authenticate
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
 
-            // TODO: register the new account here.
-            //TODO: Switch to registration activity, pass username and password
-            return true;
+            Player player = new Player(mUser, getApplication());
+            return player.checkLogin(mPassword);
         }
 
         @Override
