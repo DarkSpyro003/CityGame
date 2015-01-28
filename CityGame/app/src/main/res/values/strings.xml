@@ -25,6 +25,6 @@
     <string name="question_response_user_input">Ingevoerd: </string>
     <string name="question_response_correct_answer">Antwoord: </string>
     <string name="correct_answers">Correcte antwoorden: </string>
-
+    <string name="title_activity_gameresults">Uw score</string>
 
 </resources>

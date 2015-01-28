@@ -13,6 +13,10 @@ public class GameContent {
     private String title;
     private List<Question> questionList;
 
+    public List<Question> getQuestionList() {
+        return questionList;
+    }
+
     public GameContent(String title) {
         questionList = new ArrayList<Question>();
         this.title = title;
