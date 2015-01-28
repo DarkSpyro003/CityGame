@@ -60,7 +60,7 @@ public class RegisterFragment extends Fragment {
             Boolean success = player.register(password);
 
             if( success )
-                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.registration_success), Toast.LENGTH_LONG);
+                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.registration_success), Toast.LENGTH_LONG).show();
 
             Log.d("Register", success.toString());
         }
