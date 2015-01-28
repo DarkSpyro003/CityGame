@@ -131,7 +131,6 @@ public class QuestionFragment extends Fragment {
     }
 
     public void handleAnswer(View v) {
-        // TODO: Correct this code to use the right controls
         if( question.getType() == Question.PLAIN_TEXT )
             question.checkAnswer(txtAnswer.getText().toString());
         else if( question.getType() == Question.MULTIPLE_CHOICE ) {
@@ -140,8 +139,8 @@ public class QuestionFragment extends Fragment {
                 if( option.isChecked() ) {
                     question.checkAnswer(i);
                 }
+                i++;
             }
-            i++;
         }
 
         CityGameApplication context = (CityGameApplication) getActivity().getApplicationContext();

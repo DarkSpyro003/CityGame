@@ -59,6 +59,19 @@ public class Player {
         } catch (ExecutionException e) {
             Log.e(Player.class.toString(), e.getMessage(), e);
         }
+        AlertDialog.Builder builder = new AlertDialog.Builder(((CityGameApplication)application).getActivity());
+        builder.setTitle("Registration failed")
+                .setMessage("Sorry, something went wrong")
+                .setCancelable(true)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        AlertDialog alert = builder.create();
+        alert.show();
         return false;
     }
 
@@ -128,19 +141,6 @@ public class Player {
         } catch (JSONException e) {
             Log.e(Player.class.toString(), e.getMessage(), e);
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(((CityGameApplication)application).getActivity());
-        builder.setTitle("Registration failed")
-                .setMessage("Sorry, something went wrong")
-                .setCancelable(true)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-        AlertDialog alert = builder.create();
-        alert.show();
 
         return false;
     }
