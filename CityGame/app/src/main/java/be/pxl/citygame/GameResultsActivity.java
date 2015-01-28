@@ -8,6 +8,8 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.List;
+
 import be.pxl.citygame.data.Question;
 import be.pxl.citygame.providers.Providers;
 
@@ -28,10 +30,13 @@ public class GameResultsActivity extends ActionBarActivity {
         this.gameId = intent.getIntExtra("gameId", 0);
 
         ListView view = (ListView)findViewById(R.id.lv_question_response);
-        // todo: Get correct list of answers from question activity
-        Question[] questions = (Question[])Providers.getGameContentProvider().getGameContentById(gameId).getQuestionList();
+        List<Question> questionList = Providers.getGameContentProvider().getGameContentById(gameId).getQuestionList();
+        Question[] questions = questionList.toArray(new Question[questionList.size()]);
         QuestionResponseAdapter adapter = new QuestionResponseAdapter(this, questions);
         view.setAdapter(adapter);
+
+        view.invalidateViews();
+        view.requestLayout();
     }
 
 

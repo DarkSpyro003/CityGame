@@ -62,6 +62,7 @@ public class QuestionResponseAdapter extends ArrayAdapter<Question> {
                 Log.e(QuestionResponseAdapter.class.toString(), "Unknown question type");
         }
         questionLabelView.setText(question.getQuestion());
+
         return questionResponseView;
     }
 }
