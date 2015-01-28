@@ -15,12 +15,12 @@ class PlayerDb
 	{
 		if( $statement = $this->database->prepare('INSERT INTO `players` (`username`, `passwordhash`, `email`, `realname`) VALUES (?, ?, ?, ?)') )
 		{
-			$player->username = $this->database->real_escape_string($player->username);
-			$player->email = $this->database->real_escape_string($player->email);
-			$player->realname = $this->database->real_escape_string($player->realname);
+			$username = $this->database->real_escape_string($player->username);
+			$email = $this->database->real_escape_string($player->email);
+			$realname = $this->database->real_escape_string($player->realname);
 			$passwordhash = $this->createPasswordHash($password);
 			
-			$statement->bind_param('ssss', $player->username, $passwordhash, $player->email, $player->realname);
+			$statement->bind_param('ssss', $username, $passwordhash, $email, $realname);
 			$statement->execute();
 			return $this->database->affected_rows;
 		}
@@ -40,11 +40,11 @@ class PlayerDb
 		{
 			if( $statement = $this->database->prepare('INSERT INTO `player_games` (`playerId`, `gameContentId`, `score`) VALUES ?, ?, ?') )
 			{
-				$player->id = $this->database->real_escape_string($player->id);
+				$playerId = $this->database->real_escape_string($player->id);
 				$gameContentId = $this->database->real_escape_string($gameContentId);
 				$score = $this->database->real_escape_string($score);
 				
-				$statement->bind_param('iid', $player->id, $gameContentId, $score);
+				$statement->bind_param('iid', $playerId, $gameContentId, $score);
 				$statement->execute();
 				if( $this->database->affected_rows > 0 )
 					return 201;
@@ -82,13 +82,13 @@ class PlayerDb
 				if( $statement = $this->database->prepare('UPDATE `players` SET `username` = ?, `passwordhash` = ?, `email` = ?, `realname` = ? WHERE `username` = ?') )
 				{
 					
-					$player->username = $this->database->real_escape_string($player->username);
-					$player->email = $this->database->real_escape_string($player->email);
-					$player->realname = $this->database->real_escape_string($player->realname);
+					$username = $this->database->real_escape_string($player->username);
+					$email = $this->database->real_escape_string($player->email);
+					$realname = $this->database->real_escape_string($player->realname);
 					$passwordhash = $this->createPasswordHash($password);
 					$oldusername = $this->database->real_escape_string($oldusername);
 			
-					$statement->bind_param('sssss', $player->username, $passwordhash, $player->email, $player->realname, $oldusername);
+					$statement->bind_param('sssss', $username, $passwordhash, $email, $realname, $oldusername);
 					$statement->execute();
 					if( $this->database->affected_rows > 0 )
 						return 200;

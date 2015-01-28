@@ -57,7 +57,7 @@ $app->post(
 	{
 		if (0 === strpos($app->request->headers->get('Content-Type'), 'application/json')) 
 		{
-			$data = json_decode($app->request->getContent(), true);
+			$data = json_decode($app->request->getBody(), true);
 			$jsonusername = $data['username'];
 			$password = $data['password'];
 			$email = $data['email'];
