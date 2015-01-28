@@ -18,7 +18,9 @@ import org.apache.http.params.BasicHttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.concurrent.ExecutionException;
 
 import be.pxl.citygame.CityGameApplication;
@@ -134,7 +136,21 @@ public class Player {
 
             HttpResponse response = httpClient.execute(httpPost);
             int statusCode = response.getStatusLine().getStatusCode();
-            Log.d(Player.class.toString(), "User registration with status " + statusCode + " and content " + response.getEntity().toString());
+
+            StringBuilder sb = new StringBuilder();
+            try {
+                BufferedReader reader =
+                        new BufferedReader(new InputStreamReader(response.getEntity().getContent()), 65728);
+                String line = null;
+
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                }
+            }
+            catch (IOException e) { e.printStackTrace(); }
+            catch (Exception e) { e.printStackTrace(); }
+
+            Log.d(Player.class.toString(), "User registration with status " + statusCode + " and content " + sb.toString());
 
             return statusCode == HttpStatus.SC_CREATED;
         } catch (IOException e) {
