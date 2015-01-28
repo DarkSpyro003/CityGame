@@ -12,8 +12,9 @@
     <string name="error_incorrect_password">Dit paswoord is verkeerd</string>
     <string name="error_field_required">Dit veld is verplicht</string>
 
-    <string name="email">Email (Optioneel)</string>
+    <string name="email">Email</string>
     <string name="action_register">Registreer</string>
     <string name="action_register_now">Registreer u nu</string>
     <string name="no_account">Nog geen account?</string>
+    <string name="name">Naam (Optioneel)</string>
 </resources>

@@ -226,7 +226,7 @@ public class LoginActivity extends Activity {
 
     public void goToRegistration(View v)
     {
-        Intent intent = new Intent(getApplicationContext(), InfoActivity.class);
+        Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
         startActivity(intent);
     }
 
