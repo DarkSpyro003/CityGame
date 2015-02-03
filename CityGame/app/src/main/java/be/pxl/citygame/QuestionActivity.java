@@ -14,7 +14,7 @@ import be.pxl.citygame.data.Question;
 import be.pxl.citygame.providers.Providers;
 
 
-public class QuestionActivity extends ActionBarActivity implements QuestionFragment.OnFragmentInteractionListener {
+public class QuestionActivity extends ActionBarActivity {
 
     private int currGame;
     private int currQuestion;
@@ -64,12 +64,7 @@ public class QuestionActivity extends ActionBarActivity implements QuestionFragm
 
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
-
+    
     public void handleAnswer(View v) {
         QuestionFragment fragment = (QuestionFragment) getSupportFragmentManager().findFragmentById(R.id.questionFragment);
         fragment.handleAnswer(v);

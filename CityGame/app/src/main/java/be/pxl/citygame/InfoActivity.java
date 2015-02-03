@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 
-public class InfoActivity extends ActionBarActivity implements InfoFragment.OnFragmentInteractionListener {
+public class InfoActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +44,6 @@ public class InfoActivity extends ActionBarActivity implements InfoFragment.OnFr
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 
     public void handleBackToQuestion(View v)

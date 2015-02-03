@@ -8,8 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
 
-public class NextLocationActivity extends ActionBarActivity
-        implements NextLocationFragment.OnFragmentInteractionListener {
+public class NextLocationActivity extends ActionBarActivity {
 
     private int currGame;
     private int currQuestion;
@@ -53,11 +52,6 @@ public class NextLocationActivity extends ActionBarActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 
     @Override
