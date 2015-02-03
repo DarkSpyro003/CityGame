@@ -30,5 +30,9 @@
     <string name="registration_success">Uw account is succesvol aangemaakt.</string>
     <string name="login_success">U bent nu aangemeld!</string>
     <string name="login_failed">Aanmelden mislukt, controleer uw wachtwoord</string>
+    <string name="registering_dialog_title">Bezig met registreren...</string>
+    <string name="registering_dialog_content">Dit kan een minuut duren.</string>
+    <string name="register_fail_title">Registration failed</string>
+    <string name="register_fail_content">Sorry, something went wrong</string>
 
 </resources>
