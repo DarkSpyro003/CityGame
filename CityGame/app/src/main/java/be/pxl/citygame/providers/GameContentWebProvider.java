@@ -163,7 +163,6 @@ class GameContentWebProvider implements IGameContentProvider
                     questionObject.setPlacename(quest.getString("placename"));
                     questionObject.setExtraInfo(quest.getString("extraInfo"));
                     questionObject.setRemoteContentUri(Uri.parse(quest.getString("contentUrl")));
-                    // TODO: Christina gaat dit doen: Download remote video
                     URL remoteURL = null;
                     try {
                         String link = questionObject.getRemoteContentUri().toString();
