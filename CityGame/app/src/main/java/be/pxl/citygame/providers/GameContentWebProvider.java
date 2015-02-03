@@ -69,6 +69,7 @@ class GameContentWebProvider implements IGameContentProvider
                 throw new NoSuchElementException("No such gamecontent ID");
 
             content.setId(id);
+            // TODO: Christina gaat dit doen: Insert this gamecontent into local database, including questions
             contentCache.put(id, content);
         }
 
@@ -140,7 +141,7 @@ class GameContentWebProvider implements IGameContentProvider
                     questionObject.setPlacename(quest.getString("placename"));
                     questionObject.setExtraInfo(quest.getString("extraInfo"));
                     questionObject.setRemoteContentUri(Uri.parse(quest.getString("contentUrl")));
-                    // TODO : Download remote video
+                    // TODO: Christina gaat dit doen: Download remote video
                     URL remoteURL = null;
                     try {
                         String link = questionObject.getRemoteContentUri().toString();

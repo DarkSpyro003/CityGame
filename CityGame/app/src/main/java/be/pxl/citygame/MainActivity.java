@@ -75,6 +75,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void startGame(int id) {
+        // TODO: Christina gaat dit doen: Check if game is completed or was interrupted, and block/resume game
         // Download data
         Providers.getGameContentProvider().getGameContentById(id);
 

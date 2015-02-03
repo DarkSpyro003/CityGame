@@ -40,6 +40,8 @@ public class GameResultsActivity extends ActionBarActivity {
 
         CityGameApplication app = (CityGameApplication)getApplication();
 
+        // TODO: Christina gaat dit doen: Set gamecontent as complete in local DB
+
         if( app.isLoggedIn() )
             app.getPlayer().postGames(app.getPassword());
     }

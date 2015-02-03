@@ -145,6 +145,7 @@ public class QuestionFragment extends Fragment {
 
         CityGameApplication context = (CityGameApplication) getActivity().getApplicationContext();
         if( (questionId + 1) < Providers.getGameContentProvider().getGameContentById(gameId).getNumQuestions() ) {
+            // TODO: Christina gaat dit doen: Mark this question as answered & put result in local db
             // Switch to next activity
             Intent intent = new Intent(context, NextLocationActivity.class);
             intent.putExtra("gameId", gameId);
