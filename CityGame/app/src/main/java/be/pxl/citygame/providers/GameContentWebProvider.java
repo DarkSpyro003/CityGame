@@ -2,7 +2,9 @@ package be.pxl.citygame.providers;
 
 import android.app.Application;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -36,6 +38,8 @@ import be.pxl.citygame.CityGameApplication;
 import be.pxl.citygame.data.GameContent;
 import be.pxl.citygame.data.Question;
 import be.pxl.citygame.R;
+import be.pxl.citygame.data.database.GameDB;
+import be.pxl.citygame.data.database.GameDbHelper;
 
 /**
  * Created by Lorenz Jolling on 2015-01-16.
@@ -68,8 +72,6 @@ class GameContentWebProvider implements IGameContentProvider
             if( content == null )
                 throw new NoSuchElementException("No such gamecontent ID");
 
-            content.setId(id);
-            // TODO: Christina gaat dit doen: Insert this gamecontent into local database, including questions
             contentCache.put(id, content);
         }
 
@@ -138,6 +140,9 @@ class GameContentWebProvider implements IGameContentProvider
                     content.addQuestion(questionObject);
 
                 if( questionObject != null ) {
+                    questionObject.setqId(i);
+                    questionObject.setGameId(id);
+                    questionObject.setApplication(application);
                     questionObject.setPlacename(quest.getString("placename"));
                     questionObject.setExtraInfo(quest.getString("extraInfo"));
                     questionObject.setRemoteContentUri(Uri.parse(quest.getString("contentUrl")));
@@ -146,7 +151,6 @@ class GameContentWebProvider implements IGameContentProvider
                     try {
                         String link = questionObject.getRemoteContentUri().toString();
                         remoteURL = new URL(link);
-                        URLConnection connection = remoteURL.openConnection();
                         InputStream remoteInput = new BufferedInputStream(remoteURL.openStream(), 10240);
                         File cacheDir = application.getCacheDir();
                         String fileName = link.substring(link.lastIndexOf('/') + 1);
@@ -163,8 +167,6 @@ class GameContentWebProvider implements IGameContentProvider
                         cacheOutput.close();
 
                         questionObject.setLocalContentUri(Uri.parse(cacheFile.getAbsolutePath()));
-                    } catch (MalformedURLException e) {
-                        Log.e(GameContentWebProvider.class.toString(), e.getMessage(), e);
                     } catch (IOException e) {
                         Log.e(GameContentWebProvider.class.toString(), e.getMessage(), e);
                     }
@@ -176,6 +178,32 @@ class GameContentWebProvider implements IGameContentProvider
                     questionObject.setLocation(loc);
                 }
             }
+            content.setId(id);
+            // Store content into local database
+            GameDbHelper helper = new GameDbHelper(application.getApplicationContext());
+            SQLiteDatabase sqlDb = helper.getWritableDatabase();
+
+            ContentValues gamecontent_data = new ContentValues();
+            gamecontent_data.put(GameDB.Games.COL_GID, content.getId());
+            gamecontent_data.put(GameDB.Games.COL_COMPLETED, 0);
+            gamecontent_data.put(GameDB.Games.COL_SCORE, 0);
+            // Insert can fail if game played before, we don't care about this
+            sqlDb.insert(GameDB.Games.TABLE_NAME, null, gamecontent_data);
+
+            // Also insert the questions
+            int i = 0;
+            for( Question question : content.getQuestionList() ) {
+                ContentValues question_data = new ContentValues();
+                question_data.put(GameDB.Questions.COL_QID, i);
+                question_data.put(GameDB.Questions.COL_GID, content.getId());
+                question_data.put(GameDB.Questions.COL_ANSWERED, 0);
+                question_data.put(GameDB.Questions.COL_ANSWERED_CORRECT, 0);
+
+                // Insert can fail if game played before, we don't care about this
+                sqlDb.insert(GameDB.Questions.TABLE_NAME, null, question_data);
+                i++;
+            }
+
             return content;
         } catch(JSONException e) {
         }

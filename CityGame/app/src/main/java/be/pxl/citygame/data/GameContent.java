@@ -1,8 +1,12 @@
 package be.pxl.citygame.data;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import be.pxl.citygame.MainActivity;
 
 /**
  * Created by Christina on 7/01/2015.
@@ -30,6 +34,8 @@ public class GameContent {
     }
 
     public Question getQuestionById(int id) throws NoSuchElementException {
+        Log.d(MainActivity.class.toString(), "Fetching question with id " + id);
+
         if( id >= questionList.size() )
             throw new NoSuchElementException("No such question id in this gamecontent id");
 
