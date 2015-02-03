@@ -17,7 +17,7 @@
     <string name="login_progress_title">Bezig met aanmelden...</string>
     <string name="login_progress_content">Het systeem contacteert onze servers. Dit kan een minuut duren.</string>
     <string name="login_fail_title">Aanmelden mislukt!</string>
-    <string name="login_fail_content">Aanmelden is mislukt. Contruleer uw wachtwoord.</string>
+    <string name="login_fail_content">Aanmelden is mislukt. Controleer uw wachtwoord.</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="back">Terug</string>
     <string name="title_activity_info">Informatie</string>

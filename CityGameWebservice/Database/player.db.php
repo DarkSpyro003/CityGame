@@ -118,7 +118,7 @@ class PlayerDb
 		$username = $this->database->real_escape_string($username);
 		
 		$playerResult = $this->database->query('SELECT `passwordhash` FROM `players` WHERE `username` = \'' . $username . '\'');
-		$passwordhash = $result->fetch_assoc()['passwordhash'];
+		$passwordhash = $playerResult->fetch_assoc()['passwordhash'];
 		return password_verify($password, $passwordhash);
 	}
 	

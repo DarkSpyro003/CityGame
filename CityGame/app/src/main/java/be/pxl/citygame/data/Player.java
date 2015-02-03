@@ -178,6 +178,28 @@ public class Player {
             HttpResponse response = httpClient.execute(httpPost);
             int statusCode = response.getStatusLine().getStatusCode();
 
+            StringBuilder sb = new StringBuilder();
+            try {
+                BufferedReader reader =
+                        new BufferedReader(new InputStreamReader(response.getEntity().getContent()), 65728);
+                String line = null;
+
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                }
+            }
+            catch (IOException e) { e.printStackTrace(); }
+            catch (Exception e) { e.printStackTrace(); }
+
+            Log.d(Player.class.toString(), "User login with status " + statusCode + " and content " + sb.toString());
+
+            if( statusCode == HttpStatus.SC_OK ) {
+                CityGameApplication app = (CityGameApplication) application;
+                app.setUsername(username);
+                app.setPassword(password);
+                app.setLoggedIn(true);
+            }
+
             return statusCode == HttpStatus.SC_OK;
         } catch (IOException e) {
             Log.e(Player.class.toString(), e.getMessage(), e);

@@ -122,7 +122,7 @@ $app->put('/player/:username',
 	{
 		if (0 === strpos($app->request->headers->get('Content-Type'), 'application/json')) 
 		{
-			$data = json_decode($app->request->getContent(), true);
+			$data = json_decode($app->request->getBody(), true);
 			
 			$newusername = $data['username'];
 			$password = $data['password'];
@@ -188,7 +188,7 @@ $app->post(
 	{
 		if (0 === strpos($app->request->headers->get('Content-Type'), 'application/json')) 
 		{
-			$data = json_decode($app->request->getContent(), true);
+			$data = json_decode($app->request->getBody(), true);
 			$jsonusername = $data['username'];
 			$password = $data['password'];
 			
@@ -207,7 +207,7 @@ $app->post(
 			if( $correct )
 			{
 				$playerdb = new PlayerDb($database);
-				if( checkPassword($username, $password) )
+				if( $playerdb->checkPassword($username, $password) )
 				{
 					echo '200 Ok';
 				}
@@ -229,7 +229,7 @@ $app->post(
 	{
 		if (0 === strpos($app->request->headers->get('Content-Type'), 'application/json')) 
 		{
-			$data = json_decode($app->request->getContent(), true);
+			$data = json_decode($app->request->getBody(), true);
 			
 			$playerdb = new PlayerDb($database);
 			if( $playerdb->checkPassword($username, $data['password']) )
