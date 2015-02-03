@@ -73,6 +73,8 @@ public class Player {
             // If not true, let it go to the bottom to show the AlertDialog
             if( ((Boolean) register.get()) )
                 return true;
+            else
+                Log.d(Player.class.toString(), "Registration failed without error");
         } catch (InterruptedException e) {
             Log.e(Player.class.toString(), e.getMessage(), e);
         } catch (ExecutionException e) {
@@ -183,6 +185,8 @@ public class Player {
 
                 // Any games completed yet?
                 tryPostGames(password);
+
+                return true;
             }
         } catch (ClientProtocolException e) {
             e.printStackTrace();
