@@ -14,17 +14,12 @@ import be.pxl.citygame.providers.Providers;
 
 /**
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link NextLocationFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
  */
 public class NextLocationFragment extends Fragment {
 
     private int gameId;
     private int questionId;
     private boolean dataSet = false;
-
-    private OnFragmentInteractionListener mListener;
 
     public void setData(int gameId, int questionId) {
         this.gameId = gameId;
