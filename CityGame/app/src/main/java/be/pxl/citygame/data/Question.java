@@ -26,7 +26,9 @@ public class Question {
 
     // type: 0 = plain text, 1 = multiple choice
     public static final int PLAIN_TEXT = 0,
-                            MULTIPLE_CHOICE = 1;
+                            MULTIPLE_CHOICE = 1,
+                            CONTENT_IMAGE = 0,
+                            CONTENT_VIDEO = 1;
     private int type;
     private int gameId;
     private int qId;
@@ -41,6 +43,7 @@ public class Question {
     private Location location;
     private Uri remoteContentUri; // The remote location for the content
     private Uri localContentUri; // When the content is downloaded, its location gets set here
+    private int contentType;
 
     private boolean answered = false; // Gets set to true when the question is answered
     private boolean answeredCorrect = false; // Gets set to if the result was correct or not
@@ -56,6 +59,7 @@ public class Question {
         this.question = question;
         this.text_answer = answer;
         this.extraInfo = "";
+        this.contentType = 0;
     }
 
     // Constructor multiple choice question
@@ -68,6 +72,7 @@ public class Question {
         this.multi_answer = answer;
         this.options = new ArrayList<String>(options);
         this.extraInfo = "";
+        this.contentType = 0;
     }
 
     private void storeAnswered(boolean result, String resultText) {
@@ -230,5 +235,13 @@ public class Question {
 
     public void setAnsweredCorrect(boolean answeredCorrect) {
         this.answeredCorrect = answeredCorrect;
+    }
+
+    public int getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(int contentType) {
+        this.contentType = contentType;
     }
 }

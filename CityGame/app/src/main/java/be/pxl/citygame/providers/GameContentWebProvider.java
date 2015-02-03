@@ -151,6 +151,13 @@ class GameContentWebProvider implements IGameContentProvider
                     try {
                         String link = questionObject.getRemoteContentUri().toString();
                         remoteURL = new URL(link);
+                        String contentType = remoteURL.openConnection().getContentType();
+                        if( contentType.toLowerCase().contains("video") ) {
+                            questionObject.setContentType(Question.CONTENT_VIDEO);
+                        } else if( contentType.toLowerCase().contains("image") ) {
+                            questionObject.setContentType(Question.CONTENT_IMAGE);
+                        }
+
                         InputStream remoteInput = new BufferedInputStream(remoteURL.openStream(), 10240);
                         File cacheDir = application.getCacheDir();
                         String fileName = link.substring(link.lastIndexOf('/') + 1);
