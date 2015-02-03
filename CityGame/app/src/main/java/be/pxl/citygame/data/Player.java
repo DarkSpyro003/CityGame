@@ -21,6 +21,9 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import be.pxl.citygame.CityGameApplication;
@@ -35,7 +38,7 @@ public class Player {
     private String username;
     private String email;
     private String realname;
-    private String games;
+    private ArrayList<GameContent> games;
     private Application application;
 
     private String dialogTitle;
@@ -50,8 +53,8 @@ public class Player {
     }
 
     public boolean register(String password) {
-        this.dialogTitle = "Registering...";
-        this.dialogContent = "Please wait.";
+        this.dialogTitle = application.getString(R.string.registering_dialog_title);
+        this.dialogContent = application.getString(R.string.registering_dialog_content);
         job = this.JOB_REGISTER;
         AsyncTask register = new GetRestData().execute(password);
         try {
@@ -64,8 +67,8 @@ public class Player {
             Log.e(Player.class.toString(), e.getMessage(), e);
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(((CityGameApplication)application).getActivity());
-        builder.setTitle("Registration failed")
-                .setMessage("Sorry, something went wrong")
+        builder.setTitle(application.getString(R.string.register_fail_title))
+                .setMessage(application.getString(R.string.register_fail_content))
                 .setCancelable(true)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
@@ -255,11 +258,11 @@ public class Player {
         this.realname = realname;
     }
 
-    public String getGames() {
+    public ArrayList<GameContent> getGames() {
         return games;
     }
 
-    public void setGames(String games) {
+    public void setGames(ArrayList<GameContent> games) {
         this.games = games;
     }
 }
