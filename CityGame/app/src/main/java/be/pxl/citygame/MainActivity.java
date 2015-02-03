@@ -78,6 +78,12 @@ public class MainActivity extends ActionBarActivity {
         ((CityGameApplication)getApplication()).setPlayer(offlinePlayer);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ((CityGameApplication)getApplicationContext()).setActivity(this);
+    }
+
     public void handleBtnStart(View v) {
         startGame(PRIMARY_CONTENT_ID);
     }

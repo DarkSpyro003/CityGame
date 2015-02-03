@@ -74,6 +74,12 @@ public class LoginActivity extends Activity {
         ((CityGameApplication)getApplicationContext()).setActivity(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ((CityGameApplication)getApplicationContext()).setActivity(this);
+    }
+
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
