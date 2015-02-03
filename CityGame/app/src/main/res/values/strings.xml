@@ -34,5 +34,6 @@
     <string name="registering_dialog_content">Dit kan een minuut duren.</string>
     <string name="register_fail_title">Registration failed</string>
     <string name="register_fail_content">Sorry, something went wrong</string>
+    <string name="instruction_tap_video">Tap op de video en tap dan op de play knop om hem af te spelen.</string>
 
 </resources>

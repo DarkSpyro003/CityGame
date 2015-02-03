@@ -53,7 +53,7 @@ public class ImageFragment extends Fragment {
             videoView.seekTo(10);
 
             // Notify user to tap video and hit play
-            Toast.makeText(getActivity().getApplicationContext(), "Tap op de video en tap dan op de play knop om hem af te spelen.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity().getApplicationContext(), getActivity().getApplicationContext().getString(R.string.instruction_tap_video), Toast.LENGTH_LONG).show();
         }
     }
 
