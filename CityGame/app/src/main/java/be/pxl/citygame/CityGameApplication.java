@@ -3,6 +3,8 @@ package be.pxl.citygame;
 import android.app.Activity;
 import android.app.Application;
 
+import be.pxl.citygame.data.Player;
+
 /**
  * Created by Christina on 15/01/2015.
  */
@@ -10,8 +12,9 @@ public class CityGameApplication extends Application {
 
     private Activity activity;
     private boolean loggedIn = false;
-    private String username;
+    private String username = "!!offline";
     private String password;
+    private Player player;
 
     public Activity getActivity() {
         return activity;
@@ -43,5 +46,13 @@ public class CityGameApplication extends Application {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 }

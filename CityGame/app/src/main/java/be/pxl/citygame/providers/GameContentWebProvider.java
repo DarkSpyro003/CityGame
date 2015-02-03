@@ -68,6 +68,7 @@ class GameContentWebProvider implements IGameContentProvider
             if( content == null )
                 throw new NoSuchElementException("No such gamecontent ID");
 
+            content.setId(id);
             contentCache.put(id, content);
         }
 

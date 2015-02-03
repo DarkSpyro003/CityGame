@@ -54,7 +54,8 @@ public class RegisterFragment extends Fragment {
 
         if(isUsernameValid(username) && isPasswordValid(password) && isEmailValid(email))
         {
-            Player player = new Player(username, getActivity().getApplication());
+            Player player = ((CityGameApplication)getActivity().getApplication()).getPlayer();
+            player.setUsername(username);
             player.setEmail(email);
             player.setRealname(name);
 

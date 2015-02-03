@@ -37,6 +37,11 @@ public class GameResultsActivity extends ActionBarActivity {
 
         view.invalidateViews();
         view.requestLayout();
+
+        CityGameApplication app = (CityGameApplication)getApplication();
+
+        if( app.isLoggedIn() )
+            app.getPlayer().postGames(app.getPassword());
     }
 
 

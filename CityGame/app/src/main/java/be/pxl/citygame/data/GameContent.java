@@ -12,6 +12,9 @@ public class GameContent {
 
     private String title;
     private List<Question> questionList;
+    private int id = 0;
+    private boolean completed = false;
+    private int score;
 
     public List<Question> getQuestionList() {
         return questionList;
@@ -49,5 +52,29 @@ public class GameContent {
     public void removeQuestion(Question question) throws IllegalArgumentException {
         if( !questionList.remove(question) )
             throw new IllegalArgumentException("Question to remove does not exist");
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

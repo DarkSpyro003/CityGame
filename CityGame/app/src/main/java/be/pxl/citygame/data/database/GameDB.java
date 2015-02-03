@@ -15,6 +15,7 @@ public class GameDB {
         public static final String COL_GID = "gid";
         public static final String COL_USERNAME = "title";
         public static final String COL_COMPLETED = "completed";
+        public static final String COL_SCORE = "score";
     }
 
     public static final class Questions implements BaseColumns {

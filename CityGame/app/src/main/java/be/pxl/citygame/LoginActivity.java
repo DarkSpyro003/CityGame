@@ -88,7 +88,8 @@ public class LoginActivity extends Activity {
         String user = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        Player player = new Player(user, getApplication());
+        Player player = ((CityGameApplication)getApplication()).getPlayer();
+        player.setUsername(user);
         if( player.checkLogin(password) ) {
             Toast.makeText(getApplicationContext(), getString(R.string.login_success), Toast.LENGTH_LONG).show();
         } else {

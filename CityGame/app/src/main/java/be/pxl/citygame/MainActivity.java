@@ -1,6 +1,8 @@
 package be.pxl.citygame;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -16,6 +18,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import be.pxl.citygame.data.GameContent;
+import be.pxl.citygame.data.Player;
+import be.pxl.citygame.data.database.GameDB;
+import be.pxl.citygame.data.database.GameDbHelper;
 import be.pxl.citygame.providers.Providers;
 
 
@@ -33,6 +38,36 @@ public class MainActivity extends ActionBarActivity {
         Providers.load(getApplication());
 
         ((CityGameApplication)getApplicationContext()).setActivity(this);
+
+        GameDbHelper helper = new GameDbHelper(getApplicationContext());
+        SQLiteDatabase sqlDb = helper.getReadableDatabase();
+        Cursor cur = sqlDb.query(GameDB.Games.TABLE_NAME, null, null, null, null, null, null, null);
+
+        Player offlinePlayer = new Player("!!offline", getApplication());
+
+        cur.moveToFirst();
+        while (!cur.isAfterLast()) {
+            int id = 0;
+            boolean completed = false;
+            int score = 0;
+            for(int i = 0; i < cur.getColumnCount(); i++) {
+                if( cur.getColumnName(i).equals(GameDB.Games.COL_GID) ) {
+                    id = cur.getInt(i);
+                } else if( cur.getColumnName(i).equals(GameDB.Games.COL_SCORE) ) {
+                    score = cur.getInt(i);
+                } else if( cur.getColumnName(i).equals(GameDB.Games.COL_COMPLETED) ) {
+                    completed = cur.getInt(i) == 1;
+                }
+            }
+
+            GameContent content = new GameContent("localdata");
+            content.setId(id);
+            content.setCompleted(completed);
+            content.setScore(score);
+
+            offlinePlayer.getGames().add(content);
+        }
+        cur.close();
     }
 
     public void handleBtnStart(View v) {

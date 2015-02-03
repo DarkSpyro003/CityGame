@@ -243,7 +243,7 @@ $app->post(
 					$newContent = $playerdb->getPlayerByUsername($username);
 					echo json_encode($newContent);
 				}
-				else if( $status == 401 )
+				else if( $status == 409 )
 					echo '409 Resource Already Exists - The gamecontent has already been completed by this user';
 				else if( $status == 500 )
 					echo '500 Internal Server Error - Something went wrong';

@@ -5,12 +5,15 @@ import android.app.Application;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -21,6 +24,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +32,8 @@ import java.util.concurrent.ExecutionException;
 
 import be.pxl.citygame.CityGameApplication;
 import be.pxl.citygame.R;
+import be.pxl.citygame.data.database.GameDB;
+import be.pxl.citygame.data.database.GameDbHelper;
 
 /**
  * Created by Christina on 21/01/2015.
@@ -44,12 +50,18 @@ public class Player {
     private String dialogTitle;
     private String dialogContent;
 
-    private static final int JOB_LOGIN = 0, JOB_REGISTER = 1, JOB_UPDATE = 2;
+    private static final int JOB_LOGIN = 0, JOB_REGISTER = 1, JOB_UPDATE = 2, JOB_POST_GAME = 3;
     private int job = 0;
 
     public Player(String username, Application application) {
         this.username = username;
         this.application = application;
+        this.games = new ArrayList<GameContent>();
+    }
+
+    public void postGames(String password) {
+        job = this.JOB_POST_GAME;
+        AsyncTask postgames = new GetRestData().execute(password);
     }
 
     public boolean register(String password) {
@@ -123,6 +135,8 @@ public class Player {
                     return tryLogin(params[0]);
                 case JOB_REGISTER:
                     return tryRegister(params[0]);
+                case JOB_POST_GAME:
+                    return tryPostGames(params[0]);
             }
             return null;
         }
@@ -152,17 +166,70 @@ public class Player {
                 while ((line = reader.readLine()) != null) {
                     sb.append(line);
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            catch (IOException e) { e.printStackTrace(); }
-            catch (Exception e) { e.printStackTrace(); }
 
             Log.d(Player.class.toString(), "User registration with status " + statusCode + " and content " + sb.toString());
 
-            return statusCode == HttpStatus.SC_CREATED;
+            if (statusCode == HttpStatus.SC_CREATED) {
+                // Login
+                CityGameApplication app = (CityGameApplication) application;
+                app.setUsername(username);
+                app.setPassword(password);
+                app.setLoggedIn(true);
+
+                // Any games completed yet?
+                tryPostGames(password);
+            }
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
         } catch (IOException e) {
-            Log.e(Player.class.toString(), e.getMessage(), e);
+            e.printStackTrace();
         } catch (JSONException e) {
-            Log.e(Player.class.toString(), e.getMessage(), e);
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    private boolean tryPostGames(String password) {
+        boolean success = true;
+        for( GameContent content : games ) {
+            if( content.isCompleted() ) {
+                success = tryPostGame(username, password, content.getId(), content.getScore());
+            }
+        }
+        return success;
+    }
+
+    private boolean tryPostGame(String username, String password, int gameContentId, int score) {
+        DefaultHttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
+        HttpPost httpPost = new HttpPost(application.getString(R.string.webservice_url) + "player/" + username + "/" + gameContentId);
+        httpPost.setHeader("Content-Type", "application/json");
+
+        JSONObject data = new JSONObject();
+        try {
+            data.put("password", password);
+            data.put("score", score);
+
+            httpPost.setEntity(new StringEntity(data.toString()));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        HttpResponse response;
+
+        try {
+            response = httpClient.execute(httpPost);
+
+            return response.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return false;
@@ -201,6 +268,7 @@ public class Player {
                 app.setUsername(username);
                 app.setPassword(password);
                 app.setLoggedIn(true);
+                tryPostGames(password);
             }
 
             return statusCode == HttpStatus.SC_OK;
