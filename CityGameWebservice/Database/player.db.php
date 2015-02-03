@@ -35,10 +35,10 @@ class PlayerDb
 	
 	public function completeGameContent($username, $gameContentId, $score)
 	{
-		$player = getPlayerByUsername($username);
-		if( !$hasCompletedGameContent($player->id, $gameContentId) )
+		$player = $this->getPlayerByUsername($username);
+		if( !$this->hasCompletedGameContent($player->id, $gameContentId) )
 		{
-			if( $statement = $this->database->prepare('INSERT INTO `player_games` (`playerId`, `gameContentId`, `score`) VALUES ?, ?, ?') )
+			if( $statement = $this->database->prepare('INSERT INTO `player_games` (`playerId`, `gameContentId`, `score`) VALUES (?, ?, ?)') )
 			{
 				$playerId = $this->database->real_escape_string($player->id);
 				$gameContentId = $this->database->real_escape_string($gameContentId);
@@ -47,9 +47,15 @@ class PlayerDb
 				$statement->bind_param('iid', $playerId, $gameContentId, $score);
 				$statement->execute();
 				if( $this->database->affected_rows > 0 )
+				{
+					$statement->close();
 					return 201;
+				}
 				else
+				{
+					$statement->close();
 					return 500;
+				}
 			}
 			else
 			{
@@ -91,9 +97,15 @@ class PlayerDb
 					$statement->bind_param('sssss', $username, $passwordhash, $email, $realname, $oldusername);
 					$statement->execute();
 					if( $this->database->affected_rows > 0 )
+					{
+						$statement->close();
 						return 200;
+					}
 					else
+					{
+						$statement->close();
 						return 500;
+					}
 				}
 				else
 					return 500;

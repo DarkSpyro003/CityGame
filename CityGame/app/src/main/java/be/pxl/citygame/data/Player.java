@@ -230,6 +230,22 @@ public class Player {
 
         try {
             response = httpClient.execute(httpPost);
+            int statusCode = response.getStatusLine().getStatusCode();
+
+            StringBuilder sb = new StringBuilder();
+            try {
+                BufferedReader reader =
+                        new BufferedReader(new InputStreamReader(response.getEntity().getContent()), 65728);
+                String line = null;
+
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                }
+            }
+            catch (IOException e) { e.printStackTrace(); }
+            catch (Exception e) { e.printStackTrace(); }
+
+            Log.d(Player.class.toString(), "User post Game with status " + statusCode + " and content " + sb.toString());
 
             return response.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED;
         } catch (IOException e) {
