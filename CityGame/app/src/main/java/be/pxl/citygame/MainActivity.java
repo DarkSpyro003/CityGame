@@ -74,6 +74,8 @@ public class MainActivity extends ActionBarActivity {
             cur.moveToNext();
         }
         cur.close();
+
+        ((CityGameApplication)getApplication()).setPlayer(offlinePlayer);
     }
 
     public void handleBtnStart(View v) {
