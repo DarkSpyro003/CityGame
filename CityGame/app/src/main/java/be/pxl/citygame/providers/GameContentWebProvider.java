@@ -35,6 +35,7 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.ExecutionException;
 
 import be.pxl.citygame.CityGameApplication;
+import be.pxl.citygame.MainActivity;
 import be.pxl.citygame.data.GameContent;
 import be.pxl.citygame.data.Question;
 import be.pxl.citygame.R;
@@ -46,8 +47,11 @@ import be.pxl.citygame.data.database.GameDbHelper;
  */
 class GameContentWebProvider implements IGameContentProvider
 {
+    private int MODE_CALLBACK = 0, MODE_GET = 1;
     private Application application;
     private Hashtable<Integer, GameContent> contentCache;
+    private int mode;
+    private MainActivity caller;
 
     public GameContentWebProvider(Application application) {
         contentCache = new Hashtable<Integer, GameContent>();
@@ -55,7 +59,20 @@ class GameContentWebProvider implements IGameContentProvider
     }
 
     @Override
+    public void initGameContentById(int id, MainActivity caller) {
+        GameContent content = contentCache.get(id);
+        if( content == null ) {
+            this.mode = MODE_CALLBACK;
+            this.caller = caller;
+            AsyncTask dataTask = new GetRestData().execute(id);
+        } else {
+            caller.startGameCallback(id);
+        }
+    }
+
+    @Override
     public GameContent getGameContentById(int id) throws NoSuchElementException {
+        this.mode = MODE_GET;
         GameContent content = contentCache.get(id);
         if( content == null ) {
             AsyncTask dataTask = new GetRestData().execute(id);
@@ -237,6 +254,10 @@ class GameContentWebProvider implements IGameContentProvider
         protected void onPostExecute(GameContent content) {
             if (dialog.isShowing())
                 dialog.dismiss();
+
+            if( mode == MODE_CALLBACK ) {
+                caller.startGameCallback(content.getId());
+            }
         }
 
         @Override

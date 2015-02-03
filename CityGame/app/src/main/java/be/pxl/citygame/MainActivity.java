@@ -90,8 +90,10 @@ public class MainActivity extends ActionBarActivity {
 
     public void startGame(int id) {
         // Download data
-        Providers.getGameContentProvider().getGameContentById(id);
+        Providers.getGameContentProvider().initGameContentById(id, this);
+    }
 
+    public void startGameCallback(int id) {
         // Check if game is completed
         if( isGameCompleted(id) ) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
