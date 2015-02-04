@@ -8,22 +8,16 @@ import android.view.MenuItem;
 
 public class PauseActivity extends ActionBarActivity {
 
-    private int currGame;
-    private int currQuestion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_next_location);
+        setContentView(R.layout.activity_pause);
 
         ((CityGameApplication)getApplicationContext()).setActivity(this);
 
-        Intent intent = getIntent();
-        currGame = intent.getIntExtra("gameId", 0);
-        currQuestion = intent.getIntExtra("questionId", 0);
 
         PauseFragment mapfrag = (PauseFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_pause);
-        mapfrag.setData(currGame, currQuestion);
         mapfrag.showPOIS("restaurant");
     }
 

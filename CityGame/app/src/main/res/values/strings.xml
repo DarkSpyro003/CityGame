@@ -37,5 +37,7 @@
     <string name="instruction_tap_video">Tap op de video en tap dan op de play knop om hem af te spelen.</string>
     <string name="title_activity_camera">CameraActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="pause">Pauze</string>
+    <string name="title_activity_pause">Pauze</string>
 
 </resources>

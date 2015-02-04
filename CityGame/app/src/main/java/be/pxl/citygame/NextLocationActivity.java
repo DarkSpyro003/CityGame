@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
+import android.view.View;
 
 public class NextLocationActivity extends ActionBarActivity {
 
@@ -57,5 +58,11 @@ public class NextLocationActivity extends ActionBarActivity {
     @Override
      public void onBackPressed() {
         // Do nothing - you can't go back to previous question!
+    }
+
+    public void goToPause(View v)
+    {
+        NextLocationFragment fragment = (NextLocationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_next_location);
+        fragment.goToPause(v);
     }
 }

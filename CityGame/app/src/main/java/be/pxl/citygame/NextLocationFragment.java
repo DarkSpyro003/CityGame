@@ -1,6 +1,7 @@
 package be.pxl.citygame;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -46,4 +47,9 @@ public class NextLocationFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_next_location, container, false);
     }
 
+    public void goToPause(View v)
+    {
+        Intent intent = new Intent(getActivity().getApplicationContext(), PauseActivity.class);
+        startActivityForResult(intent, 0);
+    }
 }

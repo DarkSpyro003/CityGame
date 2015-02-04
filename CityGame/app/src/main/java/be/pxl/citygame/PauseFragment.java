@@ -34,19 +34,12 @@ import be.pxl.citygame.providers.Providers;
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass.
  */
-public class PauseFragment extends Fragment implements ILocationRequest {
+public class PauseFragment extends Fragment{
 
-    private int gameId;
-    private int questionId;
-    private boolean dataSet = false;
     private MapView mapView;
     private MyLocationNewOverlay myLocationOverlay;
-    private OverlayItem targetOverlay;
-    private Location targetLocation;
 
-    public void setData(int gameId, int questionId) {
-        this.gameId = gameId;
-        this.questionId = questionId;
+    public void start() {
 
         // Init map
         mapView = (MapView) getActivity().findViewById(R.id.mapview);
@@ -56,42 +49,11 @@ public class PauseFragment extends Fragment implements ILocationRequest {
         mapView.setClickable(true);
         mapView.getController().setZoom(18);
 
-        // Start GPS
-        new LocationGps(this, getActivity());
-
         // Display locations on map
         myLocationOverlay = new MyLocationNewOverlay(getActivity().getApplicationContext(), mapView);
         myLocationOverlay.enableMyLocation();
         myLocationOverlay.setDrawAccuracyEnabled(true);
         mapView.getOverlays().add(myLocationOverlay);
-
-        targetLocation = Providers.getQuestionProvider().loadQuestionById(gameId, questionId).getLocation();
-        targetOverlay = new OverlayItem("Doel", "Uw volgende stopplaats", new GeoPoint(targetLocation));
-        ArrayList<OverlayItem> overlayItems = new ArrayList<OverlayItem>();
-        overlayItems.add(targetOverlay);
-        ItemizedIconOverlay<OverlayItem> itemizedOverlayItems = new ItemizedIconOverlay<OverlayItem>(getActivity(), overlayItems, null);
-        mapView.getOverlays().add(itemizedOverlayItems);
-
-        this.dataSet = true;
-    }
-
-    @Override
-    public void setLocation(Location loc) {
-        if (loc != null) {
-            GeoPoint currentLoc;
-            currentLoc = new GeoPoint(loc);
-            mapView.getController().animateTo(currentLoc);
-            if( loc.distanceTo(targetLocation) <= getResources().getInteger(R.integer.gps_marker_distance) ) {
-                CityGameApplication context = (CityGameApplication) getActivity().getApplicationContext();
-                // Switch to next activity
-                Intent intent = new Intent(context, QuestionActivity.class);
-                intent.putExtra("gameId", gameId);
-                // Ask question
-                intent.putExtra("questionId", questionId);
-                startActivity(intent);
-                Log.d(PauseFragment.class.toString(), "Switching to Game activity");
-            }
-        }
     }
 
     public PauseFragment() {
@@ -101,6 +63,7 @@ public class PauseFragment extends Fragment implements ILocationRequest {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        start();
     }
 
     @Override
