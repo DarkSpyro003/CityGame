@@ -28,21 +28,32 @@ public class GameDbHelper extends SQLiteOpenHelper {
                 GameDB.Questions._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 GameDB.Questions.COL_QID + " INTEGER, " +
                 GameDB.Questions.COL_GID + " INTEGER, " +
+                GameDB.Questions.COL_TYPE + " INTEGER, " +
                 GameDB.Questions.COL_QUESTION + " TEXT, " +
                 GameDB.Questions.COL_TEXT_ANSWER + " TEXT, " +
                 GameDB.Questions.COL_MULTI_ANSWER + " INTEGER, " +
                 GameDB.Questions.COL_PLACENAME + " TEXT, " +
                 GameDB.Questions.COL_EXTRAINFO + " TEXT, " +
                 GameDB.Questions.COL_LOCALURL + " TEXT, " +
+                GameDB.Questions.COL_CONTENT_TYPE + " INTEGER, " +
                 GameDB.Questions.COL_LATITUDE + " REAL, " +
                 GameDB.Questions.COL_LONGITUDE + " REAL, " +
                 GameDB.Questions.COL_ANSWERED + " INTEGER, " +
                 GameDB.Questions.COL_ANSWERED_CORRECT + " INTEGER, " +
                 GameDB.Questions.COL_ANSWERED_CONTENT + " TEXT, " +
-                "CONSTRAINT unq UNIQUE (" + GameDB.Questions.COL_QID + ", " + GameDB.Questions.COL_GID + "));";
+                "CONSTRAINT unqq UNIQUE (" + GameDB.Questions.COL_QID + ", " + GameDB.Questions.COL_GID + "));";
+        String sqlCreate3 = "CREATE TABLE " + GameDB.QuestionMultiAnswer.TABLE_NAME + " (" +
+                GameDB.QuestionMultiAnswer._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                GameDB.QuestionMultiAnswer.COL_QID + " INTEGER, " +
+                GameDB.QuestionMultiAnswer.COL_GID + " INTEGER, " +
+                GameDB.QuestionMultiAnswer.COL_CID + " INTEGER, " +
+                GameDB.QuestionMultiAnswer.COL_ANSWER + " TEXT, " +
+                "CONSTRAINT unqmc UNIQUE (" + GameDB.QuestionMultiAnswer.COL_QID + ", " +
+                GameDB.QuestionMultiAnswer.COL_GID + ", " + GameDB.QuestionMultiAnswer.COL_CID + "));";
 
         db.execSQL(sqlCreate);
         db.execSQL(sqlCreate2);
+        db.execSQL(sqlCreate3);
     }
 
     @Override
