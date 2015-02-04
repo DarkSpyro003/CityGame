@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Debug;
 import android.support.v4.app.Fragment;
@@ -119,20 +120,11 @@ public class MapFragment extends Fragment implements ILocationRequest {
 
     public  void showPOIS(String tag)
     {
-        //Test restaurants
-        NominatimPOIProvider poiProvider = new NominatimPOIProvider();
-        if(poiProvider == null)
-        {
-            Log.d("POI", "poiProvider is null");
-        }
-        else
-        {
-            Log.d("POI", "poiProvider is set");
-        }
-        LocationManager lm = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
-        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        GeoPoint currentPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
-        ArrayList<POI> pois = poiProvider.getPOICloseTo(currentPoint, tag, 50, 50.0);
+        AsyncTask poiTask = new GetPoi().execute(tag);
+    }
+
+    public void onCallback(ArrayList<POI> pois)
+    {
         FolderOverlay poiMarkers = new FolderOverlay(getActivity());
         mapView.getOverlays().add(poiMarkers);
 
@@ -153,6 +145,26 @@ public class MapFragment extends Fragment implements ILocationRequest {
                 poiItem.setImage(new BitmapDrawable(poi.mThumbnail));
             }*/
             poiMarkers.add(poiMarker);
+        }
+    }
+
+    private class GetPoi extends AsyncTask<String, Void, ArrayList<POI>> {
+
+        @Override
+        protected ArrayList<POI> doInBackground(String... params) {
+            String tag = params[0];
+            NominatimPOIProvider poiProvider = new NominatimPOIProvider();
+            LocationManager lm = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            GeoPoint currentPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+            ArrayList<POI> pois = poiProvider.getPOICloseTo(currentPoint, tag, 50, 50.0);
+
+            return pois;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<POI> pois) {
+            onCallback(pois);
         }
     }
 
