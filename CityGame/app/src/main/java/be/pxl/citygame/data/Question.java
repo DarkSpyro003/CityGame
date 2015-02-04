@@ -70,7 +70,7 @@ public class Question {
         this.type = type;
         this.question = question;
         this.multi_answer = answer;
-        this.options = new ArrayList<String>(options);
+        this.options = new ArrayList<>(options);
         this.extraInfo = "";
         this.contentType = 0;
     }
@@ -92,6 +92,20 @@ public class Question {
         sqlDb.update(GameDB.Questions.TABLE_NAME, contentValues, where, whereArgs);
     }
 
+    public Question(String question, int answer, List<String> options) {
+        this.type = MULTIPLE_CHOICE;
+        this.question = question;
+        this.multi_answer = answer;
+        this.options = new ArrayList<>(options);
+        this.extraInfo = "";
+    }
+
+    public Question(String question, String answer) {
+        this.type = PLAIN_TEXT;
+        this.question = question;
+        this.text_answer = answer;
+        this.extraInfo = "";
+    }
     // Checks plain text answer
     public boolean checkAnswer(String text) {
         this.answered = true;

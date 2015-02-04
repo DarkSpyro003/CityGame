@@ -1,11 +1,13 @@
 package be.pxl.citygame;
 
 import android.content.Context;
+import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -28,12 +30,14 @@ public class QuestionResponseAdapter extends ArrayAdapter<Question> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        // Might fix this if performance is an issue.
         View questionResponseView = inflater.inflate(R.layout.question_response, parent, false);
 
         TextView questionLabelView = (TextView) questionResponseView.findViewById(R.id.tv_question_label);
         TextView questionUserInputView = (TextView) questionResponseView.findViewById(R.id.tv_question_user_input);
         TextView questionUserInputLabelView = (TextView) questionResponseView.findViewById(R.id.tv_question_user_input_label);
         TextView questionCorrectOutputView = (TextView) questionResponseView.findViewById(R.id.tv_question_correct_output);
+        ImageView imageView = (ImageView) questionResponseView.findViewById(R.id.checkmark_image);
 
         Question question = questions[position];
 
@@ -41,9 +45,11 @@ public class QuestionResponseAdapter extends ArrayAdapter<Question> {
             questionCorrectOutputView.setTextColor(0xFF00CC00);
             questionUserInputLabelView.setVisibility(View.GONE);
             questionUserInputView.setVisibility(View.GONE);
+            // todo: Set a check mark drawable
 
         } else {
             questionUserInputView.setTextColor(0xFFCC0000);
+            // todo: Set a x mark drawable
         }
 
         switch (question.getType())

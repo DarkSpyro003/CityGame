@@ -35,5 +35,7 @@
     <string name="register_fail_title">Registration failed</string>
     <string name="register_fail_content">Sorry, something went wrong</string>
     <string name="instruction_tap_video">Tap op de video en tap dan op de play knop om hem af te spelen.</string>
+    <string name="title_activity_camera">CameraActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

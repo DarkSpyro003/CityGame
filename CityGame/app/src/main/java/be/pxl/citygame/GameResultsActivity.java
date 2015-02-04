@@ -39,9 +39,6 @@ public class GameResultsActivity extends ActionBarActivity {
         QuestionResponseAdapter adapter = new QuestionResponseAdapter(this, questions);
         view.setAdapter(adapter);
 
-        view.invalidateViews();
-        view.requestLayout();
-
         CityGameApplication app = (CityGameApplication)getApplication();
 
         //Calculate score
@@ -51,6 +48,8 @@ public class GameResultsActivity extends ActionBarActivity {
                 score++;
             }
         }
+
+        correctAnswersText.setText(String.format("%s %d/%d", correctAnswersText.getText().toString(), score, questionList.size()));
 
         GameDbHelper helper = new GameDbHelper(getApplicationContext());
         SQLiteDatabase sqlDb = helper.getReadableDatabase();
