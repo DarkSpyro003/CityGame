@@ -21,12 +21,21 @@ public class GameDbHelper extends SQLiteOpenHelper {
         String sqlCreate = "CREATE TABLE " + GameDB.Games.TABLE_NAME + " (" +
                 GameDB.Games._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 GameDB.Games.COL_GID + " INTEGER UNIQUE, " +
+                GameDB.Games.COL_TITLE + " TEXT, " +
                 GameDB.Games.COL_COMPLETED + " INTEGER DEFAULT 0, " +
                 GameDB.Games.COL_SCORE + " INTEGER); ";
         String sqlCreate2 = "CREATE TABLE " + GameDB.Questions.TABLE_NAME + " (" +
                 GameDB.Questions._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 GameDB.Questions.COL_QID + " INTEGER, " +
                 GameDB.Questions.COL_GID + " INTEGER, " +
+                GameDB.Questions.COL_QUESTION + " TEXT, " +
+                GameDB.Questions.COL_TEXT_ANSWER + " TEXT, " +
+                GameDB.Questions.COL_MULTI_ANSWER + " INTEGER, " +
+                GameDB.Questions.COL_PLACENAME + " TEXT, " +
+                GameDB.Questions.COL_EXTRAINFO + " TEXT, " +
+                GameDB.Questions.COL_LOCALURL + " TEXT, " +
+                GameDB.Questions.COL_LATITUDE + " REAL, " +
+                GameDB.Questions.COL_LONGITUDE + " REAL, " +
                 GameDB.Questions.COL_ANSWERED + " INTEGER, " +
                 GameDB.Questions.COL_ANSWERED_CORRECT + " INTEGER, " +
                 GameDB.Questions.COL_ANSWERED_CONTENT + " TEXT, " +

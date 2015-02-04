@@ -211,6 +211,7 @@ class GameContentWebProvider implements IGameContentProvider
 
             ContentValues gamecontent_data = new ContentValues();
             gamecontent_data.put(GameDB.Games.COL_GID, content.getId());
+            gamecontent_data.put(GameDB.Games.COL_TITLE, content.getTitle());
             gamecontent_data.put(GameDB.Games.COL_COMPLETED, 0);
             gamecontent_data.put(GameDB.Games.COL_SCORE, 0);
             // Insert can fail if game played before, we don't care about this
