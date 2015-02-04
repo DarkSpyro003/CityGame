@@ -60,6 +60,7 @@ public class MapFragment extends Fragment implements ILocationRequest {
         mapView = (MapView) getActivity().findViewById(R.id.mapview);
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.setBuiltInZoomControls(true);
+        mapView.setMultiTouchControls(true);
         mapView.setClickable(true);
         mapView.getController().setZoom(18);
 
