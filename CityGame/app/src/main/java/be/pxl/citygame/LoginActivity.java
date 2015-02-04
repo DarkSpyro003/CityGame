@@ -98,6 +98,7 @@ public class LoginActivity extends Activity {
         player.setUsername(user);
         if( player.checkLogin(password) ) {
             Toast.makeText(getApplicationContext(), getString(R.string.login_success), Toast.LENGTH_LONG).show();
+            goToMain();
         } else {
             Toast.makeText(getApplicationContext(), getString(R.string.login_failed), Toast.LENGTH_LONG).show();
         }
@@ -191,6 +192,12 @@ public class LoginActivity extends Activity {
     public void goToRegistration(View v)
     {
         Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+        startActivity(intent);
+    }
+
+    public void goToMain()
+    {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }
 }
