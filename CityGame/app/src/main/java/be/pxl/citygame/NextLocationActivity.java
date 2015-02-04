@@ -57,5 +57,7 @@ public class NextLocationActivity extends ActionBarActivity {
     @Override
      public void onBackPressed() {
         // Do nothing - you can't go back to previous question!
+        MapFragment mapfrag = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_map);
+        mapfrag.showPOIS("restaurant");
     }
 }
