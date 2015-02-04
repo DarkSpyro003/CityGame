@@ -203,13 +203,16 @@ public class Player {
         boolean success = true;
         for( GameContent content : games ) {
             if( content.isCompleted() ) {
-                success = tryPostGame(username, password, content.getId(), content.getScore());
+                success = tryPostGame(username, password, content);
             }
         }
         return success;
     }
 
-    private boolean tryPostGame(String username, String password, int gameContentId, int score) {
+    private boolean tryPostGame(String username, String password, GameContent content) {
+        int gameContentId = content.getId();
+        int score = content.getScore();
+
         DefaultHttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
         HttpPost httpPost = new HttpPost(application.getString(R.string.webservice_url) + "player/" + username + "/" + gameContentId);
         httpPost.setHeader("Content-Type", "application/json");
