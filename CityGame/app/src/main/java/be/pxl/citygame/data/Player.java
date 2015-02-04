@@ -292,6 +292,7 @@ public class Player {
                 app.setPassword(password);
                 app.setLoggedIn(true);
                 tryPostGames(password);
+                // TODO: Christina: Get completed games from server and store locally
             }
 
             return statusCode == HttpStatus.SC_OK;
