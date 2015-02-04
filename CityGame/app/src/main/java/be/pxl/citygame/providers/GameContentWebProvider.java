@@ -88,8 +88,6 @@ class GameContentWebProvider implements IGameContentProvider
 
             if( content == null )
                 throw new NoSuchElementException("No such gamecontent ID");
-
-            contentCache.put(id, content);
         }
 
         return content;
@@ -226,6 +224,7 @@ class GameContentWebProvider implements IGameContentProvider
                 sqlDb.insert(GameDB.Questions.TABLE_NAME, null, question_data);
                 i++;
             }
+            contentCache.put(id, content);
 
             return content;
         } catch(JSONException e) {
