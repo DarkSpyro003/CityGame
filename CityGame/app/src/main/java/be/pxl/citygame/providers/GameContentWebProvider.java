@@ -164,29 +164,34 @@ class GameContentWebProvider implements IGameContentProvider
                     URL remoteURL = null;
                     try {
                         String link = questionObject.getRemoteContentUri().toString();
-                        remoteURL = new URL(link);
-                        String contentType = remoteURL.openConnection().getContentType();
-                        if( contentType.toLowerCase().contains("video") ) {
-                            questionObject.setContentType(Question.CONTENT_VIDEO);
-                        } else if( contentType.toLowerCase().contains("image") ) {
-                            questionObject.setContentType(Question.CONTENT_IMAGE);
-                        }
-
-                        InputStream remoteInput = new BufferedInputStream(remoteURL.openStream(), 10240);
-                        File cacheDir = application.getCacheDir();
                         String fileName = link.substring(link.lastIndexOf('/') + 1);
+                        File cacheDir = application.getCacheDir();
+
                         File cacheFile = new File(cacheDir, fileName);
+                        if (!cacheFile.exists()){ // If already in cache, don't download again
+                            Log.d(GameContentWebProvider.class.toString(), "File not in cache, fetching: " + link);
+                            remoteURL = new URL(link);
+                            String contentType = remoteURL.openConnection().getContentType();
+                            if (contentType.toLowerCase().contains("video")) {
+                                questionObject.setContentType(Question.CONTENT_VIDEO);
+                            } else if (contentType.toLowerCase().contains("image")) {
+                                questionObject.setContentType(Question.CONTENT_IMAGE);
+                            }
 
-                        FileOutputStream cacheOutput = new FileOutputStream(cacheFile);
-                        byte[] buff = new byte[1024];
-                        int dataSize;
-                        int loadedSize = 0;
-                        while( (dataSize = remoteInput.read(buff)) != -1 ) {
-                            loadedSize += dataSize;
-                            cacheOutput.write(buff, 0, dataSize);
+                            InputStream remoteInput = new BufferedInputStream(remoteURL.openStream(), 10240);
+
+                            FileOutputStream cacheOutput = new FileOutputStream(cacheFile);
+                            byte[] buff = new byte[1024];
+                            int dataSize;
+                            int loadedSize = 0;
+                            while ((dataSize = remoteInput.read(buff)) != -1) {
+                                loadedSize += dataSize;
+                                cacheOutput.write(buff, 0, dataSize);
+                            }
+                            cacheOutput.close();
+                        } else {
+                            Log.d(GameContentWebProvider.class.toString(), "File found in cache: " + link);
                         }
-                        cacheOutput.close();
-
                         questionObject.setLocalContentUri(Uri.parse(cacheFile.getAbsolutePath()));
                     } catch (IOException e) {
                         Log.e(GameContentWebProvider.class.toString(), e.getMessage(), e);
