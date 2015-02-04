@@ -140,6 +140,7 @@ public class MapFragment extends Fragment implements ILocationRequest {
             poiMarker.setSnippet(poi.mDescription);
             poiMarker.setPosition(poi.mLocation);
             poiMarker.setIcon(poiIcon);
+            Log.d("POI", poi.mDescription);
             /*if(poi.mThumbnail != null)
             {
                 poiItem.setImage(new BitmapDrawable(poi.mThumbnail));
@@ -157,7 +158,7 @@ public class MapFragment extends Fragment implements ILocationRequest {
             LocationManager lm = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
             Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             GeoPoint currentPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
-            ArrayList<POI> pois = poiProvider.getPOICloseTo(currentPoint, tag, 50, 50.0);
+            ArrayList<POI> pois = poiProvider.getPOICloseTo(currentPoint, tag, 50, 0.1);
 
             return pois;
         }
