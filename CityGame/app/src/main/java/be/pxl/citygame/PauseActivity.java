@@ -18,7 +18,7 @@ public class PauseActivity extends ActionBarActivity {
 
 
         PauseFragment mapfrag = (PauseFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_pause);
-        mapfrag.showPOIS("restaurant");
+        //mapfrag.showPOIS("restaurant");
     }
 
     @Override

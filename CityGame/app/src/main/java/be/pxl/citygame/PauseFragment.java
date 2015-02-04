@@ -55,11 +55,12 @@ public class PauseFragment extends Fragment{
         myLocationOverlay.setDrawAccuracyEnabled(true);
         mapView.getOverlays().add(myLocationOverlay);
 
-        do {
-            if( myLocationOverlay != null && mapView.getController() != null )
-                mapView.getController().setCenter(myLocationOverlay.getMyLocation());
+        LocationManager lm = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        GeoPoint currentPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
 
-        } while( myLocationOverlay == null || mapView.getController() == null );
+        mapView.getController().setCenter(currentPoint);
+        showPOIS("restaurants");
     }
 
     public PauseFragment() {
