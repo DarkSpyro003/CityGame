@@ -39,10 +39,10 @@ public class PauseFragment extends Fragment{
     private MapView mapView;
     private MyLocationNewOverlay myLocationOverlay;
 
-    public void start() {
+    public void start(View v) {
 
         // Init map
-        mapView = (MapView) getActivity().findViewById(R.id.mapview);
+        mapView = (MapView) v.findViewById(R.id.pauseview);
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.setBuiltInZoomControls(true);
         mapView.setMultiTouchControls(true);
@@ -54,6 +54,12 @@ public class PauseFragment extends Fragment{
         myLocationOverlay.enableMyLocation();
         myLocationOverlay.setDrawAccuracyEnabled(true);
         mapView.getOverlays().add(myLocationOverlay);
+
+        do {
+            if( myLocationOverlay != null && mapView.getController() != null )
+                mapView.getController().setCenter(myLocationOverlay.getMyLocation());
+
+        } while( myLocationOverlay == null || mapView.getController() == null );
     }
 
     public PauseFragment() {
@@ -63,15 +69,18 @@ public class PauseFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        start();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_map, container, false);
+        View view = inflater.inflate(R.layout.fragment_pause, container, false);
+        start(view);
+        return view;
     }
+
+
 
 
     public  void showPOIS(String tag)
