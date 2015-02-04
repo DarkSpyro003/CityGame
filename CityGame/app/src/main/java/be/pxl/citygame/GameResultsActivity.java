@@ -1,6 +1,8 @@
 package be.pxl.citygame;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,6 +13,8 @@ import android.widget.TextView;
 import java.util.List;
 
 import be.pxl.citygame.data.Question;
+import be.pxl.citygame.data.database.GameDB;
+import be.pxl.citygame.data.database.GameDbHelper;
 import be.pxl.citygame.providers.Providers;
 
 
@@ -40,7 +44,23 @@ public class GameResultsActivity extends ActionBarActivity {
 
         CityGameApplication app = (CityGameApplication)getApplication();
 
-        // TODO: Christina gaat dit doen: Set gamecontent as complete in local DB
+        //Calculate score
+        int score = 0;
+        for( Question question : questionList) {
+            if( question.isAnsweredCorrect() ) {
+                score++;
+            }
+        }
+
+        GameDbHelper helper = new GameDbHelper(getApplicationContext());
+        SQLiteDatabase sqlDb = helper.getReadableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(GameDB.Games.COL_COMPLETED, 1);
+        contentValues.put(GameDB.Games.COL_SCORE, score);
+        String where = GameDB.Games.COL_GID + " = ?";
+        String[] whereArgs = { "" + gameId };
+        sqlDb.update(GameDB.Games.TABLE_NAME, contentValues, where, whereArgs);
 
         if( app.isLoggedIn() )
             app.getPlayer().postGames(app.getPassword());

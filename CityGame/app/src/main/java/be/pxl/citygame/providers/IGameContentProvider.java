@@ -2,6 +2,7 @@ package be.pxl.citygame.providers;
 
 import java.util.NoSuchElementException;
 
+import be.pxl.citygame.MainActivity;
 import be.pxl.citygame.data.GameContent;
 
 /**
@@ -9,6 +10,7 @@ import be.pxl.citygame.data.GameContent;
  */
 public interface IGameContentProvider {
 
+    public void initGameContentById(int id, MainActivity caller);
     public GameContent getGameContentById(int id) throws NoSuchElementException;
 
 }

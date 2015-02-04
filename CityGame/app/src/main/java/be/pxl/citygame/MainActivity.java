@@ -1,5 +1,7 @@
 package be.pxl.citygame;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,8 +19,11 @@ import com.google.zxing.integration.android.IntentResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 import be.pxl.citygame.data.GameContent;
 import be.pxl.citygame.data.Player;
+import be.pxl.citygame.data.Question;
 import be.pxl.citygame.data.database.GameDB;
 import be.pxl.citygame.data.database.GameDbHelper;
 import be.pxl.citygame.providers.Providers;
@@ -66,8 +71,17 @@ public class MainActivity extends ActionBarActivity {
             content.setScore(score);
 
             offlinePlayer.getGames().add(content);
+            cur.moveToNext();
         }
         cur.close();
+
+        ((CityGameApplication)getApplication()).setPlayer(offlinePlayer);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ((CityGameApplication)getApplicationContext()).setActivity(this);
     }
 
     public void handleBtnStart(View v) {
@@ -75,16 +89,91 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void startGame(int id) {
-        // TODO: Christina gaat dit doen: Check if game is completed or was interrupted, and block/resume game
         // Download data
-        Providers.getGameContentProvider().getGameContentById(id);
+        Providers.getGameContentProvider().initGameContentById(id, this);
+    }
 
-        // Switch to next activity
-        CityGameApplication context = (CityGameApplication) getApplicationContext();
-        Intent intent = new Intent(context, NextLocationActivity.class);
-        intent.putExtra("gameId", id);
-        intent.putExtra("questionId", 0);
-        startActivity(intent);
+    public void startGameCallback(int id) {
+        // Check if game is completed
+        if( isGameCompleted(id) ) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Al uitgespeeld")
+                    .setMessage("U heeft dit spel al uitgespeeld. Scan een ander spel in om te spelen.")
+                    .setCancelable(true)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+        else {
+            // Check if game was interrupted, and resume to the next available question, 0 if new game
+            CityGameApplication context = (CityGameApplication) getApplicationContext();
+            Intent intent = new Intent(context, NextLocationActivity.class);
+            intent.putExtra("gameId", id);
+            intent.putExtra("questionId", getStartQuestionId(id));
+            startActivity(intent);
+        }
+    }
+
+    private int getStartQuestionId(int gid) {
+        GameDbHelper helper = new GameDbHelper(getApplicationContext());
+        SQLiteDatabase sqlDb = helper.getReadableDatabase();
+
+        String where = GameDB.Questions.COL_GID + " = ?";
+        String whereArgs[] = { "" + gid };
+        String order = GameDB.Questions.COL_QID + " ASC";
+        Cursor cur = sqlDb.query(GameDB.Questions.TABLE_NAME, null, where, whereArgs, null, null, order, null);
+
+        if( cur.getCount() < 1 ) {
+            cur.close();
+            return 0;
+        }
+
+        int qid = 0;
+        cur.moveToFirst();
+        while(!cur.isAfterLast()) {
+            for(int i = 0; i < cur.getColumnCount(); i++) {
+                if( cur.getColumnName(i).equals(GameDB.Questions.COL_ANSWERED) ) {
+                    if( cur.getInt(i) == 0 ) {
+                        return qid;
+                    } else { // Question possibly answered, load previous answer from DB.
+                        List<Question> questions = Providers.getGameContentProvider().getGameContentById(gid).getQuestionList();
+                        Question current = questions.get(qid);
+                        current.setAnswered(cur.getInt(cur.getColumnIndex(GameDB.Questions.COL_ANSWERED)) == 1);
+                        current.setAnsweredCorrect(cur.getInt(cur.getColumnIndex(GameDB.Questions.COL_ANSWERED_CORRECT)) == 1);
+                        if( current.getType() == Question.PLAIN_TEXT ) {
+                            current.setUserTextInput(cur.getString(cur.getColumnIndex(GameDB.Questions.COL_ANSWERED_CONTENT)));
+                        } else if( current.getType() == Question.MULTIPLE_CHOICE ) {
+                            current.setUserMultiInput(Integer.parseInt(cur.getString(cur.getColumnIndex(GameDB.Questions.COL_ANSWERED_CONTENT))));
+                        }
+                    }
+                }
+            }
+            qid++;
+            cur.moveToNext();
+        }
+        cur.close();
+
+        return qid;
+    }
+
+    private boolean isGameCompleted(int id) {
+        GameDbHelper helper = new GameDbHelper(getApplicationContext());
+        SQLiteDatabase sqlDb = helper.getReadableDatabase();
+
+        String where = GameDB.Games.COL_GID + " = ? AND " + GameDB.Games.COL_COMPLETED + " = ?";
+        String whereArgs[] = { "" + id, "1" };
+        Cursor cur = sqlDb.query(GameDB.Games.TABLE_NAME, null, where, whereArgs, null, null, null, null);
+
+        boolean toReturn = cur.getCount() > 0;
+        cur.close();
+
+        return toReturn;
     }
 
     @Override

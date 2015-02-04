@@ -1,6 +1,8 @@
 package be.pxl.citygame.data;
 
 import android.app.Application;
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
@@ -14,6 +16,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import be.pxl.citygame.data.database.GameDB;
+import be.pxl.citygame.data.database.GameDbHelper;
+
 /**
  * Created by Christina on 7/01/2015.
  */
@@ -21,8 +26,12 @@ public class Question {
 
     // type: 0 = plain text, 1 = multiple choice
     public static final int PLAIN_TEXT = 0,
-                            MULTIPLE_CHOICE = 1;
+                            MULTIPLE_CHOICE = 1,
+                            CONTENT_IMAGE = 0,
+                            CONTENT_VIDEO = 1;
     private int type;
+    private int gameId;
+    private int qId;
     private String question;
     private String text_answer;
     private int multi_answer;
@@ -34,9 +43,12 @@ public class Question {
     private Location location;
     private Uri remoteContentUri; // The remote location for the content
     private Uri localContentUri; // When the content is downloaded, its location gets set here
+    private int contentType;
 
     private boolean answered = false; // Gets set to true when the question is answered
     private boolean answeredCorrect = false; // Gets set to if the result was correct or not
+
+    private Application application; // Store calling application
 
     // Constructor plain text question
     public Question(int type, String question, String answer) {
@@ -47,6 +59,7 @@ public class Question {
         this.question = question;
         this.text_answer = answer;
         this.extraInfo = "";
+        this.contentType = 0;
     }
 
     // Constructor multiple choice question
@@ -59,6 +72,24 @@ public class Question {
         this.multi_answer = answer;
         this.options = new ArrayList<String>(options);
         this.extraInfo = "";
+        this.contentType = 0;
+    }
+
+    private void storeAnswered(boolean result, String resultText) {
+        int iresult = 0;
+        if( result )
+            iresult = 1;
+
+        GameDbHelper helper = new GameDbHelper(application.getApplicationContext());
+        SQLiteDatabase sqlDb = helper.getReadableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(GameDB.Questions.COL_ANSWERED, 1);
+        contentValues.put(GameDB.Questions.COL_ANSWERED_CORRECT, iresult);
+        contentValues.put(GameDB.Questions.COL_ANSWERED_CONTENT, resultText);
+        String where = GameDB.Questions.COL_GID + " = ? AND " + GameDB.Questions.COL_QID + " = ?";
+        String[] whereArgs = { "" + gameId, "" + qId };
+        sqlDb.update(GameDB.Questions.TABLE_NAME, contentValues, where, whereArgs);
     }
 
     // Checks plain text answer
@@ -66,6 +97,7 @@ public class Question {
         this.answered = true;
         this.answeredCorrect = text.toLowerCase().equals(this.text_answer.toLowerCase());
         this.setUserTextInput(text);
+        storeAnswered(this.answeredCorrect, text);
         return this.answeredCorrect;
     }
 
@@ -74,6 +106,7 @@ public class Question {
         this.answered = true;
         answeredCorrect = id == this.multi_answer ;
         this.setUserMultiInput(id);
+        storeAnswered(this.answeredCorrect, "" + id);
         return this.answeredCorrect;
     }
 
@@ -182,5 +215,33 @@ public class Question {
 
     public void setUserMultiInput(int userMultiInput) {
         this.userMultiInput = userMultiInput;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
+    }
+
+    public void setqId(int qId) {
+        this.qId = qId;
+    }
+
+    public void setApplication(Application application) {
+        this.application = application;
+    }
+
+    public void setAnswered(boolean answered) {
+        this.answered = answered;
+    }
+
+    public void setAnsweredCorrect(boolean answeredCorrect) {
+        this.answeredCorrect = answeredCorrect;
+    }
+
+    public int getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(int contentType) {
+        this.contentType = contentType;
     }
 }

@@ -64,7 +64,7 @@ public class QuestionActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    
+
     public void handleAnswer(View v) {
         QuestionFragment fragment = (QuestionFragment) getSupportFragmentManager().findFragmentById(R.id.questionFragment);
         fragment.handleAnswer(v);

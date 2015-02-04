@@ -23,5 +23,6 @@ public class GameDB {
         public static final String COL_GID = "gid";
         public static final String COL_ANSWERED = "answered";
         public static final String COL_ANSWERED_CORRECT = "answeredCorrect";
+        public static final String COL_ANSWERED_CONTENT = "answeredContent";
     }
 }
