@@ -39,5 +39,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="pause">Pauze</string>
     <string name="title_activity_pause">Pauze</string>
+    <string name="title_activity_about">Over de app</string>
 
 </resources>

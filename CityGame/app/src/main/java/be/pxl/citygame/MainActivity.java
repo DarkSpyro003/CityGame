@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -97,6 +96,7 @@ public class MainActivity extends ActionBarActivity {
         // Check if game is completed
         if( isGameCompleted(id) ) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            // TODO: Christina: Add option to view score screen
             builder.setTitle("Al uitgespeeld")
                     .setMessage("U heeft dit spel al uitgespeeld. Scan een ander spel in om te spelen.")
                     .setCancelable(true)
@@ -179,7 +179,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
@@ -191,7 +191,7 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_about) {
             return true;
         }
 

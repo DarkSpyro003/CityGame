@@ -18,6 +18,7 @@ public class GameDB {
         public static final String COL_SCORE = "score";
     }
 
+    // TODO: Christina: Implement photo uri saving into local db
     public static final class Questions implements BaseColumns {
         public static final String TABLE_NAME = "questions";
         public static final String COL_QID = "qid";

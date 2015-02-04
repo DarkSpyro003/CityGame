@@ -16,6 +16,7 @@ public class GameDbHelper extends SQLiteOpenHelper {
         super(ctx, GameDB.DB_NAME, null, GameDB.DB_VER);
     }
 
+    // TODO: Christina: Implement photo uri saving into local db
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sqlCreate = "CREATE TABLE " + GameDB.Games.TABLE_NAME + " (" +
