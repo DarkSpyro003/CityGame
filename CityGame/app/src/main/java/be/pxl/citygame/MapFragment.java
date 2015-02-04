@@ -118,6 +118,8 @@ public class MapFragment extends Fragment implements ILocationRequest {
         return inflater.inflate(R.layout.fragment_map, container, false);
     }
 
+    // TODO: move OpenData Restaurants to its own Activity for different style of map controls (such as not locking onto gps marker)
+
     public  void showPOIS(String tag)
     {
         AsyncTask poiTask = new GetPoi().execute(tag);
