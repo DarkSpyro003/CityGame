@@ -17,6 +17,7 @@ public class LocationGps implements LocationListener {
     private ILocationRequest request;
     private LocationManager locMan;
     private String locationProviderName;
+    private boolean started = false;
 
     public LocationGps(ILocationRequest request, Activity activity) {
         this.request = request;
@@ -49,10 +50,21 @@ public class LocationGps implements LocationListener {
         }
 
         locMan.requestLocationUpdates(locationProviderName, 5000, 10, this);
+        this.started = true;
     }
 
     public void stopGpsLocation() {
-        locMan.removeUpdates(this);
+        if( started ) {
+            this.started = false;
+            locMan.removeUpdates(this);
+        }
+    }
+
+    public void startGpsLocation() {
+        if( !started ) {
+            locMan.requestLocationUpdates(locationProviderName, 5000, 10, this);
+            this.started = true;
+        }
     }
 
     @Override

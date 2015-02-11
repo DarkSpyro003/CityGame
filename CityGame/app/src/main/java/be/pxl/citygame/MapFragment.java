@@ -36,6 +36,7 @@ public class MapFragment extends Fragment implements ILocationRequest {
     private MyLocationNewOverlay myLocationOverlay;
     private OverlayItem targetOverlay;
     private Location targetLocation;
+    private LocationGps locService;
 
     public void setData(int gameId, int questionId) {
         this.gameId = gameId;
@@ -50,7 +51,7 @@ public class MapFragment extends Fragment implements ILocationRequest {
         mapView.getController().setZoom(18);
 
         // Start GPS
-        new LocationGps(this, getActivity());
+        locService = new LocationGps(this, getActivity());
 
         // Display locations on map
         myLocationOverlay = new MyLocationNewOverlay(getActivity().getApplicationContext(), mapView);
@@ -68,6 +69,27 @@ public class MapFragment extends Fragment implements ILocationRequest {
         mapView.getOverlays().add(itemizedOverlayItems);
 
         this.dataSet = true;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // Turn off GPS when the activity is not active
+        if( dataSet && locService != null )
+            locService.stopGpsLocation();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Turn GPS on again when the activity becomes active
+        if( dataSet ) {
+            if( locService != null ) {
+                locService.startGpsLocation();
+            } else { // Should never happen, but just in case:
+                locService = new LocationGps(this, getActivity());
+            }
+        }
     }
 
     @Override
