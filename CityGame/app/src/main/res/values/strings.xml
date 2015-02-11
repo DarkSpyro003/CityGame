@@ -40,5 +40,15 @@
     <string name="pause">Pauze</string>
     <string name="title_activity_pause">Pauze</string>
     <string name="title_activity_about">Over de app</string>
+    <string name="about_created_by">Gemaakt door:</string>
+    <string name="jorne">Jorne De Smedt</string>
+    <string name="christina">Christina Korosec</string>
+    <string name="laurenz">Laurenz Jolling</string>
+    <string name="about_collab">In samenwerking met:</string>
+    <string name="about_special_thanks">Speciale dank aan:</string>
+    <string name="about_school">Hogeschool PXL</string>
+    <string name="about_dept_tourism"><![CDATA[PXL Departement Media & Tourisme]]></string>
+    <string name="about_dept_it">PXL Departement IT</string>
+    <string name="tilkin">Servaas Tilkin</string>
 
 </resources>
