@@ -18,6 +18,8 @@ public class CameraActivity extends ActionBarActivity {
     private CameraView cameraView;
     private ImageView imageView;
 
+    // todo: Make it so this activity is activated by QuestionActivity
+    // todo: Needs gameid & questionid parameters for db saving, intent extras?
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

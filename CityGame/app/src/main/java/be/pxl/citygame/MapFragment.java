@@ -60,6 +60,7 @@ public class MapFragment extends Fragment implements ILocationRequest {
         mapView.getOverlays().add(myLocationOverlay);
 
         targetLocation = Providers.getQuestionProvider().loadQuestionById(gameId, questionId).getLocation();
+        // todo: Perhaps use custom pointer icon/art like teacher suggested?
         targetOverlay = new OverlayItem("Doel", "Uw volgende stopplaats", new GeoPoint(targetLocation));
         ArrayList<OverlayItem> overlayItems = new ArrayList<OverlayItem>();
         overlayItems.add(targetOverlay);
@@ -75,7 +76,7 @@ public class MapFragment extends Fragment implements ILocationRequest {
             GeoPoint currentLoc;
             currentLoc = new GeoPoint(loc);
             mapView.getController().animateTo(currentLoc);
-            if( loc.distanceTo(targetLocation) <= getResources().getInteger(R.integer.gps_marker_distance) ) {
+            if( loc.getAccuracy() <= getResources().getInteger(R.integer.gps_marker_distance) && loc.distanceTo(targetLocation) <= getResources().getInteger(R.integer.gps_marker_distance) ) {
                 CityGameApplication context = (CityGameApplication) getActivity().getApplicationContext();
                 // Switch to next activity
                 Intent intent = new Intent(context, QuestionActivity.class);
