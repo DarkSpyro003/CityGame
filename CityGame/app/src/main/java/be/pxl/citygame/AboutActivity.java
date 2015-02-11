@@ -9,7 +9,7 @@ public class AboutActivity extends ActionBarActivity {
 
 
     // TODO: Create about screen and send the menu handlers here
-    // todo: Populate with stuff like our names, PXL logo, "in samenwerking met PXL", etc
+    //TODO: Fix crash moving to about screen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
