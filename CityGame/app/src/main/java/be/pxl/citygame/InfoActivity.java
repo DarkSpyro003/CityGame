@@ -46,8 +46,7 @@ public class InfoActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void handleBackToQuestion(View v)
-    {
+    public void handleBackToQuestion(View v) {
         InfoFragment frag = (InfoFragment) getSupportFragmentManager().findFragmentById(R.id.infoFragment);
         frag.handleBackToQuestion(v);
     }

@@ -47,8 +47,7 @@ public class NextLocationFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_next_location, container, false);
     }
 
-    public void goToPause(View v)
-    {
+    public void goToPause(View v) {
         Intent intent = new Intent(getActivity().getApplicationContext(), PauseActivity.class);
         startActivityForResult(intent, 0);
     }

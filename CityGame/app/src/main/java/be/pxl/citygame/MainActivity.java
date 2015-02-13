@@ -193,8 +193,7 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_about)
-        {
+        if (id == R.id.action_about) {
             Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
             startActivity(intent);
             return true;
@@ -203,8 +202,7 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void scanQR(View v)
-    {
+    public void scanQR(View v) {
         IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
         integrator.addExtra("SCAN_WIDTH", 640);
         integrator.addExtra("SCAN_HEIGHT", 480);
@@ -215,15 +213,12 @@ public class MainActivity extends ActionBarActivity {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent intent)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        if(result != null)
-        {
+        if(result != null) {
             // QR code should contain application name + gamecontent  in JSON
             String contents = result.getContents();
-            if(contents != null)
-            {
+            if(contents != null) {
                 try {
                     JSONObject object = new JSONObject(contents);
                     String app = object.getString("appname");

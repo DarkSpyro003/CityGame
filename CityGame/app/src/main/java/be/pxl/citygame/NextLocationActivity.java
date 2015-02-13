@@ -60,8 +60,7 @@ public class NextLocationActivity extends ActionBarActivity {
         // Do nothing - you can't go back to previous question!
     }
 
-    public void goToPause(View v)
-    {
+    public void goToPause(View v) {
         NextLocationFragment fragment = (NextLocationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_next_location);
         fragment.goToPause(v);
     }

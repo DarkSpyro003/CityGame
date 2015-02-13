@@ -40,8 +40,7 @@ public class RegisterFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_register, container, false);
     }
 
-    public void register(View v)
-    {
+    public void register(View v) {
         EditText txtUsername = (EditText) getActivity().findViewById(R.id.txtUser);
         EditText txtPassword = (EditText) getActivity().findViewById(R.id.txtPassword);
         EditText txtName = (EditText) getActivity().findViewById(R.id.txtName);
@@ -52,8 +51,7 @@ public class RegisterFragment extends Fragment {
         String email = txtEmail.getText().toString();
         String name = txtName.getText().toString();
 
-        if(isUsernameValid(username) && isPasswordValid(password) && isEmailValid(email))
-        {
+        if(isUsernameValid(username) && isPasswordValid(password) && isEmailValid(email)) {
             Player player = ((CityGameApplication)getActivity().getApplication()).getPlayer();
             player.setUsername(username);
             player.setEmail(email);
@@ -69,24 +67,21 @@ public class RegisterFragment extends Fragment {
         }
     }
 
-    private boolean isPasswordValid(String password)
-    {
+    private boolean isPasswordValid(String password) {
         Boolean success = !password.isEmpty() && password.length() >= 4;
         Log.d("Password is valid", success.toString());
 
         return  success;
     }
 
-    private boolean isUsernameValid(String username)
-    {
+    private boolean isUsernameValid(String username) {
         Boolean success = !username.isEmpty() && username.length() >= 6;
         Log.d("Username is valid", success.toString());
 
         return  success;
     }
 
-    private boolean isEmailValid(String email)
-    {
+    private boolean isEmailValid(String email) {
         //return true;
         String expression = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
         CharSequence inputStr = email;

@@ -189,14 +189,12 @@ public class LoginActivity extends Activity {
         mEmailView.setAdapter(adapter);
     }
 
-    public void goToRegistration(View v)
-    {
+    public void goToRegistration(View v) {
         Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
         startActivity(intent);
     }
 
-    public void goToMain()
-    {
+    public void goToMain() {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }

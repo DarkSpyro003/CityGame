@@ -43,8 +43,7 @@ public class CameraActivity extends ActionBarActivity {
         }
     };
 
-    public void onClick(View view)
-    {
+    public void onClick(View view) {
         camera.takePicture(null, null, callback);
     }
 

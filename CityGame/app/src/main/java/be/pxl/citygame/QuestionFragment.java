@@ -48,20 +48,17 @@ public class QuestionFragment extends Fragment {
         tv_question.setText(question.getQuestion());
 
         LinearLayout layout_procedural_answer = (LinearLayout) getActivity().findViewById(R.id.layout_procedural_answer);
-        if(question.getType() == Question.PLAIN_TEXT)
-        {
+        if(question.getType() == Question.PLAIN_TEXT) {
             txtAnswer = new EditText(getActivity());
             layout_procedural_answer.addView(txtAnswer);
         }
-        else if(question.getType() == Question.MULTIPLE_CHOICE)
-        {
+        else if(question.getType() == Question.MULTIPLE_CHOICE) {
             RadioGroup rg_options = new RadioGroup(getActivity());
             rg_options.setOrientation(LinearLayout.VERTICAL);
             layout_procedural_answer.addView(rg_options);
             optionList = new ArrayList<RadioButton>();
 
-            for (String option : question.getOptions())
-            {
+            for (String option : question.getOptions()) {
                 RadioButton rb_option = new RadioButton(getActivity());
                 rb_option.setText(option);
                 rg_options.addView(rb_option);
@@ -116,7 +113,6 @@ public class QuestionFragment extends Fragment {
     }
 
     public void showMoreInfo(View v) {
-
         Intent intent = new Intent(getActivity().getApplicationContext(), InfoActivity.class);
         intent.putExtra("gameId", gameId);
         intent.putExtra("questionId", questionId);

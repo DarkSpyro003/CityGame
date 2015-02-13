@@ -84,23 +84,19 @@ public class PauseFragment extends Fragment{
 
 
 
-    public  void showPOIS(String tag)
-    {
+    public  void showPOIS(String tag) {
         AsyncTask poiTask = new GetPoi().execute(tag);
     }
 
-    public void onCallback(ArrayList<POI> pois)
-    {
+    public void onCallback(ArrayList<POI> pois) {
         FolderOverlay poiMarkers = new FolderOverlay(getActivity());
         mapView.getOverlays().add(poiMarkers);
 
         Drawable poiIcon = getResources().getDrawable(R.drawable.restaurant);
-        if(pois == null)
-        {
+        if(pois == null) {
             Log.d("POI", "pois is null");
         }
-        for(POI poi : pois)
-        {
+        for(POI poi : pois) {
             Marker poiMarker = new Marker(mapView);
             poiMarker.setTitle(poi.mType);
             poiMarker.setSnippet(poi.mDescription);

@@ -23,12 +23,10 @@ public class QuestionResponseAdapter extends ArrayAdapter<Question> {
     public QuestionResponseAdapter(Context context, Question[] questions) {
         super(context, R.layout.question_response, questions);
         this.questions = questions;
-
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         // Might fix this if performance is an issue.
         View questionResponseView = inflater.inflate(R.layout.question_response, parent, false);
@@ -54,8 +52,7 @@ public class QuestionResponseAdapter extends ArrayAdapter<Question> {
             // todo: Set a x mark drawable
         }
 
-        switch (question.getType())
-        {
+        switch (question.getType()) {
             case Question.MULTIPLE_CHOICE:
                 questionUserInputView.setText(question.getOption(question.getUserMultiInput()));
                 questionCorrectOutputView.setText(question.getOption(question.getMulti_answer()));

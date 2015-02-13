@@ -40,8 +40,7 @@ public class RegisterActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void register(View v)
-    {
+    public void register(View v) {
         RegisterFragment frag = (RegisterFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_register);
         frag.register(v);
     }
