@@ -27,7 +27,8 @@ import be.pxl.citygame.data.database.GameDB;
 import be.pxl.citygame.data.database.GameDbHelper;
 import be.pxl.citygame.providers.Providers;
 
-
+// todo: Design a logo
+// todo: Design an app icon -> http://developer.android.com/design/style/iconography.html
 // todo: Replace login button with logoff button when logged in
 // CityGameApplication app = (CityGameApplication)getApplication();
 // app.isLoggedIn()
