@@ -34,6 +34,7 @@ import be.pxl.citygame.providers.Providers;
 public class MainActivity extends ActionBarActivity {
 
     private static final int PRIMARY_CONTENT_ID = 1;
+    private int scoreId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,15 +98,24 @@ public class MainActivity extends ActionBarActivity {
     public void startGameCallback(int id) {
         // Check if game is completed
         if( isGameCompleted(id) ) {
+            scoreId = id;
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            // TODO: Christina: Add option to view score screen
-            builder.setTitle("Al uitgespeeld")
+            builder
+                    .setTitle("Al uitgespeeld")
                     .setMessage("U heeft dit spel al uitgespeeld. Scan een ander spel in om te spelen.")
                     .setCancelable(true)
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
+                        }
+                    })
+                    .setNeutralButton(R.string.btn_show_score, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(getApplicationContext(), GameResultsActivity.class);
+                            intent.putExtra("gameId", scoreId);
+                            startActivity(intent);
                         }
                     });
 

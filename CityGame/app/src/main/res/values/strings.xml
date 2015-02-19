@@ -50,5 +50,6 @@
     <string name="about_dept_tourism"><![CDATA[PXL Departement Media & Tourisme]]></string>
     <string name="about_dept_it">PXL Departement IT</string>
     <string name="tilkin">Servaas Tilkin</string>
+    <string name="btn_show_score">Toon score</string>
 
 </resources>
