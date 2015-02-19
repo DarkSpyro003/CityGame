@@ -51,5 +51,8 @@
     <string name="about_dept_it">PXL Departement IT</string>
     <string name="tilkin">Servaas Tilkin</string>
     <string name="btn_show_score">Toon score</string>
+    <string name="game_finished_title">Al uitgespeeld</string>
+    <string name="game_finished_content">U heeft dit spel al uitgespeeld. Scan een ander spel in om te spelen.</string>
+    <string name="btn_ok">OK</string>
 
 </resources>

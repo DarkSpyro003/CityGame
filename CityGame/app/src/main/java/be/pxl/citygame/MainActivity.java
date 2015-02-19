@@ -101,10 +101,10 @@ public class MainActivity extends ActionBarActivity {
             scoreId = id;
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder
-                    .setTitle("Al uitgespeeld")
-                    .setMessage("U heeft dit spel al uitgespeeld. Scan een ander spel in om te spelen.")
+                    .setTitle(getString(R.string.game_finished_title))
+                    .setMessage(getString(R.string.game_finished_content))
                     .setCancelable(true)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    .setPositiveButton(getString(R.string.btn_ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
