@@ -11,6 +11,7 @@ import android.net.Uri;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ public class Question {
     private Location location;
     private Uri remoteContentUri; // The remote location for the content
     private Uri localContentUri; // When the content is downloaded, its location gets set here
+    private Uri localPhotoUri = null;
     private int contentType;
 
     private boolean answered = false; // Gets set to true when the question is answered
@@ -124,23 +126,8 @@ public class Question {
         return this.answeredCorrect;
     }
 
-    public Bitmap getImage(Application app) {
-        try {
-            File cacheFile = new File(localContentUri.toString());
-            InputStream fileInputStream = null;
-            fileInputStream = new FileInputStream(cacheFile);
-            BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-            bitmapOptions.inJustDecodeBounds = false;
-            Bitmap image = BitmapFactory.decodeStream(fileInputStream, null, bitmapOptions);
-            fileInputStream.close();
-
-            return image;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public Bitmap getImage() {
+        return loadImage(localContentUri.toString());
     }
 
     public int getType() {
@@ -257,5 +244,61 @@ public class Question {
 
     public void setContentType(int contentType) {
         this.contentType = contentType;
+    }
+
+    public void savePhoto(Bitmap photo) {
+        File saveDir = application.getFilesDir();
+        File image = new File(saveDir, "photo_" + this.qId + "_" + this.gameId + ".jpg");
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(image);
+            photo.compress(Bitmap.CompressFormat.JPEG, 85, out);
+            this.localPhotoUri = Uri.fromFile(image);
+
+            // Save to DB
+            GameDbHelper helper = new GameDbHelper(application.getApplicationContext());
+            SQLiteDatabase sqlDb = helper.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(GameDB.Questions.COL_LOCALPHOTO, image.getAbsolutePath());
+            String where = GameDB.Questions.COL_GID + " = ? AND " + GameDB.Questions.COL_QID + " = ?";
+            String[] whereArgs = { "" + this.gameId, "" + this.qId };
+            sqlDb.update(GameDB.Questions.TABLE_NAME, contentValues, where, whereArgs);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            if( out != null ) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private Bitmap loadImage(String location) {
+        File file = new File(location);
+        InputStream fileInputStream = null;
+        try {
+            fileInputStream = new FileInputStream(file);
+            BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+            bitmapOptions.inJustDecodeBounds = false;
+            Bitmap image = BitmapFactory.decodeStream(fileInputStream, null, bitmapOptions);
+            fileInputStream.close();
+            return image;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Bitmap getLocalPhoto() {
+        return loadImage(localPhotoUri.toString());
+    }
+
+    public void setLocalPhotoUri(Uri localPhotoUri) {
+        this.localPhotoUri = localPhotoUri;
     }
 }

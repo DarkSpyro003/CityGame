@@ -18,7 +18,6 @@ public class GameDB {
         public static final String COL_SCORE = "score";
     }
 
-    // TODO: Christina: Implement photo uri saving into local db
     public static final class Questions implements BaseColumns {
         public static final String TABLE_NAME = "questions";
         public static final String COL_QID = "qid";
@@ -30,6 +29,7 @@ public class GameDB {
         public static final String COL_PLACENAME = "placename";
         public static final String COL_EXTRAINFO = "extraInfo";
         public static final String COL_LOCALURL = "contentUrl";
+        public static final String COL_LOCALPHOTO = "photoUrl";
         public static final String COL_CONTENT_TYPE = "contentType";
         public static final String COL_LATITUDE = "latitude";
         public static final String COL_LONGITUDE = "longitude";

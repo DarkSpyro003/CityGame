@@ -36,7 +36,7 @@ public class ImageFragment extends Fragment {
         Question question = Providers.getQuestionProvider().loadQuestionById(gameId, questionId);
         ImageView pictureView = (ImageView) getActivity().findViewById(R.id.picture);
         if( question.getContentType() == Question.CONTENT_IMAGE ) {
-            Bitmap img = question.getImage(getActivity().getApplication());
+            Bitmap img = question.getImage();
             pictureView.setImageBitmap(img);
         } else if( question.getContentType() == Question.CONTENT_VIDEO ) {
             pictureView.setVisibility(View.GONE);

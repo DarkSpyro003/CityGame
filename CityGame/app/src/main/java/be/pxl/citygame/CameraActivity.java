@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import be.pxl.citygame.providers.Providers;
+
 
 public class CameraActivity extends ActionBarActivity {
 
@@ -23,7 +25,7 @@ public class CameraActivity extends ActionBarActivity {
     private int questionId;
 
     // todo: Make it so this activity is activated by QuestionActivity
-    // todo: button to save image and return to previous activity
+    // todo: button to return to previous activity
     // Returning to previous activity: just call: finish();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class CameraActivity extends ActionBarActivity {
             imageView.setImageBitmap(bitmap);
             camera.stopPreview();
             camera.startPreview();
+            Providers.getQuestionProvider().loadQuestionById(gameId, questionId).savePhoto(bitmap);
         }
     };
 
