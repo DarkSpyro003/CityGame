@@ -35,7 +35,7 @@ import be.pxl.citygame.data.Player;
 public class LoginActivity extends Activity {
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
+    private EditText mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
@@ -45,9 +45,7 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-
+        mEmailView = (EditText) findViewById(R.id.email);
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -140,54 +138,6 @@ public class LoginActivity extends Activity {
         }
     }
 
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
-    }
-
-    /**
-     * Use an AsyncTask to fetch the user's email addresses on a background thread, and update
-     * the email text field with results on the main UI thread.
-     */
-    class SetupEmailAutoCompleteTask extends AsyncTask<Void, Void, List<String>> {
-
-        @Override
-        protected List<String> doInBackground(Void... voids) {
-            ArrayList<String> emailAddressCollection = new ArrayList<String>();
-
-            // Get all emails from the user's contacts and copy them to a list.
-            ContentResolver cr = getContentResolver();
-            Cursor emailCur = cr.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null,
-                    null, null, null);
-            while (emailCur.moveToNext()) {
-                String email = emailCur.getString(emailCur.getColumnIndex(ContactsContract
-                        .CommonDataKinds.Email.DATA));
-                emailAddressCollection.add(email);
-            }
-            emailCur.close();
-
-            return emailAddressCollection;
-        }
-
-        @Override
-        protected void onPostExecute(List<String> emailAddressCollection) {
-            addEmailsToAutoComplete(emailAddressCollection);
-        }
-    }
-
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mEmailView.setAdapter(adapter);
-    }
 
     public void goToRegistration(View v) {
         Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
