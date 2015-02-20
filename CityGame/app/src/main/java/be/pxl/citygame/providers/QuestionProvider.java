@@ -17,6 +17,15 @@ public class QuestionProvider implements IQuestionProvider {
         this.application = application;
     }
 
+    /**
+     * Gets the question requested from the GameContentProvider
+     * @param gameId        Game's id
+     * @param questionId    Question's id
+     * @return              The requested Question
+     * @throws NoSuchElementException
+     * @see be.pxl.citygame.data.GameContent#getQuestionById(int)
+     * @see be.pxl.citygame.providers.GameContentWebProvider#getGameContentById(int)
+     */
     @Override
     public Question loadQuestionById(int gameId, int questionId) throws NoSuchElementException {
         Question question = Providers.getGameContentProvider().getGameContentById(gameId).getQuestionById(questionId);

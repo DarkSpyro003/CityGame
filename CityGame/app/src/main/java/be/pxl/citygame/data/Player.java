@@ -53,17 +53,32 @@ public class Player {
     private static final int JOB_LOGIN = 0, JOB_REGISTER = 1, JOB_UPDATE = 2, JOB_POST_GAME = 3;
     private int job = 0;
 
+    /**
+     * Initializes player of this application
+     * @param username      Username, if any
+     * @param application   application creating this instance
+     */
     public Player(String username, Application application) {
         this.username = username;
         this.application = application;
         this.games = new ArrayList<GameContent>();
     }
 
+    /**
+     * Try to post games to online account
+     * @param password  User's password
+     * @see #tryPostGames(String)
+     */
     public void postGames(String password) {
         job = this.JOB_POST_GAME;
         AsyncTask postgames = new GetRestData().execute(password);
     }
 
+    /**
+     * Try to register to online service
+     * @param password  User's password
+     * @return          Success or failure
+     */
     public boolean register(String password) {
         this.dialogTitle = application.getString(R.string.registering_dialog_title);
         this.dialogContent = application.getString(R.string.registering_dialog_content);
@@ -97,6 +112,11 @@ public class Player {
         return false;
     }
 
+    /**
+     * Checks if user credentials are valid on the online service
+     * @param password  User's password
+     * @return          Credentials' validity
+     */
     public boolean checkLogin(String password) {
         this.dialogTitle = application.getString(R.string.login_progress_title);
         this.dialogContent = application.getString(R.string.login_progress_content);
@@ -112,6 +132,9 @@ public class Player {
         return false;
     }
 
+    /**
+     * Class to handle all Player network tasks from a central async hub
+     */
     private class GetRestData extends AsyncTask<String, Void, Boolean> {
 
         private ProgressDialog dialog;
@@ -144,6 +167,11 @@ public class Player {
         }
     }
 
+    /**
+     * Try to connect to the online service to register the account
+     * @param password  User's password
+     * @return          Success or failure
+     */
     private boolean tryRegister(String password) {
         DefaultHttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
         HttpPost httpPost = new HttpPost(application.getString(R.string.webservice_url) + "player/" + username);
@@ -199,6 +227,12 @@ public class Player {
         return false;
     }
 
+    /**
+     * Try to post games to online account
+     * @param password  User's password
+     * @return          Success or failure
+     * @see #tryPostGame(String, String, GameContent)
+     */
     private boolean tryPostGames(String password) {
         boolean success = true;
         for( GameContent content : games ) {
@@ -209,6 +243,13 @@ public class Player {
         return success;
     }
 
+    /**
+     * Try to post an individual game to the online account
+     * @param username  Username
+     * @param password  User's password
+     * @param content   The game content to post
+     * @return          Success or failure
+     */
     private boolean tryPostGame(String username, String password, GameContent content) {
         int gameContentId = content.getId();
         int score = content.getScore();
@@ -258,6 +299,11 @@ public class Player {
         return false;
     }
 
+    /**
+     * Checks if user's credentials are valid on the online webservice
+     * @param password  User's password
+     * @return          Credentials' validity
+     */
     private boolean tryLogin(String password) {
         DefaultHttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
         HttpPost httpPost = new HttpPost(application.getString(R.string.webservice_url) + "player/login/" + username);

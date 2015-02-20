@@ -37,6 +37,11 @@ public class QuestionFragment extends Fragment {
     private EditText txtAnswer;
     private List<RadioButton> optionList;
 
+    /**
+     * Generates dynamic question layout after receiving data
+     * @param gameId        Game's id
+     * @param questionId    Question's id
+     */
     public void setData(int gameId, int questionId) {
         this.gameId = gameId;
         this.questionId = questionId;

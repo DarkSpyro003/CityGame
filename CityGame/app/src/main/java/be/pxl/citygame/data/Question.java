@@ -25,7 +25,8 @@ import be.pxl.citygame.data.database.GameDbHelper;
  */
 public class Question {
 
-    // type: 0 = plain text, 1 = multiple choice
+    // question type: 0 = plain text, 1 = multiple choice
+    // content type: 0 = image, 1 = video
     public static final int PLAIN_TEXT = 0,
                             MULTIPLE_CHOICE = 1,
                             CONTENT_IMAGE = 0,
@@ -52,7 +53,12 @@ public class Question {
 
     private Application application; // Store calling application
 
-    // Constructor plain text question
+    /**
+     * Constructor plain text question
+     * @param type      The type of the question
+     * @param question  The question text
+     * @param answer    The correct answer text
+     */
     public Question(int type, String question, String answer) {
         if( type != PLAIN_TEXT )
             throw new IllegalArgumentException("Type must be 0 for using this constructor");
@@ -64,7 +70,13 @@ public class Question {
         this.contentType = 0;
     }
 
-    // Constructor multiple choice question
+    /**
+     * Constructor for a multiple choice question
+     * @param type      The type of the question
+     * @param question  The question text
+     * @param answer    The answer id
+     * @param options   List of possible answers
+     */
     public Question(int type, String question, int answer, List<String> options) {
         if( type != MULTIPLE_CHOICE )
             throw new IllegalArgumentException("Type must be 1 for using this constructor");
@@ -77,6 +89,11 @@ public class Question {
         this.contentType = 0;
     }
 
+    /**
+     * Flags a question as answered and store the flag in local db
+     * @param result        Validity of question's answer
+     * @param resultText    The exact written answer
+     */
     private void storeAnswered(boolean result, String resultText) {
         int iresult = 0;
         if( result )
@@ -94,21 +111,12 @@ public class Question {
         sqlDb.update(GameDB.Questions.TABLE_NAME, contentValues, where, whereArgs);
     }
 
-    public Question(String question, int answer, List<String> options) {
-        this.type = MULTIPLE_CHOICE;
-        this.question = question;
-        this.multi_answer = answer;
-        this.options = new ArrayList<>(options);
-        this.extraInfo = "";
-    }
-
-    public Question(String question, String answer) {
-        this.type = PLAIN_TEXT;
-        this.question = question;
-        this.text_answer = answer;
-        this.extraInfo = "";
-    }
-    // Checks plain text answer
+    /**
+     * Checks validity of plaintext answer and stores it
+     * @param text  The given answer
+     * @return      The answer's validity
+     * @see #storeAnswered(boolean, String)
+     */
     public boolean checkAnswer(String text) {
         this.answered = true;
         this.answeredCorrect = text.toLowerCase().equals(this.text_answer.toLowerCase());
@@ -117,7 +125,12 @@ public class Question {
         return this.answeredCorrect;
     }
 
-    // Checks multiple choice answer
+    /**
+     * Checks validity of multichoice answer and stores it
+     * @param id    The given answer
+     * @return      The answer's validity
+     * @see #storeAnswered(boolean, String)
+     */
     public boolean checkAnswer(int id) {
         this.answered = true;
         answeredCorrect = id == this.multi_answer ;
@@ -126,6 +139,11 @@ public class Question {
         return this.answeredCorrect;
     }
 
+    /**
+     * Loads question's picture as bitmap
+     * @return  The picture's bitmap
+     * @see #loadImage(String)
+     */
     public Bitmap getImage() {
         return loadImage(localContentUri.toString());
     }
@@ -246,6 +264,10 @@ public class Question {
         this.contentType = contentType;
     }
 
+    /**
+     * Save photo to app's getFilesDir as a jpeg with 85% quality
+     * @param photo     The photo to save
+     */
     public void savePhoto(Bitmap photo) {
         File saveDir = application.getFilesDir();
         File image = new File(saveDir, "photo_" + this.qId + "_" + this.gameId + ".jpg");
@@ -276,6 +298,11 @@ public class Question {
         }
     }
 
+    /**
+     * Loads an image from file as a bitmap
+     * @param location  String ocntaining the path to the file
+     * @return          The loaded Bitmap
+     */
     private Bitmap loadImage(String location) {
         File file = new File(location);
         InputStream fileInputStream = null;
@@ -302,6 +329,11 @@ public class Question {
         return null;
     }
 
+    /**
+     * Loads the photo taken for this question from storage
+     * @return  The photo's Bitmap
+     * @see #loadImage(String)
+     */
     public Bitmap getLocalPhoto() {
         return loadImage(localPhotoUri.toString());
     }

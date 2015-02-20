@@ -38,6 +38,11 @@ public class MapFragment extends Fragment implements ILocationRequest {
     private Location targetLocation;
     private LocationGps locService;
 
+    /**
+     * Setup GPS and markers
+     * @param gameId        Game's id
+     * @param questionId    Question's id
+     */
     public void setData(int gameId, int questionId) {
         this.gameId = gameId;
         this.questionId = questionId;

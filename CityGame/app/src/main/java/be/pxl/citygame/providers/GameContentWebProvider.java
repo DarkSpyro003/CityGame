@@ -59,6 +59,14 @@ class GameContentWebProvider implements IGameContentProvider
         this.application = application;
     }
 
+    /**
+     * Initializes game content by id, trying to download it all into cache
+     * while waiting on a progress dialog. Will callback to MainActivity
+     * when finished.
+     * @param id        Game's id
+     * @param caller    MainActivity calling this method so we can callback to it
+     * @see be.pxl.citygame.MainActivity#startGameCallback(int)
+     */
     @Override
     public void initGameContentById(int id, MainActivity caller) {
         GameContent content = contentCache.get(id);
@@ -71,6 +79,13 @@ class GameContentWebProvider implements IGameContentProvider
         }
     }
 
+    /**
+     * Check if we have game content in RAM, else request from next method before returning
+     * @param id    game's id
+     * @return      The GameContent object holding all content
+     * @throws NoSuchElementException
+     * @see #getWebGameContentById(int)
+     */
     @Override
     public GameContent getGameContentById(int id) throws NoSuchElementException {
         this.mode = MODE_GET;
@@ -94,6 +109,12 @@ class GameContentWebProvider implements IGameContentProvider
         return content;
     }
 
+    /**
+     * Checks local SQL cache for gamecontent, and if it's not there it'll fetch it from the online
+     * service
+     * @param id    The game's id
+     * @return      The GameContent object holding all content
+     */
     public GameContent getWebGameContentById(int id) {
         // Check local SQL database first
         GameDbHelper helper = new GameDbHelper(application.getApplicationContext());
@@ -340,6 +361,9 @@ class GameContentWebProvider implements IGameContentProvider
         }
     }
 
+    /**
+     * Handle all network tasks asynchronously and display a ProgressDialog where possible
+     */
     private class GetRestData extends AsyncTask<Integer, Void, GameContent> {
 
         private int gameContentId;

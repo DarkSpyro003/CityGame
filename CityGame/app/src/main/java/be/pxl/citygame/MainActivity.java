@@ -37,6 +37,10 @@ public class MainActivity extends ActionBarActivity {
     private static final int PRIMARY_CONTENT_ID = 1;
     private int scoreId = 0;
 
+    /**
+     * Initialize app and load user's data
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +100,11 @@ public class MainActivity extends ActionBarActivity {
         Providers.getGameContentProvider().initGameContentById(id, this);
     }
 
+    /**
+     * Called when initial game caching has completed
+     * Should have all data locally now
+     * @param id    The game's id
+     */
     public void startGameCallback(int id) {
         // Check if game is completed
         if( isGameCompleted(id) ) {
@@ -133,6 +142,12 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    /**
+     * Finds out of the player was already playing this game, and finds out which question
+     * they haven't answered yet.
+     * @param gid   Game's id
+     * @return      Question to start with id
+     */
     private int getStartQuestionId(int gid) {
         GameDbHelper helper = new GameDbHelper(getApplicationContext());
         SQLiteDatabase sqlDb = helper.getReadableDatabase();
@@ -175,6 +190,11 @@ public class MainActivity extends ActionBarActivity {
         return qid;
     }
 
+    /**
+     * Checks if a game is completed
+     * @param id    The game's id
+     * @return      Is the game completed
+     */
     private boolean isGameCompleted(int id) {
         GameDbHelper helper = new GameDbHelper(getApplicationContext());
         SQLiteDatabase sqlDb = helper.getReadableDatabase();
@@ -247,8 +267,7 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    public void goToLogin(View v)
-    {
+    public void goToLogin(View v) {
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(intent);
     }

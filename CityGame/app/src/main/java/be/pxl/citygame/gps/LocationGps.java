@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * Created by Christina on 20/01/2015.
+ * Handles getting GPS location when necessary
  */
 public class LocationGps implements LocationListener {
 
@@ -19,6 +20,12 @@ public class LocationGps implements LocationListener {
     private String locationProviderName;
     private boolean started = false;
 
+    /**
+     * Initialize the GPS and begin sending location updates
+     * @param request   The object that wants to receive location updates
+     * @param activity  The activity that will provide the SystemService for the locationprovider
+     * @see be.pxl.citygame.gps.ILocationRequest
+     */
     public LocationGps(ILocationRequest request, Activity activity) {
         this.request = request;
 
@@ -53,6 +60,9 @@ public class LocationGps implements LocationListener {
         this.started = true;
     }
 
+    /**
+     * Stops the location updates, disabling this GPS instance
+     */
     public void stopGpsLocation() {
         if( started ) {
             this.started = false;
@@ -60,6 +70,9 @@ public class LocationGps implements LocationListener {
         }
     }
 
+    /**
+     * (Re)starts the location updates, enabling this GPS instance
+     */
     public void startGpsLocation() {
         if( !started ) {
             locMan.requestLocationUpdates(locationProviderName, 5000, 10, this);
@@ -67,6 +80,10 @@ public class LocationGps implements LocationListener {
         }
     }
 
+    /**
+     * Location callback to the requesting object
+     * @param location  The new current location
+     */
     @Override
     public void onLocationChanged(Location location) {
         request.setLocation(location);
