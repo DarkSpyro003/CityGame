@@ -7,9 +7,6 @@ import android.view.MenuItem;
 
 public class AboutActivity extends ActionBarActivity {
 
-
-    // TODO: Create about screen and send the menu handlers here
-    // TODO: Make all about menu event handlers call the about activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

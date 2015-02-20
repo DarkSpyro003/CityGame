@@ -40,6 +40,8 @@ public class InfoActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_about) {
+            Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
+            startActivity(intent);
             return true;
         }
 
@@ -50,4 +52,6 @@ public class InfoActivity extends ActionBarActivity {
         InfoFragment frag = (InfoFragment) getSupportFragmentManager().findFragmentById(R.id.infoFragment);
         frag.handleBackToQuestion(v);
     }
+
+
 }
