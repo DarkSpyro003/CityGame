@@ -153,6 +153,7 @@ class GameContentWebProvider implements IGameContentProvider
                     loc.setLatitude(qcur.getDouble(qcur.getColumnIndex(GameDB.Questions.COL_LATITUDE)));
                     loc.setLongitude(qcur.getDouble(qcur.getColumnIndex(GameDB.Questions.COL_LONGITUDE)));
                     q.setLocation(loc);
+                    q.setLocalPhotoUri(Uri.parse(qcur.getString(qcur.getColumnIndex(GameDB.Questions.COL_LOCALPHOTO))));
 
                     boolean answered = qcur.getInt(qcur.getColumnIndex(GameDB.Questions.COL_ANSWERED)) == 1;
                     q.setAnswered(answered);
