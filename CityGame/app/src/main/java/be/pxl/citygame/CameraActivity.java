@@ -19,8 +19,10 @@ public class CameraActivity extends ActionBarActivity {
     private CameraView cameraView;
     private ImageView imageView;
 
+    private int gameId;
+    private int questionId;
+
     // todo: Make it so this activity is activated by QuestionActivity
-    // todo: Needs gameid & questionid parameters for db saving, intent extras?
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +34,8 @@ public class CameraActivity extends ActionBarActivity {
         FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
         preview.addView(cameraView);
 
+        gameId = this.getIntent().getIntExtra("gameid", 0);
+        questionId = this.getIntent().getIntExtra("questionid", 0);
     }
 
     private Camera.PictureCallback callback = new Camera.PictureCallback() {
