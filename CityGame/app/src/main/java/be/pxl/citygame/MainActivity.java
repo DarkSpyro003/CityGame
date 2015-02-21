@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -18,6 +20,7 @@ import com.google.zxing.integration.android.IntentResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -61,20 +64,71 @@ public class MainActivity extends ActionBarActivity implements GameContentCaller
 
         cur.moveToFirst();
         while (!cur.isAfterLast()) {
-            int id = 0;
-            boolean completed = false;
-            int score = 0;
-            for(int i = 0; i < cur.getColumnCount(); i++) {
-                if( cur.getColumnName(i).equals(GameDB.Games.COL_GID) ) {
-                    id = cur.getInt(i);
-                } else if( cur.getColumnName(i).equals(GameDB.Games.COL_SCORE) ) {
-                    score = cur.getInt(i);
-                } else if( cur.getColumnName(i).equals(GameDB.Games.COL_COMPLETED) ) {
-                    completed = cur.getInt(i) == 1;
-                }
-            }
+            int id = cur.getInt(cur.getColumnIndex(GameDB.Games.COL_GID));
+            boolean completed = cur.getInt(cur.getColumnIndex(GameDB.Games.COL_COMPLETED)) == 1;
+            int score = cur.getInt(cur.getColumnIndex(GameDB.Games.COL_SCORE));
+            String title = cur.getString(cur.getColumnIndex(GameDB.Games.COL_TITLE));
 
-            GameContent content = new GameContent("localdata");
+            GameContent content = new GameContent(title);
+
+            String where = GameDB.Questions.COL_GID + " = " + id;
+            Cursor qcur = sqlDb.query(GameDB.Questions.TABLE_NAME, null, where, null, null, null, null, null);
+            qcur.moveToFirst();
+            while(!qcur.isAfterLast()) {
+                Question q = null;
+                int qid = qcur.getInt(qcur.getColumnIndex(GameDB.Questions.COL_QID));
+                int qType = qcur.getInt(qcur.getColumnIndex(GameDB.Questions.COL_TYPE));
+                String question = qcur.getString(qcur.getColumnIndex(GameDB.Questions.COL_QUESTION));
+                if( qType == Question.PLAIN_TEXT ) {
+                    String textanswer = qcur.getString(qcur.getColumnIndex(GameDB.Questions.COL_TEXT_ANSWER));
+                    q = new Question(qType, question, textanswer);
+                } else if( qType == Question.MULTIPLE_CHOICE ) {
+                    int multianswer = qcur.getInt(qcur.getColumnIndex(GameDB.Questions.COL_MULTI_ANSWER));
+                    String mcwhere = GameDB.QuestionMultiAnswer.COL_QID + " = ? AND " +
+                            GameDB.QuestionMultiAnswer.COL_GID + " = ?";
+                    String[] mcWhereArgs = { "" + qid, "" + id };
+                    String mcorder = GameDB.QuestionMultiAnswer.COL_CID + " ASC";
+                    Cursor mcCur = sqlDb.query(GameDB.QuestionMultiAnswer.TABLE_NAME, null, mcwhere, mcWhereArgs, null, null, mcorder, null);
+                    mcCur.moveToFirst();
+                    ArrayList<String> choices = new ArrayList<>();
+                    while(!mcCur.isAfterLast()) {
+                        choices.add(mcCur.getString(mcCur.getColumnIndex(GameDB.QuestionMultiAnswer.COL_ANSWER)));
+                        mcCur.moveToNext();
+                    }
+                    q = new Question(qType, question, multianswer, choices);
+                }
+                if( q != null ) {
+                    q.setApplication(getApplication());
+                    q.setqId(qid);
+                    q.setGameId(id);
+                    q.setPlacename(qcur.getString(qcur.getColumnIndex(GameDB.Questions.COL_PLACENAME)));
+                    q.setExtraInfo(qcur.getString(qcur.getColumnIndex(GameDB.Questions.COL_EXTRAINFO)));
+                    q.setLocalContentUri(Uri.parse(qcur.getString(qcur.getColumnIndex(GameDB.Questions.COL_LOCALURL))));
+                    q.setContentType(qcur.getInt(qcur.getColumnIndex(GameDB.Questions.COL_CONTENT_TYPE)));
+                    Location loc = new Location("");
+                    loc.setLatitude(qcur.getDouble(qcur.getColumnIndex(GameDB.Questions.COL_LATITUDE)));
+                    loc.setLongitude(qcur.getDouble(qcur.getColumnIndex(GameDB.Questions.COL_LONGITUDE)));
+                    q.setLocation(loc);
+                    String localPhotoUri = qcur.getString(qcur.getColumnIndex(GameDB.Questions.COL_LOCALPHOTO));
+                    if( localPhotoUri != null )
+                        q.setLocalPhotoUri(Uri.parse(localPhotoUri));
+
+                    boolean answered = qcur.getInt(qcur.getColumnIndex(GameDB.Questions.COL_ANSWERED)) == 1;
+                    q.setAnswered(answered);
+                    if( answered ) {
+                        q.setAnsweredCorrect(qcur.getInt(qcur.getColumnIndex(GameDB.Questions.COL_ANSWERED_CORRECT)) == 1);
+                        if (q.getType() == Question.PLAIN_TEXT) {
+                            q.setUserTextInput(qcur.getString(qcur.getColumnIndex(GameDB.Questions.COL_ANSWERED_CONTENT)));
+                        } else if (q.getType() == Question.MULTIPLE_CHOICE) {
+                            q.setUserMultiInput(Integer.parseInt(qcur.getString(qcur.getColumnIndex(GameDB.Questions.COL_ANSWERED_CONTENT))));
+                        }
+                    }
+
+                    content.addQuestion(q);
+                }
+
+                qcur.moveToNext();
+            }
             content.setId(id);
             content.setCompleted(completed);
             content.setScore(score);

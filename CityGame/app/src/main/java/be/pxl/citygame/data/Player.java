@@ -258,7 +258,6 @@ public class Player {
             data.put("score", score);
 
             // And individual question result data
-            // TODO: Christina: Check this, doesn't work yet
             JSONArray questions = new JSONArray();
             for( Map.Entry<Integer, Question> entry : content.getQuestionList().entrySet() ) {
                 Question question = entry.getValue();
@@ -270,9 +269,10 @@ public class Player {
                 } else if( question.getType() == Question.MULTIPLE_CHOICE ) {
                     addQuestion.put("answer", question.getUserMultiInput());
                 }
-                questions.put(question);
+                questions.put(addQuestion);
             }
             data.put("questions", questions);
+            Log.d(Player.class.toString(), "Data: " + data.toString());
 
             httpPost.setEntity(new StringEntity(data.toString()));
         } catch (JSONException e) {

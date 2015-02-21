@@ -71,7 +71,7 @@ class PlayerDb
 				if( $this->database->affected_rows > 0 )
 				{
 					$statement->close();
-					completeQuestions($playerId, $questiondata);
+					$this->completeQuestions($playerId, $questiondata);
 					return 201;
 				}
 				else
