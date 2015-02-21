@@ -10,7 +10,7 @@ import be.pxl.citygame.data.GameContent;
  */
 public interface IGameContentProvider {
 
-    public void initGameContentById(int id, MainActivity caller);
+    public void initGameContentById(int id, GameContentCaller caller);
     public GameContent getGameContentById(int id) throws NoSuchElementException;
 
 }

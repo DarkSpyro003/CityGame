@@ -14,7 +14,7 @@ public class Helpers {
     /**
      * Converts data from InputStream into a String, and then closes the inputstream.
      * @param stream    The InputStream to read from
-     * @return          The built String.
+     * @return          The built String. On failure, an empty String.
      */
     public static String getStringFromStream(InputStream stream) {
         BufferedReader reader = null;

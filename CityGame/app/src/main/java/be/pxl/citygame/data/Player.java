@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -36,6 +37,8 @@ import be.pxl.citygame.CityGameApplication;
 import be.pxl.citygame.R;
 import be.pxl.citygame.data.database.GameDB;
 import be.pxl.citygame.data.database.GameDbHelper;
+import be.pxl.citygame.providers.GameContentCaller;
+import be.pxl.citygame.providers.Providers;
 
 /**
  * Created by Christina on 21/01/2015.
@@ -47,7 +50,7 @@ public class Player {
     private String email;
     private String realname;
     private ArrayList<GameContent> games;
-    private Application application;
+    private CityGameApplication application;
 
     private String dialogTitle;
     private String dialogContent;
@@ -62,7 +65,7 @@ public class Player {
      */
     public Player(String username, Application application) {
         this.username = username;
-        this.application = application;
+        this.application = (CityGameApplication)application;
         this.games = new ArrayList<GameContent>();
     }
 
@@ -143,7 +146,7 @@ public class Player {
 
         @Override
         protected void onPreExecute() {
-            this.dialog = new ProgressDialog(((CityGameApplication)application).getActivity());
+            this.dialog = new ProgressDialog(application.getActivity());
             this.dialog.setTitle(dialogTitle);
             this.dialog.setMessage(dialogContent);
             this.dialog.show();
@@ -312,15 +315,58 @@ public class Player {
             Log.d(Player.class.toString(), "User login with status " + statusCode + " and content " + result);
 
             if( statusCode == HttpStatus.SC_OK ) {
-                CityGameApplication app = (CityGameApplication) application;
-                app.setUsername(username);
-                app.setPassword(password);
-                app.setLoggedIn(true);
+                application.setUsername(username);
+                application.setPassword(password);
+                application.setLoggedIn(true);
+
+                // Post completed games to server
                 tryPostGames(password);
-                // TODO: Christina: Get completed games from server and store locally
+
+                // Get completed games from server and store locally
                 HttpGet dataGet = new HttpGet(application.getString(R.string.webservice_url) + "/player/" + username);
                 HttpResponse playerDataResponse = httpClient.execute(dataGet);
-                HttpEntity entity = playerDataResponse.getEntity();
+                String jsonData = Helpers.getStringFromStream(playerDataResponse.getEntity().getContent());
+                JSONObject playerData = new JSONObject(jsonData);
+                JSONArray gamesData = playerData.getJSONArray("games");
+
+                // Iterate through all games played
+                for( int i = 0; i < gamesData.length(); ++i ) {
+                    JSONObject gameData = gamesData.getJSONObject(i);
+                    int gameId = gameData.getInt("gameContentId");
+                    // Check if it is in database
+                    GameDbHelper helper = new GameDbHelper(application.getApplicationContext());
+                    SQLiteDatabase sqlDb = helper.getWritableDatabase();
+                    String where = GameDB.Games.COL_GID + " = ?";
+                    String[] whereArgs = { "" + gameId };
+                    Cursor cur = sqlDb.query(GameDB.Games.TABLE_NAME, null, where, whereArgs, null, null, null, null);
+                    boolean hasData = cur.getCount() > 0;
+                    cur.close();
+
+                    // Don't continue unless we don't actually have any data on this game locally
+                    if( !hasData ) {
+                        try {
+                            // Initialize GameContent (Blocking until ready)
+                            Providers.getGameContentProvider().getGameContentById(gameId);
+                            JSONArray gameQuestionsData = gameData.getJSONArray("questionAnswerData");
+                            // iterate over all questions in this game
+                            for (int j = 0; j < gameQuestionsData.length(); ++j) {
+                                JSONObject question = gameQuestionsData.getJSONObject(j);
+                                int qid = question.getInt("qid");
+                                Question questionData = Providers.getQuestionProvider().loadQuestionById(gameId, qid);
+                                String answer = question.getString("answer");
+                                // Store data through the checkAnswer method
+                                if( questionData.getType() == Question.PLAIN_TEXT ) {
+                                    questionData.checkAnswer(answer);
+                                } else if( questionData.getType() == Question.MULTIPLE_CHOICE ) {
+                                    int answerInt = Integer.parseInt(answer);
+                                    questionData.checkAnswer(answerInt);
+                                }
+                            }
+                        } catch( ClassCastException|NumberFormatException e ) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
             }
 
             return statusCode == HttpStatus.SC_OK;
@@ -329,7 +375,7 @@ public class Player {
         } catch (JSONException e) {
             Log.e(Player.class.toString(), e.getMessage(), e);
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(((CityGameApplication)application).getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(application.getActivity());
         builder.setTitle(R.string.login_fail_title)
                 .setMessage(R.string.login_fail_content)
                 .setCancelable(true)

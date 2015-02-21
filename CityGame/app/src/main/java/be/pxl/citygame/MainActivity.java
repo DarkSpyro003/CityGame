@@ -25,6 +25,7 @@ import be.pxl.citygame.data.Player;
 import be.pxl.citygame.data.Question;
 import be.pxl.citygame.data.database.GameDB;
 import be.pxl.citygame.data.database.GameDbHelper;
+import be.pxl.citygame.providers.GameContentCaller;
 import be.pxl.citygame.providers.Providers;
 
 // todo: Design a logo
@@ -32,7 +33,7 @@ import be.pxl.citygame.providers.Providers;
 // todo: Replace login button with logoff button when logged in
 // CityGameApplication app = (CityGameApplication)getApplication();
 // app.isLoggedIn()
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements GameContentCaller {
 
     private static final int PRIMARY_CONTENT_ID = 1;
     private int scoreId = 0;
@@ -105,6 +106,7 @@ public class MainActivity extends ActionBarActivity {
      * Should have all data locally now
      * @param id    The game's id
      */
+    @Override
     public void startGameCallback(int id) {
         // Check if game is completed
         if( isGameCompleted(id) ) {

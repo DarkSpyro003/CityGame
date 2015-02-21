@@ -53,7 +53,7 @@ class GameContentWebProvider implements IGameContentProvider
     private Application application;
     private Hashtable<Integer, GameContent> contentCache;
     private int mode;
-    private MainActivity caller;
+    private GameContentCaller caller;
 
     public GameContentWebProvider(Application application) {
         contentCache = new Hashtable<Integer, GameContent>();
@@ -62,14 +62,14 @@ class GameContentWebProvider implements IGameContentProvider
 
     /**
      * Initializes game content by id, trying to download it all into cache
-     * while waiting on a progress dialog. Will callback to MainActivity
+     * while waiting on a progress dialog. Will callback to GameContentCaller
      * when finished.
      * @param id        Game's id
-     * @param caller    MainActivity calling this method so we can callback to it
+     * @param caller    GameContentCaller-implementing class calling this method so we can callback to it
      * @see be.pxl.citygame.MainActivity#startGameCallback(int)
      */
     @Override
-    public void initGameContentById(int id, MainActivity caller) {
+    public void initGameContentById(int id, GameContentCaller caller) {
         GameContent content = contentCache.get(id);
         if( content == null ) {
             this.mode = MODE_CALLBACK;

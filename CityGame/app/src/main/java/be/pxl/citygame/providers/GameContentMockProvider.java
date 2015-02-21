@@ -11,7 +11,7 @@ import be.pxl.citygame.data.GameContent;
 class GameContentMockProvider implements IGameContentProvider {
 
     @Override
-    public void initGameContentById(int id, MainActivity caller) {
+    public void initGameContentById(int id, GameContentCaller caller) {
         // Only id 1 valid for testing
         if (id != 1) {
             throw new NoSuchElementException("No GameContent with id: " + id + " (Mock provider)");
