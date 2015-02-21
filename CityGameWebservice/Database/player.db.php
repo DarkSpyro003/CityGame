@@ -33,7 +33,29 @@ class PlayerDb
 		return password_hash($password, PASSWORD_BCRYPT);
 	}
 	
-	public function completeGameContent($username, $gameContentId, $score)
+	public function completeQuestions($playerId, $questiondata) 
+	{
+		$queryString = 'INSERT INTO `player_question` (`pid`, `gid`, `qid`, `answer`) VALUES ';
+		$first = true;
+		foreach($questiondata as $data)
+		{
+			if( $first )
+			{
+				$first = false;
+			}
+			else
+			{
+				$queryString .= ',';
+			}
+			$gid = $this->database->real_escape_string($data['gid']);
+			$qid = $this->database->real_escape_string($data['qid']);
+			$answer = $this->database->real_escape_string($data['answer']);
+			$queryString .= "($playerId, $gid, $qid, '$answer')";
+		}
+		$this>database->query($queryString);
+	}
+	
+	public function completeGameContent($username, $gameContentId, $score, $questiondata)
 	{
 		$player = $this->getPlayerByUsername($username);
 		if( !$this->hasCompletedGameContent($player->id, $gameContentId) )
@@ -49,6 +71,7 @@ class PlayerDb
 				if( $this->database->affected_rows > 0 )
 				{
 					$statement->close();
+					completeQuestions($playerId, $questiondata);
 					return 201;
 				}
 				else

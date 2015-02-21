@@ -234,7 +234,7 @@ $app->post(
 			$playerdb = new PlayerDb($database);
 			if( $playerdb->checkPassword($username, $data['password']) )
 			{
-				$status = $playerdb->completeGameContent($username, $gamecontentId, $data['score']);
+				$status = $playerdb->completeGameContent($username, $gamecontentId, $data['score'], $data['questions']);
 				$app->response()->status($status);
 				if( $status == 201 )
 				{

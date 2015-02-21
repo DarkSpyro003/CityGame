@@ -18,6 +18,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -254,7 +255,6 @@ public class Player {
         int gameContentId = content.getId();
         int score = content.getScore();
 
-        // TODO: Christina: Also make this store individual question-answer content to webservice
         DefaultHttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
         HttpPost httpPost = new HttpPost(application.getString(R.string.webservice_url) + "player/" + username + "/" + gameContentId);
         httpPost.setHeader("Content-Type", "application/json");
@@ -263,6 +263,21 @@ public class Player {
         try {
             data.put("password", password);
             data.put("score", score);
+
+            // And individual question result data
+            JSONArray questions = new JSONArray();
+            for( Question question : content.getQuestionList() ) {
+                JSONObject addQuestion = new JSONObject();
+                addQuestion.put("gid", content.getId());
+                addQuestion.put("qid", question.getqId());
+                if( question.getType() == Question.PLAIN_TEXT ) {
+                    addQuestion.put("answer", question.getUserTextInput());
+                } else if( question.getType() == Question.MULTIPLE_CHOICE ) {
+                    addQuestion.put("answer", question.getUserMultiInput());
+                }
+                questions.put(question);
+            }
+            data.put("questions", questions);
 
             httpPost.setEntity(new StringEntity(data.toString()));
         } catch (JSONException e) {

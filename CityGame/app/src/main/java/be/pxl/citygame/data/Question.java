@@ -244,6 +244,10 @@ public class Question {
         this.qId = qId;
     }
 
+    public int getqId() {
+        return qId;
+    }
+
     public void setApplication(Application application) {
         this.application = application;
     }

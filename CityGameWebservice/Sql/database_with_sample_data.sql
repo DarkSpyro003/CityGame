@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 20, 2015 at 02:23 PM
+-- Generation Time: Feb 21, 2015 at 06:34 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -101,6 +101,19 @@ INSERT INTO `player_games` (`playerId`, `gameContentId`, `score`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `player_question`
+--
+
+CREATE TABLE IF NOT EXISTS `player_question` (
+  `pid` int(11) NOT NULL COMMENT 'player id',
+  `gid` int(11) NOT NULL COMMENT 'game id',
+  `qid` int(11) NOT NULL COMMENT 'question id',
+  `answer` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `question`
 --
 
@@ -155,6 +168,12 @@ ALTER TABLE `player_games`
  ADD PRIMARY KEY (`playerId`,`gameContentId`), ADD KEY `gameContentId` (`gameContentId`);
 
 --
+-- Indexes for table `player_question`
+--
+ALTER TABLE `player_question`
+ ADD PRIMARY KEY (`pid`,`gid`,`qid`), ADD KEY `gid` (`gid`), ADD KEY `qid` (`qid`);
+
+--
 -- Indexes for table `question`
 --
 ALTER TABLE `question`
@@ -195,6 +214,14 @@ ADD CONSTRAINT `multi_answer_ibfk_1` FOREIGN KEY (`questionId`) REFERENCES `ques
 ALTER TABLE `player_games`
 ADD CONSTRAINT `player_games_ibfk_1` FOREIGN KEY (`gameContentId`) REFERENCES `gamecontent` (`id`),
 ADD CONSTRAINT `player_games_ibfk_2` FOREIGN KEY (`playerId`) REFERENCES `players` (`id`);
+
+--
+-- Constraints for table `player_question`
+--
+ALTER TABLE `player_question`
+ADD CONSTRAINT `player_question_ibfk_1` FOREIGN KEY (`pid`) REFERENCES `player_games` (`playerId`),
+ADD CONSTRAINT `player_question_ibfk_2` FOREIGN KEY (`gid`) REFERENCES `gamecontent` (`id`),
+ADD CONSTRAINT `player_question_ibfk_3` FOREIGN KEY (`qid`) REFERENCES `question` (`id`);
 
 --
 -- Constraints for table `question`
