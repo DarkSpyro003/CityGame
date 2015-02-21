@@ -32,6 +32,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ExecutionException;
 
@@ -110,6 +111,20 @@ class GameContentWebProvider implements IGameContentProvider
         return content;
     }
 
+    @Override
+    public GameContent getGameContentByIdSync(int id) throws NoSuchElementException {
+        this.mode = MODE_GET;
+        GameContent content = contentCache.get(id);
+        if( content == null ) {
+            content = getWebGameContentById(id);
+
+            if( content == null )
+                throw new NoSuchElementException("No such gamecontent ID");
+        }
+
+        return content;
+    }
+
     /**
      * Checks local SQL cache for gamecontent, and if it's not there it'll fetch it from the online
      * service
@@ -175,7 +190,9 @@ class GameContentWebProvider implements IGameContentProvider
                     loc.setLatitude(qcur.getDouble(qcur.getColumnIndex(GameDB.Questions.COL_LATITUDE)));
                     loc.setLongitude(qcur.getDouble(qcur.getColumnIndex(GameDB.Questions.COL_LONGITUDE)));
                     q.setLocation(loc);
-                    q.setLocalPhotoUri(Uri.parse(qcur.getString(qcur.getColumnIndex(GameDB.Questions.COL_LOCALPHOTO))));
+                    String localPhotoUri = qcur.getString(qcur.getColumnIndex(GameDB.Questions.COL_LOCALPHOTO));
+                    if( localPhotoUri != null )
+                        q.setLocalPhotoUri(Uri.parse(localPhotoUri));
 
                     boolean answered = qcur.getInt(qcur.getColumnIndex(GameDB.Questions.COL_ANSWERED)) == 1;
                     q.setAnswered(answered);
@@ -236,8 +253,6 @@ class GameContentWebProvider implements IGameContentProvider
                         }
                         questionObject = new Question(type, question, answer, choices);
                     }
-                    if( questionObject != null )
-                        content.addQuestion(questionObject);
 
                     if( questionObject != null ) {
                         questionObject.setqId(quest.getInt("id"));
@@ -282,11 +297,11 @@ class GameContentWebProvider implements IGameContentProvider
                             Log.e(GameContentWebProvider.class.toString(), e.getMessage(), e);
                         }
 
-                        application.getCacheDir();
                         Location loc = new Location("");
                         loc.setLatitude(quest.getDouble("latitude"));
                         loc.setLongitude(quest.getDouble("longitude"));
                         questionObject.setLocation(loc);
+                        content.addQuestion(questionObject);
                     }
                 }
                 content.setId(id);
@@ -300,10 +315,11 @@ class GameContentWebProvider implements IGameContentProvider
                 sqlDb.insert(GameDB.Games.TABLE_NAME, null, gamecontent_data);
 
                 // Also insert the questions
-                int i = 0;
-                for( Question question : content.getQuestionList() ) {
+                for( Map.Entry<Integer, Question> entry : content.getQuestionList().entrySet() ) {
+                    Question question = entry.getValue();
                     ContentValues question_data = new ContentValues();
-                    question_data.put(GameDB.Questions.COL_QID, i);
+                    int qId = question.getqId();
+                    question_data.put(GameDB.Questions.COL_QID, qId);
                     question_data.put(GameDB.Questions.COL_GID, content.getId());
                     question_data.put(GameDB.Questions.COL_TYPE, question.getType());
                     question_data.put(GameDB.Questions.COL_QUESTION, question.getQuestion());
@@ -315,7 +331,7 @@ class GameContentWebProvider implements IGameContentProvider
                         int j = 0;
                         for( String option : question.getOptions() ) {
                             ContentValues mc_data = new ContentValues();
-                            mc_data.put(GameDB.QuestionMultiAnswer.COL_QID, i);
+                            mc_data.put(GameDB.QuestionMultiAnswer.COL_QID, qId);
                             mc_data.put(GameDB.QuestionMultiAnswer.COL_GID, content.getId());
                             mc_data.put(GameDB.QuestionMultiAnswer.COL_CID, j);
                             mc_data.put(GameDB.QuestionMultiAnswer.COL_ANSWER, option);
@@ -336,7 +352,6 @@ class GameContentWebProvider implements IGameContentProvider
 
                     // Insert can fail if game played before, we don't care about this
                     sqlDb.insert(GameDB.Questions.TABLE_NAME, null, question_data);
-                    i++;
                 }
                 contentCache.put(id, content);
 

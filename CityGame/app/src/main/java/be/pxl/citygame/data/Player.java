@@ -4,10 +4,12 @@ import android.app.AlertDialog;
 import android.app.Application;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.os.Looper;
 import android.util.Log;
 
 import org.apache.http.HttpEntity;
@@ -31,6 +33,7 @@ import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import be.pxl.citygame.CityGameApplication;
@@ -255,8 +258,10 @@ public class Player {
             data.put("score", score);
 
             // And individual question result data
+            // TODO: Christina: Check this, doesn't work yet
             JSONArray questions = new JSONArray();
-            for( Question question : content.getQuestionList() ) {
+            for( Map.Entry<Integer, Question> entry : content.getQuestionList().entrySet() ) {
+                Question question = entry.getValue();
                 JSONObject addQuestion = new JSONObject();
                 addQuestion.put("gid", content.getId());
                 addQuestion.put("qid", question.getqId());
@@ -346,10 +351,13 @@ public class Player {
                     if( !hasData ) {
                         try {
                             // Initialize GameContent (Blocking until ready)
-                            Providers.getGameContentProvider().getGameContentById(gameId);
+                            Log.d(Player.class.toString(), "Preparing gamecontent...");
+                            Providers.getGameContentProvider().getGameContentByIdSync(gameId);
+                            Log.d(Player.class.toString(), "Preparing gamecontent finished!");
                             JSONArray gameQuestionsData = gameData.getJSONArray("questionAnswerData");
                             // iterate over all questions in this game
                             for (int j = 0; j < gameQuestionsData.length(); ++j) {
+                                Log.d(Player.class.toString(), "Running question " + j + "...");
                                 JSONObject question = gameQuestionsData.getJSONObject(j);
                                 int qid = question.getInt("qid");
                                 Question questionData = Providers.getQuestionProvider().loadQuestionById(gameId, qid);
@@ -362,6 +370,13 @@ public class Player {
                                     questionData.checkAnswer(answerInt);
                                 }
                             }
+                            // And finally, flag game as completed
+                            ContentValues contentValues = new ContentValues();
+                            contentValues.put(GameDB.Games.COL_COMPLETED, 1);
+                            contentValues.put(GameDB.Games.COL_SCORE, gameData.getInt("score"));
+                            String whereGame = GameDB.Games.COL_GID + " = ?";
+                            String[] whereArgsGame = { "" + gameId };
+                            sqlDb.update(GameDB.Games.TABLE_NAME, contentValues, whereGame, whereArgsGame);
                         } catch( ClassCastException|NumberFormatException e ) {
                             e.printStackTrace();
                         }

@@ -79,6 +79,8 @@ public class RegisterFragment extends Fragment {
                 Toast.makeText(getActivity().getApplicationContext(), getString(R.string.registration_success), Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
                 startActivity(intent);
+            } else {
+                Toast.makeText(getActivity().getApplicationContext(), getActivity().getApplication().getString(R.string.registration_web_fail), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -86,14 +88,16 @@ public class RegisterFragment extends Fragment {
     private boolean isPasswordValid(String password) {
         Boolean success = !password.isEmpty() && password.length() >= 4;
         Log.d("Password is valid", success.toString());
-
+        if( !success )
+            Toast.makeText(getActivity().getApplicationContext(), getActivity().getApplication().getString(R.string.registration_err_password), Toast.LENGTH_LONG).show();
         return  success;
     }
 
     private boolean isUsernameValid(String username) {
         Boolean success = !username.isEmpty() && username.length() >= 6;
         Log.d("Username is valid", success.toString());
-
+        if( !success )
+            Toast.makeText(getActivity().getApplicationContext(), getActivity().getApplication().getString(R.string.registration_err_username), Toast.LENGTH_LONG).show();
         return  success;
     }
 
@@ -107,6 +111,8 @@ public class RegisterFragment extends Fragment {
 
         Boolean success = matcher.matches();
         Log.d("Email is valid", success.toString() + " " + email);
+        if( !success )
+            Toast.makeText(getActivity().getApplicationContext(), getActivity().getApplication().getString(R.string.registration_err_email), Toast.LENGTH_LONG).show();
 
         return  success;
     }

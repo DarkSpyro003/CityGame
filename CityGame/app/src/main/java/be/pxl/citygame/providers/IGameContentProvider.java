@@ -12,5 +12,6 @@ public interface IGameContentProvider {
 
     public void initGameContentById(int id, GameContentCaller caller);
     public GameContent getGameContentById(int id) throws NoSuchElementException;
+    public GameContent getGameContentByIdSync(int id) throws NoSuchElementException;
 
 }

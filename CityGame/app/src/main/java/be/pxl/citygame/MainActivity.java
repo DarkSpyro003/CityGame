@@ -19,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Map;
 
 import be.pxl.citygame.data.GameContent;
 import be.pxl.citygame.data.Player;
@@ -145,6 +146,21 @@ public class MainActivity extends ActionBarActivity implements GameContentCaller
     }
 
     /**
+     * Returns the first qid following passed qid
+     * @param qid   Previous question's id
+     * @param gid   Game's id
+     * @return      Next question id or -1 in case of none
+     */
+    private int getNextQid(int gid, int qid) {
+        for( Map.Entry<Integer, Question> entry : Providers.getGameContentProvider().getGameContentById(gid).getQuestionList().entrySet() ) {
+            int key = entry.getKey();
+            if( key > qid )
+                return key;
+        }
+        return -1;
+    }
+
+    /**
      * Finds out of the player was already playing this game, and finds out which question
      * they haven't answered yet.
      * @param gid   Game's id
@@ -164,7 +180,8 @@ public class MainActivity extends ActionBarActivity implements GameContentCaller
             return 0;
         }
 
-        int qid = 0;
+        // Find out first qid
+        int qid = getNextQid(gid, -1);
         cur.moveToFirst();
         while(!cur.isAfterLast()) {
             for(int i = 0; i < cur.getColumnCount(); i++) {
@@ -172,8 +189,7 @@ public class MainActivity extends ActionBarActivity implements GameContentCaller
                     if( cur.getInt(i) == 0 ) {
                         return qid;
                     } else { // Question possibly answered, load previous answer from DB.
-                        List<Question> questions = Providers.getGameContentProvider().getGameContentById(gid).getQuestionList();
-                        Question current = questions.get(qid);
+                        Question current = Providers.getQuestionProvider().loadQuestionById(gid, qid);
                         current.setAnswered(cur.getInt(cur.getColumnIndex(GameDB.Questions.COL_ANSWERED)) == 1);
                         current.setAnsweredCorrect(cur.getInt(cur.getColumnIndex(GameDB.Questions.COL_ANSWERED_CORRECT)) == 1);
                         if( current.getType() == Question.PLAIN_TEXT ) {
@@ -184,7 +200,7 @@ public class MainActivity extends ActionBarActivity implements GameContentCaller
                     }
                 }
             }
-            qid++;
+            qid = getNextQid(gid, -1);
             cur.moveToNext();
         }
         cur.close();

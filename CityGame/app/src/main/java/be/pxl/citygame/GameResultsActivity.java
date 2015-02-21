@@ -10,7 +10,11 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import be.pxl.citygame.data.Question;
 import be.pxl.citygame.data.database.GameDB;
@@ -23,6 +27,7 @@ public class GameResultsActivity extends ActionBarActivity {
     private TextView correctAnswersText;
     private int gameId;
 
+    // todo: button to return to MainActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +39,11 @@ public class GameResultsActivity extends ActionBarActivity {
         this.gameId = intent.getIntExtra("gameId", 0);
 
         ListView view = (ListView)findViewById(R.id.lv_question_response);
-        List<Question> questionList = Providers.getGameContentProvider().getGameContentById(gameId).getQuestionList();
+        List<Question> questionList = new ArrayList<Question>();
+        TreeMap<Integer, Question> questionsTable = Providers.getGameContentProvider().getGameContentById(gameId).getQuestionList();
+        for( Map.Entry<Integer, Question> entry : questionsTable.entrySet() ) {
+            questionList.add(entry.getValue());
+        }
         Question[] questions = questionList.toArray(new Question[questionList.size()]);
         QuestionResponseAdapter adapter = new QuestionResponseAdapter(this, questions);
         view.setAdapter(adapter);
@@ -52,7 +61,7 @@ public class GameResultsActivity extends ActionBarActivity {
         correctAnswersText.setText(String.format("%s %d/%d", correctAnswersText.getText().toString(), score, questionList.size()));
 
         GameDbHelper helper = new GameDbHelper(getApplicationContext());
-        SQLiteDatabase sqlDb = helper.getReadableDatabase();
+        SQLiteDatabase sqlDb = helper.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(GameDB.Games.COL_COMPLETED, 1);

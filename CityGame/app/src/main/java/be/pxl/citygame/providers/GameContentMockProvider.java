@@ -37,4 +37,9 @@ class GameContentMockProvider implements IGameContentProvider {
 
         return content;
     }
+
+    @Override
+    public GameContent getGameContentByIdSync(int id) throws NoSuchElementException {
+        return this.getGameContentById(id);
+    }
 }

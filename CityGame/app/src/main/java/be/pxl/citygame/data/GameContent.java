@@ -3,8 +3,10 @@ package be.pxl.citygame.data;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.TreeMap;
 
 import be.pxl.citygame.MainActivity;
 
@@ -15,17 +17,17 @@ import be.pxl.citygame.MainActivity;
 public class GameContent {
 
     private String title;
-    private List<Question> questionList;
+    private TreeMap<Integer, Question> questionList;
     private int id = 0;
     private boolean completed = false;
     private int score;
 
-    public List<Question> getQuestionList() {
+    public TreeMap<Integer, Question> getQuestionList() {
         return questionList;
     }
 
     public GameContent(String title) {
-        questionList = new ArrayList<Question>();
+        questionList = new TreeMap<Integer, Question>();
         this.title = title;
     }
 
@@ -34,30 +36,23 @@ public class GameContent {
     }
 
     public Question getQuestionById(int id) throws NoSuchElementException {
-        Log.d(MainActivity.class.toString(), "Fetching question with id " + id);
-
-        if( id >= questionList.size() )
-            throw new NoSuchElementException("No such question id in this gamecontent id");
-
+        Log.d(GameContent.class.toString(), "Fetching question with id " + id);
         Question question = questionList.get(id);
+
         if( question == null )
             throw new NoSuchElementException("No such question id in this gamecontent id");
 
         return question;
     }
 
-    public GameContent(String title, List<Question> questionList) {
+    public GameContent(String title, TreeMap<Integer, Question> questionList) {
         this.questionList = questionList;
         this.title = title;
     }
 
     public void addQuestion(Question question) {
-        questionList.add(question);
-    }
-
-    public void removeQuestion(Question question) throws IllegalArgumentException {
-        if( !questionList.remove(question) )
-            throw new IllegalArgumentException("Question to remove does not exist");
+        Log.d(GameContent.class.toString(), "Adding question with id " + question.getqId());
+        questionList.put(question.getqId(), question);
     }
 
     public boolean isCompleted() {
