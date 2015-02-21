@@ -39,7 +39,7 @@ public class QuestionResponseAdapter extends ArrayAdapter<Question> {
 
         Question question = questions[position];
 
-        // TODO: Christina: add button for showing picture if one was taken in the question activity
+        // todo: add button for showing picture if one was taken in the question activity
         // question.hasLocalPhoto();
 
         if (question.isAnsweredCorrect()) {
