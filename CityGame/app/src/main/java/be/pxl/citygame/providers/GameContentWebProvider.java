@@ -38,6 +38,7 @@ import java.util.concurrent.ExecutionException;
 import be.pxl.citygame.CityGameApplication;
 import be.pxl.citygame.MainActivity;
 import be.pxl.citygame.data.GameContent;
+import be.pxl.citygame.data.Helpers;
 import be.pxl.citygame.data.Question;
 import be.pxl.citygame.R;
 import be.pxl.citygame.data.database.GameDB;
@@ -206,24 +207,9 @@ class GameContentWebProvider implements IGameContentProvider
                 HttpResponse response = httpClient.execute(httpGet);
                 HttpEntity entity = response.getEntity();
 
-                inputStream = entity.getContent();
-                // json is UTF-8 by default
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
-                StringBuilder sb = new StringBuilder();
-
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line + "\n");
-                }
-                result = sb.toString();
+                result = Helpers.getStringFromStream(entity.getContent());
             } catch (Exception e) {
                 Log.e(this.getClass().toString(), e.getMessage());
-            }
-            finally {
-                try{
-                    if(inputStream != null)
-                        inputStream.close();
-                } catch(Exception squish){}
             }
 
             try {

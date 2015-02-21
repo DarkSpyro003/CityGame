@@ -14,6 +14,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -188,22 +189,8 @@ public class Player {
             HttpResponse response = httpClient.execute(httpPost);
             int statusCode = response.getStatusLine().getStatusCode();
 
-            StringBuilder sb = new StringBuilder();
-            try {
-                BufferedReader reader =
-                        new BufferedReader(new InputStreamReader(response.getEntity().getContent()), 65728);
-                String line = null;
-
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            Log.d(Player.class.toString(), "User registration with status " + statusCode + " and content " + sb.toString());
+            String result = Helpers.getStringFromStream(response.getEntity().getContent());
+            Log.d(Player.class.toString(), "User registration with status " + statusCode + " and content " + result);
 
             if (statusCode == HttpStatus.SC_CREATED) {
                 // Login
@@ -292,20 +279,8 @@ public class Player {
             response = httpClient.execute(httpPost);
             int statusCode = response.getStatusLine().getStatusCode();
 
-            StringBuilder sb = new StringBuilder();
-            try {
-                BufferedReader reader =
-                        new BufferedReader(new InputStreamReader(response.getEntity().getContent()), 65728);
-                String line = null;
-
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line);
-                }
-            }
-            catch (IOException e) { e.printStackTrace(); }
-            catch (Exception e) { e.printStackTrace(); }
-
-            Log.d(Player.class.toString(), "User post Game with status " + statusCode + " and content " + sb.toString());
+            String result = Helpers.getStringFromStream(response.getEntity().getContent());
+            Log.d(Player.class.toString(), "User post Game with status " + statusCode + " and content " + result);
 
             return response.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED;
         } catch (IOException e) {
@@ -333,20 +308,8 @@ public class Player {
             HttpResponse response = httpClient.execute(httpPost);
             int statusCode = response.getStatusLine().getStatusCode();
 
-            StringBuilder sb = new StringBuilder();
-            try {
-                BufferedReader reader =
-                        new BufferedReader(new InputStreamReader(response.getEntity().getContent()), 65728);
-                String line = null;
-
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line);
-                }
-            }
-            catch (IOException e) { e.printStackTrace(); }
-            catch (Exception e) { e.printStackTrace(); }
-
-            Log.d(Player.class.toString(), "User login with status " + statusCode + " and content " + sb.toString());
+            String result = Helpers.getStringFromStream(response.getEntity().getContent());
+            Log.d(Player.class.toString(), "User login with status " + statusCode + " and content " + result);
 
             if( statusCode == HttpStatus.SC_OK ) {
                 CityGameApplication app = (CityGameApplication) application;
@@ -355,6 +318,9 @@ public class Player {
                 app.setLoggedIn(true);
                 tryPostGames(password);
                 // TODO: Christina: Get completed games from server and store locally
+                HttpGet dataGet = new HttpGet(application.getString(R.string.webservice_url) + "/player/" + username);
+                HttpResponse playerDataResponse = httpClient.execute(dataGet);
+                HttpEntity entity = playerDataResponse.getEntity();
             }
 
             return statusCode == HttpStatus.SC_OK;
