@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 21, 2015 at 06:34 PM
+-- Generation Time: Feb 21, 2015 at 07:32 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -45,7 +45,8 @@ INSERT INTO `gamecontent` (`id`, `title`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `multi_answer` (
-  `questionId` int(11) NOT NULL,
+  `qid` int(11) NOT NULL,
+  `gid` int(11) NOT NULL,
   `choiceId` int(3) NOT NULL,
   `answer` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -54,9 +55,9 @@ CREATE TABLE IF NOT EXISTS `multi_answer` (
 -- Dumping data for table `multi_answer`
 --
 
-INSERT INTO `multi_answer` (`questionId`, `choiceId`, `answer`) VALUES
-(1, 0, 'yes'),
-(1, 1, 'no');
+INSERT INTO `multi_answer` (`qid`, `gid`, `choiceId`, `answer`) VALUES
+(1, 1, 0, 'yes'),
+(1, 1, 1, 'no');
 
 -- --------------------------------------------------------
 
@@ -118,7 +119,8 @@ CREATE TABLE IF NOT EXISTS `player_question` (
 --
 
 CREATE TABLE IF NOT EXISTS `question` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
+  `gid` int(11) NOT NULL,
   `type` int(1) NOT NULL DEFAULT '0',
   `question` text NOT NULL,
   `text_answer` varchar(255) DEFAULT NULL,
@@ -126,18 +128,17 @@ CREATE TABLE IF NOT EXISTS `question` (
   `placename` text NOT NULL COMMENT 'Straatnaam, wegbeschrijving, ...',
   `extraInfo` text NOT NULL,
   `content_url` varchar(255) DEFAULT NULL COMMENT 'image or video url',
-  `gamecontentId` int(11) NOT NULL,
   `latitude` double NOT NULL,
   `longitude` double NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `question`
 --
 
-INSERT INTO `question` (`id`, `type`, `question`, `text_answer`, `multi_answer`, `placename`, `extraInfo`, `content_url`, `gamecontentId`, `latitude`, `longitude`) VALUES
-(1, 1, 'Is this a testquestion?', NULL, 0, 'ergens in Hasselt', 'Yes, this was a testquestion, since it''s in the test gamecontent!', 'http://public.ds003.info/imghost/testcontent.png', 1, 50.9167, 5.3333),
-(2, 0, 'This is another testquestion. To answer this question correctly, fill out the opposite word of ''no'' in the answer.', 'yes', NULL, 'ergens anders in Hasselt :P', 'And this was the second testquestion, this one in plain text!', 'http://public.ds003.info/imghost/testcontent.png', 1, 50.9368583, 5.3483892);
+INSERT INTO `question` (`id`, `gid`, `type`, `question`, `text_answer`, `multi_answer`, `placename`, `extraInfo`, `content_url`, `latitude`, `longitude`) VALUES
+(1, 1, 1, 'Is this a testquestion?', NULL, 0, 'ergens in Hasselt', 'Yes, this was a testquestion, since it''s in the test gamecontent!', 'http://public.ds003.info/imghost/testcontent.png', 50.9167, 5.3333),
+(2, 1, 0, 'This is another testquestion. To answer this question correctly, fill out the opposite word of ''no'' in the answer.', 'yes', NULL, 'ergens anders in Hasselt :P', 'And this was the second testquestion, this one in plain text!', 'http://public.ds003.info/imghost/testcontent.png', 50.9368583, 5.3483892);
 
 --
 -- Indexes for dumped tables
@@ -153,7 +154,7 @@ ALTER TABLE `gamecontent`
 -- Indexes for table `multi_answer`
 --
 ALTER TABLE `multi_answer`
- ADD PRIMARY KEY (`questionId`,`choiceId`);
+ ADD PRIMARY KEY (`qid`,`gid`,`choiceId`), ADD KEY `gid` (`gid`);
 
 --
 -- Indexes for table `players`
@@ -177,7 +178,7 @@ ALTER TABLE `player_question`
 -- Indexes for table `question`
 --
 ALTER TABLE `question`
- ADD PRIMARY KEY (`id`), ADD KEY `gamecontentId` (`gamecontentId`);
+ ADD PRIMARY KEY (`id`,`gid`), ADD KEY `gid` (`gid`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -194,11 +195,6 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'unique id for gamecontent',
 ALTER TABLE `players`
 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
--- AUTO_INCREMENT for table `question`
---
-ALTER TABLE `question`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
---
 -- Constraints for dumped tables
 --
 
@@ -206,7 +202,8 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 -- Constraints for table `multi_answer`
 --
 ALTER TABLE `multi_answer`
-ADD CONSTRAINT `multi_answer_ibfk_1` FOREIGN KEY (`questionId`) REFERENCES `question` (`id`);
+ADD CONSTRAINT `multi_answer_ibfk_1` FOREIGN KEY (`qid`) REFERENCES `question` (`id`),
+ADD CONSTRAINT `multi_answer_ibfk_2` FOREIGN KEY (`gid`) REFERENCES `gamecontent` (`id`);
 
 --
 -- Constraints for table `player_games`
@@ -227,7 +224,7 @@ ADD CONSTRAINT `player_question_ibfk_3` FOREIGN KEY (`qid`) REFERENCES `question
 -- Constraints for table `question`
 --
 ALTER TABLE `question`
-ADD CONSTRAINT `question_ibfk_1` FOREIGN KEY (`gamecontentId`) REFERENCES `gamecontent` (`id`);
+ADD CONSTRAINT `question_ibfk_1` FOREIGN KEY (`gid`) REFERENCES `gamecontent` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

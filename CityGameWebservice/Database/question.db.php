@@ -14,8 +14,8 @@ class QuestionDb
 	{
 		$contentId = $this->database->real_escape_string($contentId);
 		$questionList = array();
-		$result = $this->database->query('SELECT `id`, `type`, `question`, `text_answer`, `multi_answer`, `placename`, `extraInfo`, `content_url`, `gamecontentId`, `latitude`, `longitude`
-			FROM `question` WHERE `gamecontentId` = ' . $contentId);
+		$result = $this->database->query('SELECT `id`, `gid`, `type`, `question`, `text_answer`, `multi_answer`, `placename`, `extraInfo`, `content_url`, `latitude`, `longitude`
+			FROM `question` WHERE `gid` = ' . $contentId);
 		
 		while($row = $result->fetch_assoc())
 		{
@@ -37,8 +37,8 @@ class QuestionDb
 				$qAnswer = $row['multi_answer'];
 				$qId = $row['id'];
 				$qOptions = array();
-				$resultOptions = $this->database->query('SELECT `questionId`, `choiceId`, `answer` FROM `multi_answer` WHERE `questionId` = ' . 
-					$qId . ' ORDER BY `choiceId`'); // Ordering is important here
+				$resultOptions = $this->database->query('SELECT `qid`, `gid`, `choiceId`, `answer` FROM `multi_answer` WHERE `qid` = ' . 
+					$qId . ' AND `gid` = ' . $row['gid'] . ' ORDER BY `choiceId`'); // Ordering is important here
 				while($optionRow = $resultOptions->fetch_assoc())
 				{
 					$qOptions[] = $optionRow['answer'];

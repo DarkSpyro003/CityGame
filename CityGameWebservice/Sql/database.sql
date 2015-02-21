@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 21, 2015 at 06:35 PM
+-- Generation Time: Feb 21, 2015 at 07:33 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -38,7 +38,8 @@ CREATE TABLE IF NOT EXISTS `gamecontent` (
 --
 
 CREATE TABLE IF NOT EXISTS `multi_answer` (
-  `questionId` int(11) NOT NULL,
+  `qid` int(11) NOT NULL,
+  `gid` int(11) NOT NULL,
   `choiceId` int(3) NOT NULL,
   `answer` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -89,7 +90,8 @@ CREATE TABLE IF NOT EXISTS `player_question` (
 --
 
 CREATE TABLE IF NOT EXISTS `question` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
+  `gid` int(11) NOT NULL,
   `type` int(1) NOT NULL DEFAULT '0',
   `question` text NOT NULL,
   `text_answer` varchar(255) DEFAULT NULL,
@@ -97,10 +99,9 @@ CREATE TABLE IF NOT EXISTS `question` (
   `placename` text NOT NULL COMMENT 'Straatnaam, wegbeschrijving, ...',
   `extraInfo` text NOT NULL,
   `content_url` varchar(255) DEFAULT NULL COMMENT 'image or video url',
-  `gamecontentId` int(11) NOT NULL,
   `latitude` double NOT NULL,
   `longitude` double NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Indexes for dumped tables
@@ -116,7 +117,7 @@ ALTER TABLE `gamecontent`
 -- Indexes for table `multi_answer`
 --
 ALTER TABLE `multi_answer`
- ADD PRIMARY KEY (`questionId`,`choiceId`);
+ ADD PRIMARY KEY (`qid`,`gid`,`choiceId`), ADD KEY `gid` (`gid`);
 
 --
 -- Indexes for table `players`
@@ -140,7 +141,7 @@ ALTER TABLE `player_question`
 -- Indexes for table `question`
 --
 ALTER TABLE `question`
- ADD PRIMARY KEY (`id`), ADD KEY `gamecontentId` (`gamecontentId`);
+ ADD PRIMARY KEY (`id`,`gid`), ADD KEY `gid` (`gid`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -157,11 +158,6 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'unique id for gamecontent',
 ALTER TABLE `players`
 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
--- AUTO_INCREMENT for table `question`
---
-ALTER TABLE `question`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
---
 -- Constraints for dumped tables
 --
 
@@ -169,7 +165,8 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 -- Constraints for table `multi_answer`
 --
 ALTER TABLE `multi_answer`
-ADD CONSTRAINT `multi_answer_ibfk_1` FOREIGN KEY (`questionId`) REFERENCES `question` (`id`);
+ADD CONSTRAINT `multi_answer_ibfk_1` FOREIGN KEY (`qid`) REFERENCES `question` (`id`),
+ADD CONSTRAINT `multi_answer_ibfk_2` FOREIGN KEY (`gid`) REFERENCES `gamecontent` (`id`);
 
 --
 -- Constraints for table `player_games`
@@ -190,7 +187,7 @@ ADD CONSTRAINT `player_question_ibfk_3` FOREIGN KEY (`qid`) REFERENCES `question
 -- Constraints for table `question`
 --
 ALTER TABLE `question`
-ADD CONSTRAINT `question_ibfk_1` FOREIGN KEY (`gamecontentId`) REFERENCES `gamecontent` (`id`);
+ADD CONSTRAINT `question_ibfk_1` FOREIGN KEY (`gid`) REFERENCES `gamecontent` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
