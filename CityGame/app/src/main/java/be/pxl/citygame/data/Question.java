@@ -338,6 +338,16 @@ public class Question {
         return loadImage(localPhotoUri.toString());
     }
 
+    /**
+     * Checks if the local photo (still) exists
+     * @return  Exists?
+     * @see java.io.File#exists()
+     */
+    public boolean hasLocalPhoto() {
+        File image = new File(localPhotoUri.toString());
+        return image.exists();
+    }
+
     public void setLocalPhotoUri(Uri localPhotoUri) {
         this.localPhotoUri = localPhotoUri;
     }
