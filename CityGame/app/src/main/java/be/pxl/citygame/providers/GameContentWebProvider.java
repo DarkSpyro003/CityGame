@@ -254,7 +254,7 @@ class GameContentWebProvider implements IGameContentProvider
                         content.addQuestion(questionObject);
 
                     if( questionObject != null ) {
-                        questionObject.setqId(i);
+                        questionObject.setqId(quest.getInt("id"));
                         questionObject.setGameId(id);
                         questionObject.setApplication(application);
                         questionObject.setPlacename(quest.getString("placename"));

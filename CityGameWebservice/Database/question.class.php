@@ -1,6 +1,7 @@
 <?php
 class Question implements JsonSerializable
 {
+	private $id;
 	private $type;
 	private $question;
 	private $text_answer;
@@ -17,11 +18,11 @@ class Question implements JsonSerializable
 		$argv = func_get_args();
 		switch( func_num_args() ) 
 		{
-			case 3:
-				self::__construct3($argv[0], $argv[1], $argv[2]);
-				break;
 			case 4:
 				self::__construct4($argv[0], $argv[1], $argv[2], $argv[3]);
+				break;
+			case 5:
+				self::__construct5($argv[0], $argv[1], $argv[2], $argv[3], $argv[4]);
 				break;
 			default:
 				throw new Exception('Invalid constructor called.');
@@ -29,22 +30,24 @@ class Question implements JsonSerializable
 	}
 	
 	// Constructor plain text question
-	public function __construct3($type, $question, $answer)
+	public function __construct4($id, $type, $question, $answer)
 	{
 		if( $type != 0 )
 			throw new Exception('Type must be 0 for using this constructor');
 		
+		$this->id = $id;
 		$this->type = $type;
 		$this->question = $question;
 		$this->text_answer = $answer;
 	}
 	
 	// Constructor multiple choice question
-	public function __construct4($type, $question, $answer, $options)
+	public function __construct5($id, $type, $question, $answer, $options)
 	{
 		if( $type != 1 )
 			throw new Exception('Type must be 1 for using this constructor');
 		
+		$this->id = $id;
 		$this->type = $type;
 		$this->question = $question;
 		$this->multi_answer = $answer;

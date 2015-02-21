@@ -20,6 +20,7 @@ class QuestionDb
 		while($row = $result->fetch_assoc())
 		{
 			$question;
+			$qId = $row['id'];
 			$qType = $row['type'];
 			$qQuestion = $row['question'];
 			$qPlacename = $row['placename'];
@@ -30,12 +31,11 @@ class QuestionDb
 			if( $qType == 0 ) // plain text question
 			{
 				$qAnswer = $row['text_answer'];
-				$question = new Question($qType, $qQuestion, $qAnswer);
+				$question = new Question($qId, $qType, $qQuestion, $qAnswer);
 			}
 			else if( $qType == 1 ) // multiple choice question
 			{
 				$qAnswer = $row['multi_answer'];
-				$qId = $row['id'];
 				$qOptions = array();
 				$resultOptions = $this->database->query('SELECT `qid`, `gid`, `choiceId`, `answer` FROM `multi_answer` WHERE `qid` = ' . 
 					$qId . ' AND `gid` = ' . $row['gid'] . ' ORDER BY `choiceId`'); // Ordering is important here
@@ -43,7 +43,7 @@ class QuestionDb
 				{
 					$qOptions[] = $optionRow['answer'];
 				}
-				$question = new Question($qType, $qQuestion, $qAnswer, $qOptions);
+				$question = new Question($qId, $qType, $qQuestion, $qAnswer, $qOptions);
 			}
 			$question->placename = $qPlacename;
 			$question->extraInfo = $qExtraInfo;
