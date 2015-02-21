@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 21, 2015 at 07:32 PM
+-- Generation Time: Feb 21, 2015 at 07:43 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `players` (
 --
 
 INSERT INTO `players` (`id`, `username`, `passwordhash`, `email`, `realname`) VALUES
-(1, 'christina', 'notahashyet', 'christina.korosec@student.pxl.be', 'Christina Lena Korosec');
+(1, 'christina', '$2y$10$RY6h4QeQ4Xj0togHRHXdoO26NQ/3LMgKAvkEQAb8HwZLTQbkxFG8y', 'christina.korosec@student.pxl.be', 'Christina Lena Korosec');
 
 -- --------------------------------------------------------
 
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `player_games` (
 --
 
 INSERT INTO `player_games` (`playerId`, `gameContentId`, `score`) VALUES
-(1, 1, 90);
+(1, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -111,6 +111,14 @@ CREATE TABLE IF NOT EXISTS `player_question` (
   `qid` int(11) NOT NULL COMMENT 'question id',
   `answer` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `player_question`
+--
+
+INSERT INTO `player_question` (`pid`, `gid`, `qid`, `answer`) VALUES
+(1, 1, 1, '0'),
+(1, 1, 2, 'yes');
 
 -- --------------------------------------------------------
 
