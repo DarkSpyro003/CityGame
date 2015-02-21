@@ -254,6 +254,7 @@ public class Player {
         int gameContentId = content.getId();
         int score = content.getScore();
 
+        // TODO: Christina: Also make this store individual question-answer content to webservice
         DefaultHttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
         HttpPost httpPost = new HttpPost(application.getString(R.string.webservice_url) + "player/" + username + "/" + gameContentId);
         httpPost.setHeader("Content-Type", "application/json");

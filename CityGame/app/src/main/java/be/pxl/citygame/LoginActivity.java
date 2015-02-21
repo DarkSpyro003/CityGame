@@ -41,6 +41,7 @@ public class LoginActivity extends Activity {
     private View mProgressView;
     private View mLoginFormView;
 
+    // todo: Remember credentials (SharedPreferences) and try logging in on Application startup?
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
