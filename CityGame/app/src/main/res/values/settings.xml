@@ -8,6 +8,6 @@
     <!-- -><string name="question_provider">be.pxl.citygame.providers.QuestionMockProvider</string><!- -->
     <!-- --><string name="question_provider">be.pxl.citygame.providers.QuestionProvider</string><!-- -->
 
-    <string name="webservice_url">http://192.168.56.1/citygame/</string>
+    <string name="webservice_url">http://public.ds003.info/citygame/</string>
     <integer name="gps_marker_distance">22</integer>
 </resources>
