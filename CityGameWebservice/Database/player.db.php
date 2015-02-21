@@ -52,7 +52,7 @@ class PlayerDb
 			$answer = $this->database->real_escape_string($data['answer']);
 			$queryString .= "($playerId, $gid, $qid, '$answer')";
 		}
-		$this>database->query($queryString);
+		$this->database->query($queryString);
 	}
 	
 	public function completeGameContent($username, $gameContentId, $score, $questiondata)
@@ -179,7 +179,15 @@ class PlayerDb
 				$gamesResult = $this->database->query('SELECT `playerId`, `gameContentId`, `score` FROM `player_games` WHERE `playerId` = ' . $playerId);
 				while($game = $gamesResult->fetch_assoc())
 				{
-					$games[] = new PlayedGame($game['gameContentId'], $game['score']);
+					$questionDataQuery = 'SELECT `qid`, `answer` FROM `player_question` WHERE ' .
+							'`pid` = ' . $playerId . ' AND `gid` = ' . $game['gameContentId'];
+					$questionDataResult = $this->database->query($questionDataQuery);
+					$questionList = array();
+					while($questionData = $questionDataResult->fetch_assoc())
+					{
+						$questionList[] = $questionData;
+					}
+					$games[] = new PlayedGame($game['gameContentId'], $game['score'], $questionList);
 				}
 				$player = new Player($row['username'], $row['email'], $row['realname']);
 				$player->id = $playerId;

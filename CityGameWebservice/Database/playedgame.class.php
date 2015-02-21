@@ -3,11 +3,13 @@ class PlayedGame implements JsonSerializable
 {
 	private $gameContentId;
 	private $score;
+	private $questionAnswerData;
 	
-	public function __construct($gameContentId, $score)
+	public function __construct($gameContentId, $score, $questionAnswerData)
 	{
 		$this->gameContentId = $gameContentId;
 		$this->score = $score;
+		$this->questionAnswerData = $questionAnswerData;
 	}
 	
 	public function jsonSerialize()
