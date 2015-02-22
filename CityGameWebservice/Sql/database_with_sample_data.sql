@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 21, 2015 at 07:43 PM
+-- Generation Time: Feb 22, 2015 at 03:08 AM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `players` (
   `passwordhash` char(60) NOT NULL COMMENT 'bcrypt',
   `email` varchar(255) NOT NULL,
   `realname` varchar(50) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `players`
@@ -145,8 +145,8 @@ CREATE TABLE IF NOT EXISTS `question` (
 --
 
 INSERT INTO `question` (`id`, `gid`, `type`, `question`, `text_answer`, `multi_answer`, `placename`, `extraInfo`, `content_url`, `latitude`, `longitude`) VALUES
-(1, 1, 1, 'Is this a testquestion?', NULL, 0, 'ergens in Hasselt', 'Yes, this was a testquestion, since it''s in the test gamecontent!', 'http://public.ds003.info/imghost/testcontent.png', 50.9167, 5.3333),
-(2, 1, 0, 'This is another testquestion. To answer this question correctly, fill out the opposite word of ''no'' in the answer.', 'yes', NULL, 'ergens anders in Hasselt :P', 'And this was the second testquestion, this one in plain text!', 'http://public.ds003.info/imghost/testcontent.png', 50.9368583, 5.3483892);
+(1, 1, 1, 'Is this a testquestion?', NULL, 0, 'ergens in Hasselt', 'Yes, this was a testquestion, since it''s in the test gamecontent!', 'http://public.ds003.info/vid/small/vid.webm', 50.9167, 5.3333),
+(2, 1, 0, 'This is another testquestion. To answer this question correctly, fill out the opposite word of ''no'' in the answer.', 'yes', NULL, 'ergens anders in Hasselt :P', 'And this was the second testquestion, this one in plain text!', 'http://public.ds003.info/imghost/genk1.jpg', 50.9368583, 5.3483892);
 
 --
 -- Indexes for dumped tables
