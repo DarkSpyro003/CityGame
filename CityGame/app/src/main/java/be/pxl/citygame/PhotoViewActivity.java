@@ -1,4 +1,4 @@
-package be.pxl.citygame.providers;
+package be.pxl.citygame;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
