@@ -27,7 +27,10 @@ $app->get(
 			echo '404 Resource Not Found';
 		}
 		else
+		{
+			$app->contentType('application/json');
 			echo json_encode($content);
+		}
     }
 );
 
@@ -46,7 +49,10 @@ $app->get(
 			echo '404 Resource Not Found';
 		}
 		else
+		{
+			$app->contentType('application/json');
 			echo json_encode($content);
+		}
     }
 );
 
@@ -88,6 +94,7 @@ $app->post(
 						$newUrl = $serviceroot . '/player/' . $username;
 						$app->response->headers->set('Location', $newUrl); // Holds GET url to the created resource
 						$newContent = $playerdb->getPlayerByUsername($username);
+						$app->contentType('application/json');
 						echo json_encode($newContent);
 					}
 					else
@@ -138,6 +145,7 @@ $app->put('/player/:username',
 				$newUrl = $serviceroot . '/player/' . $username;
 				$app->response->headers->set('Location', $newUrl); // Holds GET url to the created resource
 				$newContent = $playerdb->getPlayerByUsername($newusername);
+				$app->contentType('application/json');
 				echo json_encode($newContent);
 			}
 			else if( $status == 401 )
@@ -241,6 +249,7 @@ $app->post(
 					$newUrl = $serviceroot . '/player/' . $username;
 					$app->response->headers->set('Location', $newUrl); // Holds GET url to the created resource
 					$newContent = $playerdb->getPlayerByUsername($username);
+					$app->contentType('application/json');
 					echo json_encode($newContent);
 				}
 				else if( $status == 409 )
