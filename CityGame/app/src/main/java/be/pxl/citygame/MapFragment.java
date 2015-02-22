@@ -1,6 +1,7 @@
 package be.pxl.citygame;
 
 import android.content.Intent;;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -68,6 +69,7 @@ public class MapFragment extends Fragment implements ILocationRequest {
         targetLocation = Providers.getQuestionProvider().loadQuestionById(gameId, questionId).getLocation();
         // todo: Perhaps use custom pointer icon/art like teacher suggested?
         targetOverlay = new OverlayItem("Doel", "Uw volgende stopplaats", new GeoPoint(targetLocation));
+        targetOverlay.setMarker(getResources().getDrawable(R.drawable.marker));
         ArrayList<OverlayItem> overlayItems = new ArrayList<OverlayItem>();
         overlayItems.add(targetOverlay);
         ItemizedIconOverlay<OverlayItem> itemizedOverlayItems = new ItemizedIconOverlay<OverlayItem>(getActivity(), overlayItems, null);
