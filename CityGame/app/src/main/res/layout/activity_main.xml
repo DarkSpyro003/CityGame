@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="240dp"
         android:id="@+id/logo"
-        android:src="@drawable/logo"/>
+        android:src="@drawable/logo"
+        android:contentDescription="@string/logo_description"/>
 
     <Button
         android:layout_width="150dp"

@@ -68,5 +68,6 @@
     <string name="show_photo">Toon Foto</string>
     <string name="title_activity_photo_view">Foto\'s van uw spel!</string>
     <string name="img_tickmark">tickmark</string>
+    <string name="logo_description">CityGame logo</string>
 
 </resources>
