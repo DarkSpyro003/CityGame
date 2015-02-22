@@ -23,7 +23,7 @@ public class PhotoViewActivity extends ActionBarActivity {
         Bitmap bitmap = (Bitmap) intent.getParcelableExtra("Bitmap");
 
         ImageView image = (ImageView) findViewById(R.id.iv_photo);
-        image.setImageBitmap(bitmap);
+        //image.setImageBitmap(bitmap);
     }
 
 
