@@ -37,8 +37,7 @@ import be.pxl.citygame.data.database.GameDbHelper;
 import be.pxl.citygame.providers.GameContentCaller;
 import be.pxl.citygame.providers.Providers;
 
-// todo: Design a logo
-// todo: Design an app icon -> http://developer.android.com/design/style/iconography.html
+
 public class MainActivity extends ActionBarActivity implements GameContentCaller {
 
     private static final int PRIMARY_CONTENT_ID = 1;
