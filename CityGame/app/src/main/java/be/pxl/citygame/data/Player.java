@@ -79,7 +79,7 @@ public class Player {
      */
     public void postGames(String password) {
         if( application.isLoggedIn() ) {
-            job = this.JOB_POST_GAME;
+            job = JOB_POST_GAME;
             AsyncTask postgames = new GetRestData().execute(password);
         }
     }
@@ -92,7 +92,7 @@ public class Player {
     public boolean register(String password) {
         this.dialogTitle = application.getString(R.string.registering_dialog_title);
         this.dialogContent = application.getString(R.string.registering_dialog_content);
-        job = this.JOB_REGISTER;
+        job = JOB_REGISTER;
         AsyncTask register = new GetRestData().execute(password);
         try {
             // If not true, let it go to the bottom to show the AlertDialog
@@ -132,7 +132,7 @@ public class Player {
     public boolean checkLogin(String password) {
         this.dialogTitle = application.getString(R.string.login_progress_title);
         this.dialogContent = application.getString(R.string.login_progress_content);
-        job = this.JOB_LOGIN;
+        job = JOB_LOGIN;
         AsyncTask login = new GetRestData().execute(password);
         try {
             return (Boolean) login.get();
