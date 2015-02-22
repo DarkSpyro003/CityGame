@@ -60,5 +60,6 @@
     <string name="registration_err_email">Uw emailadres is incorrect</string>
     <string name="err_no_internet_title">Geen internetverbinding</string>
     <string name="err_no_internet_content">U kan geen nieuw spel starten en u kan zich niet aanmelden zonder een internetverbinding. Verbind met het internet vooraleer verder te gaan.</string>
+    <string name="btn_photo">Camera</string>
 
 </resources>

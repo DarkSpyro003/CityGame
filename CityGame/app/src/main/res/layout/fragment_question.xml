@@ -49,5 +49,13 @@ android:gravity="center_horizontal"
             android:id="@+id/btn_info"
             android:onClick="showMoreInfo"
             />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_photo"
+            android:id="@+id/btn_photo"
+            android:onClick="goToCameraActivity"
+            />
     </LinearLayout>
 </RelativeLayout>

@@ -82,10 +82,8 @@ public class QuestionActivity extends ActionBarActivity {
         // Do nothing - you can't go back to previous question!
     }
 
-    public void goToCameraActivity() {
-        Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
-        intent.putExtra("gameid", currGame);
-        intent.putExtra("questionid", currQuestion);
-        startActivityForResult(intent, 0);
+    public void goToCameraActivity(View v) {
+        QuestionFragment fragment = (QuestionFragment) getSupportFragmentManager().findFragmentById(R.id.questionFragment);
+        fragment.goToCameraActivity(v);
     }
 }

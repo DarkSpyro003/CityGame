@@ -126,4 +126,11 @@ public class QuestionFragment extends Fragment {
         intent.putExtra("questionId", questionId);
         startActivityForResult(intent, 0);
     }
+
+    public void goToCameraActivity(View v) {
+        Intent intent = new Intent(getActivity().getApplicationContext(), CameraActivity.class);
+        intent.putExtra("gameid", gameId);
+        intent.putExtra("questionid", questionId);
+        startActivityForResult(intent, 0);
+    }
 }
