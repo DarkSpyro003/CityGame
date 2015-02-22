@@ -44,4 +44,10 @@ public class PauseActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onResume() {
+        ((CityGameApplication)getApplicationContext()).setActivity(this);
+        super.onResume();
+    }
 }

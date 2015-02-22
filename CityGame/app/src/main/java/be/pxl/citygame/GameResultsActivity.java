@@ -72,6 +72,8 @@ public class GameResultsActivity extends ActionBarActivity {
 
         if( app.isLoggedIn() )
             app.getPlayer().postGames(app.getPassword());
+
+        sqlDb.close();
     }
 
 
@@ -107,5 +109,11 @@ public class GameResultsActivity extends ActionBarActivity {
     public void goToMainActivity(View v) {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivityForResult(intent, 0);
+    }
+
+    @Override
+    protected void onResume() {
+        ((CityGameApplication)getApplicationContext()).setActivity(this);
+        super.onResume();
     }
 }

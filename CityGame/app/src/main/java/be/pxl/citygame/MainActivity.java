@@ -148,6 +148,8 @@ public class MainActivity extends ActionBarActivity implements GameContentCaller
             Button btn_login = (Button) findViewById(R.id.btn_go_to_log_in);
             btn_login.setText(getString(R.string.logout));
         }
+
+        sqlDb.close();
     }
 
     /**
@@ -290,6 +292,7 @@ public class MainActivity extends ActionBarActivity implements GameContentCaller
             cur.moveToNext();
         }
         cur.close();
+        sqlDb.close();
 
         return qid;
     }
@@ -309,6 +312,7 @@ public class MainActivity extends ActionBarActivity implements GameContentCaller
 
         boolean toReturn = cur.getCount() > 0;
         cur.close();
+        sqlDb.close();
 
         return toReturn;
     }

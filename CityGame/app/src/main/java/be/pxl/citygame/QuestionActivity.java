@@ -93,4 +93,10 @@ public class QuestionActivity extends ActionBarActivity {
         QuestionFragment fragment = (QuestionFragment) getSupportFragmentManager().findFragmentById(R.id.questionFragment);
         fragment.onActivityResult(requestCode, resultCode, data);
     }
+
+    @Override
+    protected void onResume() {
+        ((CityGameApplication)getApplicationContext()).setActivity(this);
+        super.onResume();
+    }
 }

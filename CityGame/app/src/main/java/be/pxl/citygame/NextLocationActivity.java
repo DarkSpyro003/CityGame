@@ -66,4 +66,10 @@ public class NextLocationActivity extends ActionBarActivity {
         NextLocationFragment fragment = (NextLocationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_next_location);
         fragment.goToPause(v);
     }
+
+    @Override
+    protected void onResume() {
+        ((CityGameApplication)getApplicationContext()).setActivity(this);
+        super.onResume();
+    }
 }

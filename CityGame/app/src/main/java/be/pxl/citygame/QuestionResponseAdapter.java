@@ -2,7 +2,6 @@ package be.pxl.citygame;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import be.pxl.citygame.data.Question;
-import be.pxl.citygame.providers.PhotoViewActivity;
 
 /**
  * Created by Lorenz Jolling on 2015-01-21.

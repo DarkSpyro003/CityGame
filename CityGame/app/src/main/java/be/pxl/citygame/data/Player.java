@@ -391,6 +391,7 @@ public class Player {
                             e.printStackTrace();
                         }
                     }
+                    sqlDb.close();
                 }
             }
 
