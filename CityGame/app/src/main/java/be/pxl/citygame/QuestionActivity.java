@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -84,5 +85,12 @@ public class QuestionActivity extends ActionBarActivity {
     public void goToCameraActivity(View v) {
         QuestionFragment fragment = (QuestionFragment) getSupportFragmentManager().findFragmentById(R.id.questionFragment);
         fragment.goToCameraActivity(v);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(QuestionActivity.class.toString(), "onActivityResult get!");
+        QuestionFragment fragment = (QuestionFragment) getSupportFragmentManager().findFragmentById(R.id.questionFragment);
+        fragment.onActivityResult(requestCode, resultCode, data);
     }
 }

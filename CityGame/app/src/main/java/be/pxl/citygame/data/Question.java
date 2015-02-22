@@ -281,14 +281,7 @@ public class Question {
             photo.compress(Bitmap.CompressFormat.JPEG, 85, out);
             this.localPhotoUri = Uri.fromFile(image);
 
-            // Save to DB
-            GameDbHelper helper = new GameDbHelper(application.getApplicationContext());
-            SQLiteDatabase sqlDb = helper.getWritableDatabase();
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(GameDB.Questions.COL_LOCALPHOTO, image.getAbsolutePath());
-            String where = GameDB.Questions.COL_GID + " = ? AND " + GameDB.Questions.COL_QID + " = ?";
-            String[] whereArgs = { "" + this.gameId, "" + this.qId };
-            sqlDb.update(GameDB.Questions.TABLE_NAME, contentValues, where, whereArgs);
+            this.markPhotoAsSaved(Uri.fromFile(image));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } finally {
@@ -300,6 +293,20 @@ public class Question {
                 }
             }
         }
+    }
+
+    /**
+     * Stores photo uri in local db
+     */
+    public void markPhotoAsSaved(Uri uri) {
+        // Save to DB
+        GameDbHelper helper = new GameDbHelper(application.getApplicationContext());
+        SQLiteDatabase sqlDb = helper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(GameDB.Questions.COL_LOCALPHOTO, uri.getPath());
+        String where = GameDB.Questions.COL_GID + " = ? AND " + GameDB.Questions.COL_QID + " = ?";
+        String[] whereArgs = { "" + this.gameId, "" + this.qId };
+        sqlDb.update(GameDB.Questions.TABLE_NAME, contentValues, where, whereArgs);
     }
 
     /**

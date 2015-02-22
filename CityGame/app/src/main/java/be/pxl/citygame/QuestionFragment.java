@@ -5,6 +5,8 @@ import android.app.Application;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,10 +34,13 @@ import be.pxl.citygame.providers.Providers;
  */
 public class QuestionFragment extends Fragment {
 
+    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+
     private int gameId;
     private int questionId;
     private boolean dataSet = false;
     private Question question;
+    private File savePicture;
 
     private EditText txtAnswer;
     private List<RadioButton> optionList;
@@ -128,9 +134,31 @@ public class QuestionFragment extends Fragment {
     }
 
     public void goToCameraActivity(View v) {
-        Intent intent = new Intent(getActivity().getApplicationContext(), CameraActivity.class);
-        intent.putExtra("gameid", gameId);
-        intent.putExtra("questionid", questionId);
-        startActivityForResult(intent, 0);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        long unixTime = System.currentTimeMillis() / 1000L;
+        savePicture = new File(Environment.getExternalStorageDirectory() + File.separator + unixTime + "_citygame_" + this.questionId + "_" + this.gameId + ".jpg");
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(savePicture));
+        getActivity().startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(QuestionFragment.class.toString(), "Got activity result with requestcode " +
+                requestCode + " and resultCode " + resultCode);
+        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                // Image captured and saved to fileUri specified in the Intent
+                if( savePicture.exists() ) {
+                    question.markPhotoAsSaved(Uri.fromFile(savePicture));
+                    Log.d(QuestionFragment.class.toString(), "Saved picture!");
+                }
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                // User cancelled the image capture
+                Log.d(QuestionFragment.class.toString(), "Camera cancelled!");
+            } else {
+                // Image capture failed, advise user
+                Log.e(QuestionFragment.class.toString(), "Camera failure!");
+                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.err_no_camera), Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }
