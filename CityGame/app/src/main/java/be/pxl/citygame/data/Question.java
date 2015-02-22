@@ -192,6 +192,8 @@ public class Question {
         return remoteContentUri;
     }
 
+    public Uri getLocalPhotoUri(){ return localPhotoUri; }
+
     public void setRemoteContentUri(Uri remoteContentUri) {
         this.remoteContentUri = remoteContentUri;
     }

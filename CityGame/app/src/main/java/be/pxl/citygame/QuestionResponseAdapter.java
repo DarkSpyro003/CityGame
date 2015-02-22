@@ -50,9 +50,8 @@ public class QuestionResponseAdapter extends ArrayAdapter<Question> {
             btnShowImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //todo: go to new activity to show image
                     Intent intent = new Intent(v.getContext(), PhotoViewActivity.class);
-                    intent.putExtra("Bitmap", question.getLocalPhoto());
+                    intent.putExtra("Bitmap", question.getLocalPhotoUri());
                     v.getContext().startActivity(intent);
                 }
             });

@@ -2,6 +2,7 @@ package be.pxl.citygame.providers;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -20,10 +21,10 @@ public class PhotoViewActivity extends ActionBarActivity {
         setContentView(R.layout.activity_photo_view);
 
         Intent intent = getIntent();
-        Bitmap bitmap = (Bitmap) intent.getParcelableExtra("Bitmap");
+        Uri uri = (Uri) intent.getParcelableExtra("Bitmap");
 
         ImageView image = (ImageView) findViewById(R.id.iv_photo);
-        //image.setImageBitmap(bitmap);
+        image.setImageURI(uri);
     }
 
 
