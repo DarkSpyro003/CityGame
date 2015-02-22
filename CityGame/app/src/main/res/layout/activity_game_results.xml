@@ -10,7 +10,7 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/lv_question_response"
         android:layout_above="@+id/tv_correct_answers"
         android:layout_marginBottom="70dp"/>
