@@ -3,6 +3,7 @@ package be.pxl.citygame;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
@@ -12,6 +13,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -35,9 +37,6 @@ import be.pxl.citygame.providers.Providers;
 
 // todo: Design a logo
 // todo: Design an app icon -> http://developer.android.com/design/style/iconography.html
-// todo: Replace login button with logoff button when logged in
-// CityGameApplication app = (CityGameApplication)getApplication();
-// app.isLoggedIn()
 public class MainActivity extends ActionBarActivity implements GameContentCaller {
 
     private static final int PRIMARY_CONTENT_ID = 1;
@@ -140,6 +139,21 @@ public class MainActivity extends ActionBarActivity implements GameContentCaller
         cur.close();
 
         ((CityGameApplication)getApplication()).setPlayer(offlinePlayer);
+
+        //Set text for loginbutton to logout
+        CityGameApplication app = (CityGameApplication)getApplication();
+        if(app.isLoggedIn()) {
+            Button btn_login = (Button) findViewById(R.id.btn_go_to_log_in);
+            btn_login.setText(getString(R.string.logout));
+        }
+    }
+
+    public void logout()
+    {
+        CityGameApplication app = (CityGameApplication)getApplication();
+        app.setLoggedIn(false);
+        Button btn_login = (Button) findViewById(R.id.btn_go_to_log_in);
+        btn_login.setText(getString(R.string.action_sign_in));
     }
 
     @Override
@@ -326,8 +340,15 @@ public class MainActivity extends ActionBarActivity implements GameContentCaller
     }
 
     public void goToLogin(View v) {
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-        startActivity(intent);
+
+        CityGameApplication app = (CityGameApplication)getApplication();
+        if(app.isLoggedIn()) {
+            logout();
+        }
+        else{
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
+        }
     }
 }
 
