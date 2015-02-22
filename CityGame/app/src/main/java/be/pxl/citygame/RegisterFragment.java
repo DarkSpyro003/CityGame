@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import be.pxl.citygame.data.Helpers;
 import be.pxl.citygame.data.Player;
 
 
@@ -80,7 +81,8 @@ public class RegisterFragment extends Fragment {
                 Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             } else {
-                Toast.makeText(getActivity().getApplicationContext(), getActivity().getApplication().getString(R.string.registration_web_fail), Toast.LENGTH_LONG).show();
+                if(Helpers.isConnectedToInternet(getActivity().getApplication()))
+                    Toast.makeText(getActivity().getApplicationContext(), getActivity().getApplication().getString(R.string.registration_web_fail), Toast.LENGTH_LONG).show();
             }
         }
     }

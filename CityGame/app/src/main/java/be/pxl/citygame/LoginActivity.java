@@ -27,6 +27,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import be.pxl.citygame.data.Helpers;
 import be.pxl.citygame.data.Player;
 import be.pxl.citygame.providers.GameContentCaller;
 
@@ -101,7 +102,8 @@ public class LoginActivity extends Activity {
             Toast.makeText(getApplicationContext(), getString(R.string.login_success), Toast.LENGTH_LONG).show();
             goToMain();
         } else {
-            Toast.makeText(getApplicationContext(), getString(R.string.login_failed), Toast.LENGTH_LONG).show();
+            if(Helpers.isConnectedToInternet(getApplication()))
+                Toast.makeText(getApplicationContext(), getString(R.string.login_failed), Toast.LENGTH_LONG).show();
         }
     }
 
