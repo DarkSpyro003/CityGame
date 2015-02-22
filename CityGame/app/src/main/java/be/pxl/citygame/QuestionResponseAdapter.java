@@ -1,6 +1,7 @@
 package be.pxl.citygame;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import be.pxl.citygame.data.Question;
+import be.pxl.citygame.providers.PhotoViewActivity;
 
 /**
  * Created by Lorenz Jolling on 2015-01-21.
@@ -38,7 +40,7 @@ public class QuestionResponseAdapter extends ArrayAdapter<Question> {
         TextView questionCorrectOutputView = (TextView) questionResponseView.findViewById(R.id.tv_question_correct_output);
         ImageView imageView = (ImageView) questionResponseView.findViewById(R.id.checkmark_image);
 
-        Question question = questions[position];
+        final Question question = questions[position];
 
         if(question.hasLocalPhoto())
         {
@@ -49,6 +51,9 @@ public class QuestionResponseAdapter extends ArrayAdapter<Question> {
                 @Override
                 public void onClick(View v) {
                     //todo: go to new activity to show image
+                    Intent intent = new Intent(getContext().getApplicationContext(), PhotoViewActivity.class);
+                    intent.putExtra("Bitmap", question.getLocalPhoto());
+                    getContext().startActivity(intent);
                 }
             });
         }

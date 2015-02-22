@@ -65,5 +65,6 @@
     <string name="logout">Afmelden</string>
     <string name="SharedPrefsKey">CityGameSharedPreferences</string>
     <string name="show_photo">Toon Foto</string>
+    <string name="title_activity_photo_view">PhotoViewActivity</string>
 
 </resources>

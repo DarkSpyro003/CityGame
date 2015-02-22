@@ -68,6 +68,10 @@
             android:name=".AboutActivity"
             android:label="@string/title_activity_about" >
         </activity>
+        <activity
+            android:name=".providers.PhotoViewActivity"
+            android:label="@string/title_activity_photo_view" >
+        </activity>
     </application>
 
 </manifest>
