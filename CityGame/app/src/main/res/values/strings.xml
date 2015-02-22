@@ -32,8 +32,8 @@
     <string name="login_failed">Aanmelden mislukt, controleer uw wachtwoord</string>
     <string name="registering_dialog_title">Bezig met registreren...</string>
     <string name="registering_dialog_content">Dit kan een minuut duren.</string>
-    <string name="register_fail_title">Registration failed</string>
-    <string name="register_fail_content">Sorry, something went wrong</string>
+    <string name="register_fail_title">Registratie mislukt</string>
+    <string name="register_fail_content">Mogelijk is de gebruikersnaam al in gebruik, probeer een andere gebruikersnaam.</string>
     <string name="instruction_tap_video">Tap op de video en tap dan op de play knop om hem af te spelen.</string>
     <string name="title_activity_camera">CameraActivity</string>
     <string name="hello_world">Hello world!</string>
@@ -58,5 +58,7 @@
     <string name="registration_err_password">Uw wachtwoord moet minimum 4 karakters bevatten.</string>
     <string name="registration_err_username">Uw gebruikersnaam moet minimum 6 karakters bevatten.</string>
     <string name="registration_err_email">Uw emailadres is incorrect</string>
+    <string name="err_no_internet_title">Geen internetverbinding</string>
+    <string name="err_no_internet_content">U kan geen nieuw spel starten en u kan zich niet aanmelden zonder een internetverbinding. Verbind met het internet vooraleer verder te gaan.</string>
 
 </resources>

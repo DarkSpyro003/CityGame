@@ -1,5 +1,6 @@
 package be.pxl.citygame.providers;
 
+import java.net.ConnectException;
 import java.util.NoSuchElementException;
 
 import be.pxl.citygame.MainActivity;

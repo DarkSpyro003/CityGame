@@ -1,15 +1,90 @@
 package be.pxl.citygame.data;
 
+import android.app.AlertDialog;
+import android.app.Application;
+import android.content.DialogInterface;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Looper;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.concurrent.ExecutionException;
+
+import be.pxl.citygame.CityGameApplication;
+import be.pxl.citygame.R;
 
 /**
  * Created by Christina on 21/02/2015.
  */
 public class Helpers {
+
+    /**
+     * Shows an internet/webservice connection failure dialog.
+     * @param application   The CityGameApplication requesting this dialog
+     */
+    public static void showInternetErrorDialog(CityGameApplication application) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(application.getActivity());
+        builder.setTitle(application.getString(R.string.err_no_internet_title))
+                .setMessage(application.getString(R.string.err_no_internet_content))
+                .setCancelable(true)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    /**
+     * Checks if we can connect to our webservice from the current connectivity. Will automatically
+     * run on a seperate thread when called from UI thread, or in same thread of non-UI calling
+     * thread.
+     * @param app   Android application requesting this data
+     * @return      True if able to connect, false otherwise
+     * @see #testConnectivity(android.app.Application)
+     */
+    public static boolean isConnectedToInternet(Application app) {
+        if(Looper.getMainLooper().getThread() == Thread.currentThread()) {
+            // This is the UI thread. Avoid networking on there
+            AsyncTask task = new ConnectivityTester().execute(app);
+            try {
+                return (Boolean)task.get();
+            } catch (InterruptedException|ExecutionException e) {
+                return false;
+            }
+        } else {
+            // Already on an extra thread. Just make the check in there.
+            return testConnectivity(app);
+        }
+    }
+
+    /**
+     * Checks if we can connect to our webservice from the current connectivity
+     * Only call this from non-UI threads.
+     * Prefer using {@link #isConnectedToInternet(android.app.Application)} which will automatically
+     * determine if a new thread needs to be spawned or not.
+     * @param app   Android application requesting this data
+     * @return      True if able to connect, false otherwise
+     */
+    public static boolean testConnectivity(Application app) {
+        try {
+            Uri url = Uri.parse(app.getString(R.string.webservice_url));
+            InetAddress ip = InetAddress.getByName(url.getHost());
+
+            return !ip.equals("");
+        } catch (UnknownHostException e) {
+            return false;
+        }
+    }
 
     /**
      * Converts data from InputStream into a String, and then closes the inputstream.

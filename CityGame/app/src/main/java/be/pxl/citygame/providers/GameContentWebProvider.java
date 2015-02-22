@@ -3,7 +3,6 @@ package be.pxl.citygame.providers;
 import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
@@ -21,15 +20,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
+import java.net.ConnectException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
@@ -37,7 +33,6 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.ExecutionException;
 
 import be.pxl.citygame.CityGameApplication;
-import be.pxl.citygame.MainActivity;
 import be.pxl.citygame.data.GameContent;
 import be.pxl.citygame.data.Helpers;
 import be.pxl.citygame.data.Question;
@@ -51,14 +46,14 @@ import be.pxl.citygame.data.database.GameDbHelper;
 class GameContentWebProvider implements IGameContentProvider
 {
     private int MODE_CALLBACK = 0, MODE_GET = 1;
-    private Application application;
+    private CityGameApplication application;
     private Hashtable<Integer, GameContent> contentCache;
     private int mode;
     private GameContentCaller caller;
 
     public GameContentWebProvider(Application application) {
         contentCache = new Hashtable<Integer, GameContent>();
-        this.application = application;
+        this.application = (CityGameApplication)application;
     }
 
     /**
@@ -116,7 +111,11 @@ class GameContentWebProvider implements IGameContentProvider
         this.mode = MODE_GET;
         GameContent content = contentCache.get(id);
         if( content == null ) {
-            content = getWebGameContentById(id);
+            try {
+                content = getWebGameContentById(id);
+            } catch (ConnectException e) {
+                Helpers.showInternetErrorDialog(application);
+            }
 
             if( content == null )
                 throw new NoSuchElementException("No such gamecontent ID");
@@ -131,7 +130,7 @@ class GameContentWebProvider implements IGameContentProvider
      * @param id    The game's id
      * @return      The GameContent object holding all content
      */
-    public GameContent getWebGameContentById(int id) {
+    public GameContent getWebGameContentById(int id) throws ConnectException {
         // Check local SQL database first
         GameDbHelper helper = new GameDbHelper(application.getApplicationContext());
 
@@ -211,7 +210,7 @@ class GameContentWebProvider implements IGameContentProvider
                 qcur.moveToNext();
             }
             return content;
-        } else {
+        } else if( Helpers.isConnectedToInternet(application) ) {
             // Slightly modified version of the code found in MainActivity(Christina's?)
             DefaultHttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
             HttpGet httpGet = new HttpGet(application.getString(R.string.webservice_url) + "gamecontent/" + id);
@@ -359,6 +358,9 @@ class GameContentWebProvider implements IGameContentProvider
             } catch(JSONException e) {
             }
             return null;
+        } else {
+            // Can't connect to webservice
+            throw new ConnectException("Couldn't connect to webservice");
         }
     }
 
@@ -375,7 +377,7 @@ class GameContentWebProvider implements IGameContentProvider
             if( application.getApplicationContext() == null )
                 Log.e(GameContentWebProvider.class.toString(), "ApplicationContext = null");
 
-            this.dialog = new ProgressDialog(((CityGameApplication)application).getActivity());
+            this.dialog = new ProgressDialog(application.getActivity());
             this.dialog.setTitle(application.getString(R.string.load_game_progress_title));
             this.dialog.setMessage(application.getString(R.string.load_game_progress_content));
             this.dialog.show();
@@ -386,7 +388,7 @@ class GameContentWebProvider implements IGameContentProvider
             if (dialog.isShowing())
                 dialog.dismiss();
 
-            if( mode == MODE_CALLBACK ) {
+            if( mode == MODE_CALLBACK && content != null ) {
                 caller.startGameCallback(content.getId());
             }
         }
@@ -394,7 +396,16 @@ class GameContentWebProvider implements IGameContentProvider
         @Override
         protected GameContent doInBackground(Integer... params) {
             this.gameContentId = params[0];
-            GameContent content = getWebGameContentById(gameContentId);
+            GameContent content = null;
+            try {
+                content = getWebGameContentById(gameContentId);
+            } catch (ConnectException e) {
+                application.getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        Helpers.showInternetErrorDialog(application);
+                    }
+                });
+            }
 
             return content;
         }

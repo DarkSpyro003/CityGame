@@ -103,20 +103,22 @@ public class Player {
         } catch (ExecutionException e) {
             Log.e(Player.class.toString(), e.getMessage(), e);
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(((CityGameApplication)application).getActivity());
-        builder.setTitle(application.getString(R.string.register_fail_title))
-                .setMessage(application.getString(R.string.register_fail_content))
-                .setCancelable(true)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+        if(Helpers.isConnectedToInternet(application)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(application.getActivity());
+            builder.setTitle(application.getString(R.string.register_fail_title))
+                    .setMessage(application.getString(R.string.register_fail_content))
+                    .setCancelable(true)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
 
-        AlertDialog alert = builder.create();
-        alert.show();
-        Log.d(Player.class.toString(), "Showing alert dialog");
+            AlertDialog alert = builder.create();
+            alert.show();
+            Log.d(Player.class.toString(), "Showing alert dialog");
+        }
         return false;
     }
 
@@ -149,29 +151,35 @@ public class Player {
 
         @Override
         protected void onPreExecute() {
-            this.dialog = new ProgressDialog(application.getActivity());
-            this.dialog.setTitle(dialogTitle);
-            this.dialog.setMessage(dialogContent);
-            this.dialog.show();
+            if( Helpers.isConnectedToInternet(application) ) {
+                this.dialog = new ProgressDialog(application.getActivity());
+                this.dialog.setTitle(dialogTitle);
+                this.dialog.setMessage(dialogContent);
+                this.dialog.show();
+            } else {
+                Helpers.showInternetErrorDialog(application);
+            }
         }
 
         @Override
         protected void onPostExecute(Boolean success) {
-            if (dialog.isShowing())
+            if (dialog != null && dialog.isShowing())
                 dialog.dismiss();
         }
 
         @Override
         protected Boolean doInBackground(String... params) {
-            switch(job) {
-                case JOB_LOGIN:
-                    return tryLogin(params[0]);
-                case JOB_REGISTER:
-                    return tryRegister(params[0]);
-                case JOB_POST_GAME:
-                    return tryPostGames(params[0]);
+            if( Helpers.isConnectedToInternet(application) ) {
+                switch (job) {
+                    case JOB_LOGIN:
+                        return tryLogin(params[0]);
+                    case JOB_REGISTER:
+                        return tryRegister(params[0]);
+                    case JOB_POST_GAME:
+                        return tryPostGames(params[0]);
+                }
             }
-            return null;
+            return false;
         }
     }
 
