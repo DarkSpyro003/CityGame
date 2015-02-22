@@ -46,4 +46,10 @@ public class RegisterActivity extends ActionBarActivity {
         RegisterFragment frag = (RegisterFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_register);
         frag.register(v);
     }
+
+    @Override
+    protected void onResume() {
+        ((CityGameApplication)getApplicationContext()).setActivity(this);
+        super.onResume();
+    }
 }

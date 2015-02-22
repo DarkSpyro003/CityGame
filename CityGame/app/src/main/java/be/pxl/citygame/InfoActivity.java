@@ -55,5 +55,9 @@ public class InfoActivity extends ActionBarActivity {
         frag.handleBackToQuestion(v);
     }
 
-
+    @Override
+    protected void onResume() {
+        ((CityGameApplication)getApplicationContext()).setActivity(this);
+        super.onResume();
+    }
 }
