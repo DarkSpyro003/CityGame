@@ -14,11 +14,22 @@
         android:layout_height="199dp"
         android:onClick="onClick"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/back"
+        android:id="@+id/btn_back"
+        android:onClick="goBack"
+        />
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/image_view"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@id/btn_back"
         android:layout_marginBottom="79dp"/>
+
+
 
 </RelativeLayout>

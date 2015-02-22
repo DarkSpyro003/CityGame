@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -102,5 +103,10 @@ public class GameResultsActivity extends ActionBarActivity {
     @Override
     public void onBackPressed() {
         // Do nothing - you can't go back to previous question!
+    }
+
+    public void goToMainActivity(View v) {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivityForResult(intent, 0);
     }
 }

@@ -24,8 +24,7 @@ public class CameraActivity extends ActionBarActivity {
     private int gameId;
     private int questionId;
 
-    // todo: button to return to previous activity
-    // Returning to previous activity: just call: finish();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,5 +70,10 @@ public class CameraActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void goBack(View v)
+    {
+        finish();
     }
 }
