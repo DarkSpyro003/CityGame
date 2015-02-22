@@ -46,11 +46,13 @@ public class QuestionResponseAdapter extends ArrayAdapter<Question> {
             questionCorrectOutputView.setTextColor(0xFF00CC00);
             questionUserInputLabelView.setVisibility(View.GONE);
             questionUserInputView.setVisibility(View.GONE);
-            // todo: Set a check mark drawable
+
+            imageView.setImageResource(R.drawable.checkmark);
 
         } else {
             questionUserInputView.setTextColor(0xFFCC0000);
-            // todo: Set a x mark drawable
+
+            imageView.setImageResource(R.drawable.xmark);
         }
 
         switch (question.getType()) {
