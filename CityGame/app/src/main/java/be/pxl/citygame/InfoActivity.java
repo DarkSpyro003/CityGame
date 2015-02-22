@@ -20,7 +20,9 @@ public class InfoActivity extends ActionBarActivity {
 
         Intent intent = getIntent();
         InfoFragment frag = (InfoFragment) getSupportFragmentManager().findFragmentById(R.id.infoFragment);
+        ImageFragment imgFrag = (ImageFragment) getSupportFragmentManager().findFragmentById(R.id.imageFragment);
         frag.setData(intent.getIntExtra("gameId", 0), intent.getIntExtra("questionId", 0));
+        imgFrag.setData(intent.getIntExtra("gameId", 0), intent.getIntExtra("questionId", 0));
     }
 
 
