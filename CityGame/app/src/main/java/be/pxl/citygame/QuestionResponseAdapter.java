@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
@@ -39,8 +40,18 @@ public class QuestionResponseAdapter extends ArrayAdapter<Question> {
 
         Question question = questions[position];
 
-        // todo: add button for showing picture if one was taken in the question activity
-        // question.hasLocalPhoto();
+        if(question.hasLocalPhoto())
+        {
+            //Show button
+            Button btnShowImage = (Button) questionResponseView.findViewById(R.id.btn_photo);
+            btnShowImage.setVisibility(View.VISIBLE);
+            btnShowImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //todo: go to new activity to show image
+                }
+            });
+        }
 
         if (question.isAnsweredCorrect()) {
             questionCorrectOutputView.setTextColor(0xFF00CC00);

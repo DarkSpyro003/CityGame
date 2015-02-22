@@ -64,5 +64,6 @@
     <string name="btn_main_menu">Hoofdmenu</string>
     <string name="logout">Afmelden</string>
     <string name="SharedPrefsKey">CityGameSharedPreferences</string>
+    <string name="show_photo">Toon Foto</string>
 
 </resources>
