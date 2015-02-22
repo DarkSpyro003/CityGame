@@ -28,7 +28,6 @@ public class GameResultsActivity extends ActionBarActivity {
     private TextView correctAnswersText;
     private int gameId;
 
-    // todo: button to return to MainActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
