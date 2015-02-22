@@ -43,7 +43,7 @@ public class QuestionResponseAdapter extends ArrayAdapter<Question> {
         if(question.hasLocalPhoto())
         {
             //Show button
-            Button btnShowImage = (Button) questionResponseView.findViewById(R.id.btn_photo);
+            Button btnShowImage = (Button) questionResponseView.findViewById(R.id.btn_show_photo);
             btnShowImage.setVisibility(View.VISIBLE);
             btnShowImage.setOnClickListener(new View.OnClickListener() {
                 @Override
