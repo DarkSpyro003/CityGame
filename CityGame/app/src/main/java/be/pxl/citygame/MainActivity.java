@@ -1,8 +1,10 @@
 package be.pxl.citygame;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -139,12 +141,35 @@ public class MainActivity extends ActionBarActivity implements GameContentCaller
         cur.close();
 
         ((CityGameApplication)getApplication()).setPlayer(offlinePlayer);
+        tryLogin();
 
         //Set text for loginbutton to logout
         CityGameApplication app = (CityGameApplication)getApplication();
         if(app.isLoggedIn()) {
             Button btn_login = (Button) findViewById(R.id.btn_go_to_log_in);
             btn_login.setText(getString(R.string.logout));
+        }
+    }
+
+    public void tryLogin()
+    {
+        //Implement sharedprefs here
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.SharedPrefsKey), Context.MODE_PRIVATE);
+        if(sharedPreferences.contains("username") && sharedPreferences.contains("password"))
+        {
+            String username = sharedPreferences.getString("username", null);
+            String password = sharedPreferences.getString("password", null);
+
+            if(username!=null && password!=null)
+            {
+                Player player = ((CityGameApplication)getApplication()).getPlayer();
+                player.setUsername(username);
+
+                if( player.checkLogin(password) ) {
+
+                    Toast.makeText(getApplicationContext(), getString(R.string.login_success), Toast.LENGTH_LONG).show();
+                }
+            }
         }
     }
 

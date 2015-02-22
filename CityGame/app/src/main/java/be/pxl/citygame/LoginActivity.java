@@ -5,7 +5,9 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -43,7 +45,7 @@ public class LoginActivity extends Activity {
     private View mProgressView;
     private View mLoginFormView;
 
-    // todo: Remember credentials (SharedPreferences) and try logging in on Application startup?
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,12 +101,25 @@ public class LoginActivity extends Activity {
         Player player = ((CityGameApplication)getApplication()).getPlayer();
         player.setUsername(user);
         if( player.checkLogin(password) ) {
+
+            storeCredentials(user, password);
+
             Toast.makeText(getApplicationContext(), getString(R.string.login_success), Toast.LENGTH_LONG).show();
             goToMain();
         } else {
             if(Helpers.isConnectedToInternet(getApplication()))
                 Toast.makeText(getApplicationContext(), getString(R.string.login_failed), Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void storeCredentials(String username, String password)
+    {
+        //Implement sharedprefs here
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.SharedPrefsKey), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("username", username);
+        editor.putString("password", password);
+        editor.commit();
     }
 
     /**

@@ -63,5 +63,6 @@
     <string name="btn_photo">Camera</string>
     <string name="btn_main_menu">Hoofdmenu</string>
     <string name="logout">Afmelden</string>
+    <string name="SharedPrefsKey">CityGameSharedPreferences</string>
 
 </resources>
