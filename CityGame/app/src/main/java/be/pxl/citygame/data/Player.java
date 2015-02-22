@@ -78,8 +78,10 @@ public class Player {
      * @see #tryPostGames(String)
      */
     public void postGames(String password) {
-        job = this.JOB_POST_GAME;
-        AsyncTask postgames = new GetRestData().execute(password);
+        if( application.isLoggedIn() ) {
+            job = this.JOB_POST_GAME;
+            AsyncTask postgames = new GetRestData().execute(password);
+        }
     }
 
     /**
