@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import be.pxl.citygame.data.Question;
 import be.pxl.citygame.providers.Providers;
 
-// TODO: Lorenz - Add Camera activity
 public class QuestionActivity extends ActionBarActivity {
 
     private int currGame;
