@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `players` (
   `passwordhash` char(60) NOT NULL COMMENT 'bcrypt',
   `email` varchar(255) NOT NULL,
   `realname` varchar(50) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `players`
