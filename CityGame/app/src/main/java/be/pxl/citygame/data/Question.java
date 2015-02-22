@@ -355,8 +355,13 @@ public class Question {
      * @see java.io.File#exists()
      */
     public boolean hasLocalPhoto() {
-        File image = new File(localPhotoUri.toString());
-        return image.exists();
+        if(localPhotoUri != null) {
+            File image = new File(localPhotoUri.toString());
+            return image.exists();
+        }
+        else{
+            return false;
+        }
     }
 
     public void setLocalPhotoUri(Uri localPhotoUri) {

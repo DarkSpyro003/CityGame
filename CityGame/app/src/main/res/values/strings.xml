@@ -65,5 +65,7 @@
     <string name="logout">Afmelden</string>
     <string name="SharedPrefsKey">CityGameSharedPreferences</string>
     <string name="err_no_camera">Fout: We konden de camera op uw toestel niet gebruiken</string>
+    <string name="show_photo">Toon Foto</string>
+    <string name="title_activity_photo_view">Foto's van uw spel!</string>
 
 </resources>

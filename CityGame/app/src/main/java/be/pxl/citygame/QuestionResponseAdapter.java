@@ -1,17 +1,20 @@
 package be.pxl.citygame;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import be.pxl.citygame.data.Question;
+import be.pxl.citygame.providers.PhotoViewActivity;
 
 /**
  * Created by Lorenz Jolling on 2015-01-21.
@@ -37,10 +40,23 @@ public class QuestionResponseAdapter extends ArrayAdapter<Question> {
         TextView questionCorrectOutputView = (TextView) questionResponseView.findViewById(R.id.tv_question_correct_output);
         ImageView imageView = (ImageView) questionResponseView.findViewById(R.id.checkmark_image);
 
-        Question question = questions[position];
+        final Question question = questions[position];
 
-        // todo: add button for showing picture if one was taken in the question activity
-        // question.hasLocalPhoto();
+        if(question.hasLocalPhoto())
+        {
+            //Show button
+            Button btnShowImage = (Button) questionResponseView.findViewById(R.id.btn_show_photo);
+            btnShowImage.setVisibility(View.VISIBLE);
+            btnShowImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //todo: go to new activity to show image
+                    Intent intent = new Intent(getContext().getApplicationContext(), PhotoViewActivity.class);
+                    intent.putExtra("Bitmap", question.getLocalPhoto());
+                    getContext().startActivity(intent);
+                }
+            });
+        }
 
         if (question.isAnsweredCorrect()) {
             questionCorrectOutputView.setTextColor(0xFF00CC00);
