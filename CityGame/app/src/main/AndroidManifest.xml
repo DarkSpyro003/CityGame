@@ -3,6 +3,7 @@
     package="be.pxl.citygame" >
 
     <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -55,10 +56,6 @@
         <activity
             android:name=".RegisterActivity"
             android:label="@string/title_activity_register" >
-        </activity>
-        <activity
-            android:name=".CameraActivity"
-            android:label="@string/title_activity_camera" >
         </activity>
         <activity
             android:name=".PauseActivity"
