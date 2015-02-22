@@ -154,7 +154,7 @@ public class MainActivity extends ActionBarActivity implements GameContentCaller
     /**
      * Tries to login using data from SharedPreferences from previous login
      */
-    public void tryLogin() {
+    private void tryLogin() {
         //Implement sharedprefs here
         SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.SharedPrefsKey), Context.MODE_PRIVATE);
         if(sharedPreferences.contains("username") && sharedPreferences.contains("password")) {
@@ -172,7 +172,10 @@ public class MainActivity extends ActionBarActivity implements GameContentCaller
         }
     }
 
-    public void logout() {
+    /**
+     * Logs out and removes auto login SharedPreferences
+     */
+    private void logout() {
         CityGameApplication app = (CityGameApplication)getApplication();
         app.setLoggedIn(false);
         SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.SharedPrefsKey), Context.MODE_PRIVATE);
@@ -180,7 +183,7 @@ public class MainActivity extends ActionBarActivity implements GameContentCaller
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.remove("username");
             editor.remove("password");
-            editor.commit();
+            editor.apply();
         }
         Button btn_login = (Button) findViewById(R.id.btn_go_to_log_in);
         btn_login.setText(getString(R.string.action_sign_in));
@@ -196,7 +199,7 @@ public class MainActivity extends ActionBarActivity implements GameContentCaller
         startGame(PRIMARY_CONTENT_ID);
     }
 
-    public void startGame(int id) {
+    private void startGame(int id) {
         // Download data
         Providers.getGameContentProvider().initGameContentById(id, this);
     }
@@ -370,12 +373,11 @@ public class MainActivity extends ActionBarActivity implements GameContentCaller
     }
 
     public void goToLogin(View v) {
-
         CityGameApplication app = (CityGameApplication)getApplication();
         if(app.isLoggedIn()) {
             logout();
         }
-        else{
+        else {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
         }
