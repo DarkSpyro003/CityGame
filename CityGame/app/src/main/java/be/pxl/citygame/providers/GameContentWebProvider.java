@@ -209,6 +209,7 @@ class GameContentWebProvider implements IGameContentProvider
 
                 qcur.moveToNext();
             }
+            sqlDb.close();
             return content;
         } else if( Helpers.isConnectedToInternet(application) ) {
             // Slightly modified version of the code found in MainActivity(Christina's?)
@@ -354,9 +355,11 @@ class GameContentWebProvider implements IGameContentProvider
                 }
                 contentCache.put(id, content);
 
+                sqlDb.close();
                 return content;
             } catch(JSONException e) {
             }
+            sqlDb.close();
             return null;
         } else {
             // Can't connect to webservice

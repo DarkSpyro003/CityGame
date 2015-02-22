@@ -109,6 +109,7 @@ public class Question {
         String where = GameDB.Questions.COL_GID + " = ? AND " + GameDB.Questions.COL_QID + " = ?";
         String[] whereArgs = { "" + gameId, "" + qId };
         sqlDb.update(GameDB.Questions.TABLE_NAME, contentValues, where, whereArgs);
+        sqlDb.close();
     }
 
     /**
@@ -301,6 +302,7 @@ public class Question {
      * Stores photo uri in local db
      */
     public void markPhotoAsSaved(Uri uri) {
+        this.localPhotoUri = uri;
         // Save to DB
         GameDbHelper helper = new GameDbHelper(application.getApplicationContext());
         SQLiteDatabase sqlDb = helper.getWritableDatabase();
@@ -309,6 +311,7 @@ public class Question {
         String where = GameDB.Questions.COL_GID + " = ? AND " + GameDB.Questions.COL_QID + " = ?";
         String[] whereArgs = { "" + this.gameId, "" + this.qId };
         sqlDb.update(GameDB.Questions.TABLE_NAME, contentValues, where, whereArgs);
+        sqlDb.close();
     }
 
     /**

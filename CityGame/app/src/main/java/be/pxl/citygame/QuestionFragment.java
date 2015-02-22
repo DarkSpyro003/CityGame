@@ -136,7 +136,12 @@ public class QuestionFragment extends Fragment {
     public void goToCameraActivity(View v) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         long unixTime = System.currentTimeMillis() / 1000L;
-        savePicture = new File(Environment.getExternalStorageDirectory() + File.separator + unixTime + "_citygame_" + this.questionId + "_" + this.gameId + ".jpg");
+        String dcim = "DCIM" + File.separator + "CityGame" + File.separator;
+        savePicture = new File(Environment.getExternalStorageDirectory() + File.separator + dcim +
+                unixTime + "_citygame_" + this.questionId + "_" + this.gameId + ".jpg");
+        if( !savePicture.getParentFile().mkdirs() ) { // Make sure our directory exists
+            Log.d(QuestionFragment.class.toString(), "Dir creation failed");
+        }
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(savePicture));
         getActivity().startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
     }

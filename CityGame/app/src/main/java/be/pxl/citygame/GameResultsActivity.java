@@ -72,6 +72,8 @@ public class GameResultsActivity extends ActionBarActivity {
 
         if( app.isLoggedIn() )
             app.getPlayer().postGames(app.getPassword());
+
+        sqlDb.close();
     }
 
 
