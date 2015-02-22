@@ -14,15 +14,32 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import be.pxl.citygame.CityGameApplication;
 import be.pxl.citygame.R;
+import be.pxl.citygame.providers.Providers;
 
 /**
  * Created by Christina on 21/02/2015.
  */
 public class Helpers {
+
+    /**
+     * Returns the first qid following passed qid
+     * @param qid   Previous question's id
+     * @param gid   Game's id
+     * @return      Next question id or -1 in case of none
+     */
+    public static int getNextQid(int gid, int qid) {
+        for( Map.Entry<Integer, Question> entry : Providers.getGameContentProvider().getGameContentById(gid).getQuestionList().entrySet() ) {
+            int key = entry.getKey();
+            if( key > qid )
+                return key;
+        }
+        return -1;
+    }
 
     /**
      * Shows an internet/webservice connection failure dialog.

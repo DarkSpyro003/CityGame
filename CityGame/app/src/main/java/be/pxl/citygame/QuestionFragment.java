@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import be.pxl.citygame.data.GameContent;
+import be.pxl.citygame.data.Helpers;
 import be.pxl.citygame.data.Question;
 import be.pxl.citygame.providers.Providers;
 
@@ -89,21 +90,6 @@ public class QuestionFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_question, container, false);
     }
 
-    /**
-     * Returns the first qid following passed qid
-     * @param qid   Previous question's id
-     * @param gid   Game's id
-     * @return      Next question id or -1 in case of none
-     */
-    private int getNextQid(int gid, int qid) {
-        for( Map.Entry<Integer, Question> entry : Providers.getGameContentProvider().getGameContentById(gid).getQuestionList().entrySet() ) {
-            int key = entry.getKey();
-            if( key > qid )
-                return key;
-        }
-        return -1;
-    }
-
     public void handleAnswer(View v) {
         if( question.getType() == Question.PLAIN_TEXT )
             question.checkAnswer(txtAnswer.getText().toString());
@@ -118,7 +104,7 @@ public class QuestionFragment extends Fragment {
         }
 
         CityGameApplication context = (CityGameApplication) getActivity().getApplicationContext();
-        int nextQid = getNextQid(gameId, questionId);
+        int nextQid = Helpers.getNextQid(gameId, questionId);
         if( nextQid >= 0 ) {
             // Switch to next activity
             Intent intent = new Intent(context, NextLocationActivity.class);

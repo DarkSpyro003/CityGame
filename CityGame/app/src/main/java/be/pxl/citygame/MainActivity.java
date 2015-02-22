@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import be.pxl.citygame.data.GameContent;
+import be.pxl.citygame.data.Helpers;
 import be.pxl.citygame.data.Player;
 import be.pxl.citygame.data.Question;
 import be.pxl.citygame.data.database.GameDB;
@@ -200,21 +201,6 @@ public class MainActivity extends ActionBarActivity implements GameContentCaller
     }
 
     /**
-     * Returns the first qid following passed qid
-     * @param qid   Previous question's id
-     * @param gid   Game's id
-     * @return      Next question id or -1 in case of none
-     */
-    private int getNextQid(int gid, int qid) {
-        for( Map.Entry<Integer, Question> entry : Providers.getGameContentProvider().getGameContentById(gid).getQuestionList().entrySet() ) {
-            int key = entry.getKey();
-            if( key > qid )
-                return key;
-        }
-        return -1;
-    }
-
-    /**
      * Finds out of the player was already playing this game, and finds out which question
      * they haven't answered yet.
      * @param gid   Game's id
@@ -235,7 +221,7 @@ public class MainActivity extends ActionBarActivity implements GameContentCaller
         }
 
         // Find out first qid
-        int qid = getNextQid(gid, -1);
+        int qid = Helpers.getNextQid(gid, -1);
         cur.moveToFirst();
         while(!cur.isAfterLast()) {
             for(int i = 0; i < cur.getColumnCount(); i++) {
@@ -254,7 +240,7 @@ public class MainActivity extends ActionBarActivity implements GameContentCaller
                     }
                 }
             }
-            qid = getNextQid(gid, -1);
+            qid = Helpers.getNextQid(gid, -1);
             cur.moveToNext();
         }
         cur.close();
