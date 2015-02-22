@@ -101,7 +101,6 @@ public class LoginActivity extends Activity {
         Player player = ((CityGameApplication)getApplication()).getPlayer();
         player.setUsername(user);
         if( player.checkLogin(password) ) {
-
             storeCredentials(user, password);
 
             Toast.makeText(getApplicationContext(), getString(R.string.login_success), Toast.LENGTH_LONG).show();
@@ -112,14 +111,13 @@ public class LoginActivity extends Activity {
         }
     }
 
-    public void storeCredentials(String username, String password)
-    {
+    public void storeCredentials(String username, String password) {
         //Implement sharedprefs here
         SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.SharedPrefsKey), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("username", username);
         editor.putString("password", password);
-        editor.commit();
+        editor.apply();
     }
 
     /**
