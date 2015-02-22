@@ -402,7 +402,7 @@ public class Player {
         builder.setTitle(R.string.login_fail_title)
                 .setMessage(R.string.login_fail_content)
                 .setCancelable(true)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(application.getString(R.string.btn_ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();

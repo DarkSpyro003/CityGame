@@ -33,7 +33,7 @@ public class Helpers {
         builder.setTitle(application.getString(R.string.err_no_internet_title))
                 .setMessage(application.getString(R.string.err_no_internet_content))
                 .setCancelable(true)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(application.getString(R.string.btn_ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
