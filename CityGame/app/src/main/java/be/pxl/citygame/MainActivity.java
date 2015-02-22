@@ -141,7 +141,7 @@ public class MainActivity extends ActionBarActivity implements GameContentCaller
         cur.close();
 
         ((CityGameApplication)getApplication()).setPlayer(offlinePlayer);
-        tryLogin();
+        this.tryLogin();
 
         //Set text for loginbutton to logout
         CityGameApplication app = (CityGameApplication)getApplication();
@@ -151,32 +151,37 @@ public class MainActivity extends ActionBarActivity implements GameContentCaller
         }
     }
 
-    public void tryLogin()
-    {
+    /**
+     * Tries to login using data from SharedPreferences from previous login
+     */
+    public void tryLogin() {
         //Implement sharedprefs here
         SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.SharedPrefsKey), Context.MODE_PRIVATE);
-        if(sharedPreferences.contains("username") && sharedPreferences.contains("password"))
-        {
+        if(sharedPreferences.contains("username") && sharedPreferences.contains("password")) {
             String username = sharedPreferences.getString("username", null);
             String password = sharedPreferences.getString("password", null);
 
-            if(username!=null && password!=null)
-            {
+            if(username!=null && password!=null) {
                 Player player = ((CityGameApplication)getApplication()).getPlayer();
                 player.setUsername(username);
 
                 if( player.checkLogin(password) ) {
-
                     Toast.makeText(getApplicationContext(), getString(R.string.login_success), Toast.LENGTH_LONG).show();
                 }
             }
         }
     }
 
-    public void logout()
-    {
+    public void logout() {
         CityGameApplication app = (CityGameApplication)getApplication();
         app.setLoggedIn(false);
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.SharedPrefsKey), Context.MODE_PRIVATE);
+        if(sharedPreferences.contains("username") && sharedPreferences.contains("password")) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.remove("username");
+            editor.remove("password");
+            editor.commit();
+        }
         Button btn_login = (Button) findViewById(R.id.btn_go_to_log_in);
         btn_login.setText(getString(R.string.action_sign_in));
     }
